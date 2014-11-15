@@ -1,3 +1,10 @@
+Information of our group:
+Yi Wu: ywu014@ucr.edu
+Shuheng Li: sli037@ucr.edu
+Deen Ma: dma010@ucr.edu
+
+==== Initial commitment ====
+
 CS220 Project Framework
 ===============
 
