@@ -155,7 +155,8 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
                 for( int i = 0; i < b.at(blocker_num).height;i++ ){//blocker height point
                         x = b.at(blocker_num).location.x;
                         for( int j = 0; j < b.at(blocker_num).width;j++ ){//blocker width point
-                                this->map.at(y).at(x)->set_cost(-1);
+                                 Node* new_node = new Node(x,y,-1);
+                                this->replace_node(new_node);//replace the node
                                 x++;
                          }
                          y++;

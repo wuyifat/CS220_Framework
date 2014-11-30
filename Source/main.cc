@@ -52,10 +52,10 @@ int main(int argc,char* argv[]) {
 			cout << "(1,1) is cost is " <<m.get_node(1,1)->get_cost() << " the connection size is " << m.get_node(1,1)->connections_size() << endl;
 			cout << "(0,3) is cost is " <<m.get_node(0,3)->get_cost() << " the connection size is " << m.get_node(0,3)->connections_size() << endl;
 			cout << "(0,2) is cost is " <<m.get_node(0,2)->get_cost() << " the connection size is " << m.get_node(0,2)->connections_size() << endl;
-			cout << "(250,0) is cost is " <<m.get_node(250,0)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
-			cout << "(250,100) is cost is " <<m.get_node(250,100)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
+			cout << "(250,0) is cost is " <<m.get_node(250,0)->get_cost() << " the connection size is " << m.get_node(250,0)->connections_size() << endl;
+			cout << "(250,100) is cost is " <<m.get_node(250,100)->get_cost() << " the connection size is " << m.get_node(250,100)->connections_size() << endl;
 
-			cout << "(250,499) is cost is " <<m.get_node(250,499)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
+			cout << "(250,499) is cost is " <<m.get_node(250,499)->get_cost() << " the connection size is " << m.get_node(250,499)->connections_size() << endl;
 	delete first_problem;
 
 	return 0;
