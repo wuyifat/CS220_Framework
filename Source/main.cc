@@ -1,6 +1,8 @@
 
-#include "../Headers/grid.h"
+#include "../Headers/map.h"
+#include "../Headers/edge.h"
 #include "../Headers/problem_object.h"
+#include "../Headers/node.h"
 #include <time.h>
 #include <cstdlib>
 #include <iostream>
@@ -8,7 +10,7 @@
 using std::cerr;
 using std::cout;
 using std::endl;
-
+using std::vector;
 int main(int argc,char* argv[]) {
 
 	// DO NOT CHANGE THIS SECTION OF CODE
@@ -17,7 +19,7 @@ int main(int argc,char* argv[]) {
 	// EDIT FROM HERE DOWN
 
 	//Create your problem map object (in our example, we use a simple grid, you should create your own)
-	Utilities::Grid g(first_problem->get_width(), first_problem->get_height());
+	Utilities::Map m(first_problem->get_width(), first_problem->get_height());
 
 	/*
 	Note: we do not take into account the connections or blockers that exist in the Project Object
@@ -35,40 +37,25 @@ int main(int argc,char* argv[]) {
 	*/
 
 	//Note, we create random paths just as an example of how to create paths, netlists are created similarly
-	vector<Path*> paths;
-	srand(time(NULL));
-	int number_paths = first_problem->get_connections().size();
-	cout << "Creating " << number_paths << " paths...";
-	for (int i = 0;i < number_paths;i++) {
-		Path* new_path = new Path();
-		int x = rand() % first_problem->get_width();
-		int y = rand() % first_problem->get_height();
-		int path_length = 1+rand()%10;
-		for (unsigned j = 0;j < path_length;j++) {
-			bool direction = rand()%2;
-			Point head(x,y);
-			direction?x+=1:y+=1;
-			Point tail(x,y);
-			PathSegment* new_segment = new PathSegment(head,tail);
-			new_path->add_segment(new_segment);
-		}
-		paths.push_back(new_path);
-	}
-	cout << "Completed." << endl;
+	
 
-	//Print the paths/netlists that you have return from your algorithm
-	for (unsigned i = 0;i < paths.size();i++) {
-		cout << "\tPath " << i+1 << " of " << paths.size() << ": (" 
-			 << paths.at(i)->at(0)->get_source().x << "," << paths.at(i)->at(0)->get_source().y << ") ";
-		for (unsigned j = 0;j < paths.at(i)->size();j++) {
-			cout << "(" << paths.at(i)->at(j)->get_sink().x << "," << paths.at(i)->at(j)->get_sink().y << ") ";
-		}
-		cout << endl;
-		Path* temp = paths.at(i);
-		delete temp;
-	}
-	paths.clear();
 
+	m.set_blocker(first_problem->get_blockers());
+        vector<Connection> connection = first_problem->get_connections();
+	for(int i = 0; i < connection.size();i++){
+		m.set_source(connection.at(i).source);//set source 's cost is -10
+                m.set_sink(connection.at(i).sink);//set sink's cost is -20
+                }
+			cout << "(0,0) is cost is " <<m.get_node(0,0)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
+			cout << "(0,1) is cost is " <<m.get_node(0,1)->get_cost() << " the connection size is " << m.get_node(0,1)->connections_size() << endl;
+			cout << "(1,0) is cost is " <<m.get_node(1,0)->get_cost() << " the connection size is " << m.get_node(1,0)->connections_size() << endl;
+			cout << "(1,1) is cost is " <<m.get_node(1,1)->get_cost() << " the connection size is " << m.get_node(1,1)->connections_size() << endl;
+			cout << "(0,3) is cost is " <<m.get_node(0,3)->get_cost() << " the connection size is " << m.get_node(0,3)->connections_size() << endl;
+			cout << "(0,2) is cost is " <<m.get_node(0,2)->get_cost() << " the connection size is " << m.get_node(0,2)->connections_size() << endl;
+			cout << "(250,0) is cost is " <<m.get_node(250,0)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
+			cout << "(250,100) is cost is " <<m.get_node(250,100)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
+
+			cout << "(250,499) is cost is " <<m.get_node(250,499)->get_cost() << " the connection size is " << m.get_node(0,0)->connections_size() << endl;
 	delete first_problem;
 
 	return 0;
