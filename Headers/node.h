@@ -31,12 +31,11 @@ namespace Utilities {
             Point get_coord();
             int get_x();
             int get_y();
-	        unsigned connections_size();
+            unsigned connections_size();
             bool connections_empty();
             bool connections_contains(Edge* edge);
-	        Edge* connections_at(unsigned index);
+	    Edge* connections_at(unsigned index);
             int get_cost();
-
             /* Mutators */
             void set_coord(int x, int y);
             void set_x_coord(int x);

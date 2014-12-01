@@ -3,6 +3,8 @@
 #include "../Headers/claim.h"
 #include "../Headers/problem_object.h"
 #include <iostream>
+using std::cout;
+using std::endl;
 //Takes an x and y coordinate as input and creates a grid of that size filled with default nodes
 Utilities::Map::Map(int width, int height) {
     for(int y = 0; y < height; y++) {
@@ -183,4 +185,12 @@ void Utilities::Map::set_sink(Point s) {
        }
        map.at(s.y).at(s.x) -> set_cost(-3);
        this -> sink.push_back(map.at(s.y).at(s.x));
+}
+void Utilities::Map::display(){
+      for(int i = 0; i < this->get_height();i++){
+          cout << endl;
+          for(int j = 0; j < this->get_width();j++){
+              cout << " "<< (this->map.at(i).at(j))->get_cost();
+          }
+      }
 }

@@ -1,6 +1,7 @@
 #include "../Headers/grid.h"
 #include "../Headers/edge.h"
 #include "../Headers/claim.h"
+#include "../Headers/problem_object.h"
 #include <iostream>
 
 //Takes an x and y coordinate as input and creates a grid of that size filled with default nodes
@@ -81,7 +82,7 @@ void Utilities::Grid::replace_node(Node* replacement_node) {
 }
 
 void Utilities::Grid::set_paths(vector<Path*> paths) {
-      this->paths = paths;
+	this->paths = paths;
 }
 
 void Utilities::Grid::add_path(Path* path) {
@@ -103,3 +104,24 @@ void Utilities::Grid::remove_path(int i) {
       it += i;
       paths.erase(it);
 }
+/*void Utilities::Grid::set_blocker(vector<Blocker> b) {
+/*      this->blocker = b;
+      Point temp_point;
+      int x,y;
+      for(int i = 0; i < blockers.size();i++){
+          x = blockers.size(i).location.x;
+          y = blockers.size(i).location.y;
+          for(int j = 0; j < blocker.height; j++){
+  	      for(int k = 0; k < blocker.width; k++){
+		 this->grid.at(y+j).at(x+k).cost = -1;//this is location
+         
+              }     
+	  }
+      }
+*/
+/*}
+vector<Blocker> Utilities::Grid::get_blockers() {
+      return this->blocker;
+}
+void Utilities::Grid::test(Point b) {
+}*/
