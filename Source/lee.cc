@@ -31,7 +31,6 @@ vector<Path*> Algorithm::Lee::forward(){
                 if(flag == 1){
                     break;
                 }
-		cout << endl <<" q1 working"<< endl;
                 f1++;
                 if(f1 == 1){
                     if(q2.empty()){
@@ -39,15 +38,10 @@ vector<Path*> Algorithm::Lee::forward(){
                     }
                 }
                 Node* temp = q1.front();
-                temp->display_node();
                 q1.pop();
                 for(int j = 0; j < temp->connections_size();j++){                
                     Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    cout<< "this is neibor::";
-                    neibor->display_node();
-                    cout << "it's neibor size is "<< temp->connections_size();
                    if(neibor->get_cost() == -3){
-                        cout << "now is sink time !!"<<endl;
 //                        j = temp->connections_size();
                         flag = 1;
 //                        Path* new_path = new Path();
@@ -60,22 +54,16 @@ vector<Path*> Algorithm::Lee::forward(){
                     }
                     if(neibor->get_cost() == 0){
                         (this->map->get_node(neibor->get_coord()))->set_cost(value);
-                        cout << "now seting the node ("<<neibor->get_x()<<", "<< neibor->get_y()<<" ) cost to "<< value<< endl;
                         map->display_map();
                         q2.push(neibor);
                     }//if
-                    else{
-                        cout << "Don't need to seting the node ("<<neibor->get_x()<<", "<< neibor->get_y()<<" ) cost,its cost "<< neibor->get_cost() << endl;
-                    }//else
                 }//for
              }//whileq1
 
-		cout << endl <<"now swich to q2"<< endl;
              while(!q2.empty()){
                if(flag == 1){
                     break;
                 }
-		cout << endl <<" q2 working"<< endl;
                 f2++;
                 if (f2 == 1){
                     if(q1.empty()){
@@ -83,15 +71,10 @@ vector<Path*> Algorithm::Lee::forward(){
                     }
                 }
                 Node* temp = q2.front();
-                temp->display_node();
-                cout << "it's neibor size is "<< temp->connections_size();
                 q2.pop();
                 for(int j = 0; j < temp->connections_size();j++){                
                     Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    cout<< "this is neibor::";
-                    neibor->display_node();
                     if(neibor->get_cost() == -3){
-                        cout << "now is sink time !!"<<endl;
 //                        j = temp->connections_size();
                         flag = 1;
 //                        Path* new_path = new Path();
@@ -103,20 +86,12 @@ vector<Path*> Algorithm::Lee::forward(){
 //                   cout << "this is "<< j << "time" << endl;
                     }
                     if(neibor->get_cost() == 0){
-                        cout << "now seting the node ("<<neibor->get_x()<<", "<< neibor->get_y()<<" ) cost to "<< value<< endl;
                         (this->map->get_node(neibor->get_coord()))->set_cost(value);
-
                         map->display_map();
                         q1.push(neibor);
                     }//if
-		    else{
-                        cout << "Don't need to seting the node ("<<neibor->get_x()<<", "<< neibor->get_y()<<" ) cost,its cost "<< neibor->get_cost() << endl;
-                    }//else
-
                 }//for
              }//whileq2
-
-		cout << endl <<"now swich to q1"<< endl;
         }//while flag
     }//for path number
     return this->paths; 

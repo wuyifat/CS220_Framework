@@ -47,8 +47,8 @@ namespace Utilities {
             void set_cost(int cost);
             void remove_connection(Edge* connection);
             void display_node();
-            void new_node(Node* n);
             void display_edges();
+            void remove_m_connection(Node* node);
     };
 }
 

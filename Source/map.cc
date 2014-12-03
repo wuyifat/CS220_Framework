@@ -157,20 +157,14 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
                 for( int i = 0; i < b.at(blocker_num).height;i++ ){//blocker height point
                         x = b.at(blocker_num).location.x;
                         for( int j = 0; j < b.at(blocker_num).width;j++ ){//blocker width point
-                                 Node* new_node = new Node(x,y,-1);
-                                this->replace_node(new_node);//replace the node
-				if(x==b.at(blocker_num).location.x&&y==b.at(blocker_num).location.y){
-       for(int ii = 0; ii < this->map.at(3).at(2)->connections_size();i++){
-        Node* t = this->map.at(3).at(2);
-        Node* n =  t->connections_at(ii)->get_end(t);
-        cout << "now is woking in blockers!!!!!!!!!"<< endl;
-        n->display_node();
-        cout<<"           the cost is  " <<n->get_cost()<<endl;
-
-        cout<<"           the size is  " <<n->connections_size()<<endl;
-}
-
-}
+				this->map.at(y).at(x)->display_node();
+                                this->map.at(y).at(x)->set_cost(-1);
+                                while(this->map.at(y).at(x)->connections_empty()!=1){
+                                    this->map.at(y).at(x)->connections_at(0)->get_end(this->map.at(y).at(x))->remove_m_connection(this->map.at(y).at(x));
+                                    this->map.at(y).at(x)->remove_connection(this->map.at(y).at(x)->connections_at(0));
+                //                    this->display_size();
+                                }
+ 
                                 x++;
                          }
                          y++;
@@ -208,12 +202,14 @@ void Utilities::Map::display_map(){
       }
       cout << endl << endl;
 }
-void Utilities::Map::reset_connection(Node* n){
-/*     int size;
-     size = n->connections_size();
-     for(int i = 0; i < size; i++){
-         Node* neibor = get_end(n->connections_at(i));
-         this->map.at(neibor->get_x(),neibor->get_y())
-     } 
-*/ 
+void Utilities::Map::display_size(){
+        for(int i = 0; i< this->get_height();i++){
+                cout << endl;
+                for(int j = 0; j < this->get_width();j++){
+                        cout<<" "<< this->get_node(j,i)->connections_size();
+                }
+        }
+        cout << endl;
+
 }
+

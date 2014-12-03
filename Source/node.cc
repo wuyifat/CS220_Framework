@@ -126,7 +126,7 @@ void Utilities::Node::display_node() {
 }
 
 void Utilities::Node::display_edges() {
-    for(int i; i < this->connections_size();i++){
+    for(int i = 0; i < this->connections_size();i++){
         cout << endl <<"The number "<< i <<" is :";
         this->connections_at(i)->display_edge();
     }
@@ -134,4 +134,11 @@ void Utilities::Node::display_edges() {
         cout << " this node no connections" << endl;
     }
 }
-          
+void Utilities::Node::remove_m_connection(Node* node){
+        for(int i= 0; i < this->connections_size();i++){
+            if( (this->connections_at(i)->get_end(this))->get_coord()==node->get_coord()){
+            this->remove_connection(connections_at(i));
+             }
+         }
+
+}  

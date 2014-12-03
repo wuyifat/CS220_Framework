@@ -46,7 +46,7 @@ namespace Utilities {
             void set_source(Point source);
             void set_sink(Point sink);
             void display_map();
-            void reset_connection(Node* n);
+            void display_size();
     };
 }
 #endif //_MAP_BASE_H_
