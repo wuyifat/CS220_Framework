@@ -22,7 +22,7 @@ namespace Utilities {
             void add_connection_mirrored(Edge*);
 
         public:
-            /* Constructors/Destructors */
+            /* Constructors/Destr uctors */
             Node(int x, int y, int cost=0);
             Node(Point coord, int cost=0);
             ~Node();
@@ -35,6 +35,7 @@ namespace Utilities {
             bool connections_empty();
             bool connections_contains(Edge* edge);
 	    Edge* connections_at(unsigned index);
+            Edge* reverse(Edge* edge);
             int get_cost();
             /* Mutators */
             void set_coord(int x, int y);
@@ -45,6 +46,9 @@ namespace Utilities {
             void add_connection(Edge* connection);
             void set_cost(int cost);
             void remove_connection(Edge* connection);
+            void display_node();
+            void new_node(Node* n);
+            void display_edges();
     };
 }
 

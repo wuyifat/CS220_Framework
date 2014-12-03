@@ -45,7 +45,8 @@ namespace Utilities {
             void set_blocker(vector<Blocker> b);
             void set_source(Point source);
             void set_sink(Point sink);
-            void display();
+            void display_map();
+            void reset_connection(Node* n);
     };
 }
 #endif //_MAP_BASE_H_

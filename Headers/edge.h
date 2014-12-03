@@ -12,7 +12,7 @@ namespace Utilities {
         private:
             Node* head;
             Node* tail;
-
+            Edge* b;
         public:
             /* Constructors/Destructors */
             Edge(Node*, Node*);
@@ -26,6 +26,8 @@ namespace Utilities {
             /* Mutators */
             void set_head(Node* head);
             void set_tail(Node* tail);
+            Edge* reverse();
+            void display_edge();   
     };
 }
 
