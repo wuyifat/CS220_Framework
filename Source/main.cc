@@ -5,6 +5,7 @@
 #include "../Headers/lee.h"
 #include "../Headers/threebit.h"
 #include "../Headers/twobit.h"
+#include "../Headers/ruben.h"
 #include <time.h>
 #include <cstdlib>
 #include <iostream>
@@ -29,7 +30,8 @@ int main(int argc,char* argv[]) {
 
 //------------------Run different algorithm-----------------------
  //       Algorithm::Lee l(mm);
-        Algorithm::Twobit l(mm);
+//        Algorithm::Twobit l(mm);
+        Algorithm::Ruben l(mm);
         l.forward();
 	mm->display_map();
         cout << " Finished" <<endl<<endl<<endl; 
