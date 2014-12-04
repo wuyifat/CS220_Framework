@@ -136,7 +136,7 @@ void Utilities::Map::display_map(){
       for(int i = 0; i < this->get_height();i++){
           cout << endl;
           for(int j = 0; j < this->get_width();j++){
-              cout << " "<< (this->map.at(i).at(j))->get_cost();
+              cout << "\t"<< (this->map.at(i).at(j))->get_cost();
           }
       }
       cout << endl << endl;
@@ -157,4 +157,16 @@ void Utilities::Map::set_connection(vector<Connection> c){
 
 vector<Connection> Utilities::Map::get_connection(){
        return this->connection ;
+}
+
+// added by Deen: initialize is to set the costs of non-block nodes to zero
+void Utilities::Map::initialize()
+{
+	for(int y = 0; y < get_height();y++){
+            for(int x = 0; x < get_width();x++){
+                if(get_node(x,y)->get_cost()!=-1){
+                    get_node(x,y)->set_cost(0);//reset cost to 0
+                }//if
+            }//for x
+        }//for y
 }
