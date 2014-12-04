@@ -5,6 +5,7 @@
 #include "node.h"
 #include "path.h"
 #include "map.h"
+#include "problem_object.h"
 #include <queue>
 #include <vector>
 #include <iostream>
@@ -25,14 +26,18 @@ namespace Algorithm{
             Map* map;
             int number; //number of source = number of sink = number of path
             vector<Path*> paths;
-            vector<Node*> source;
-            vector<Node*> sink;
-             
+            vector<Connection> connection;
+            vector<Node*> source;        
+            vector<Node*> sink;        
         public:
             Lee(Map* m);
           //  ~Lee();
-            vector<Path*> forward();
+
+            void forward();
+            void traceback(Path* path);
             Map* get_map();
+            vector<Path*> get_paths();
+	    vector<Connection> get_connection();
     };
 }
 #endif

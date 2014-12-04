@@ -71,47 +71,7 @@ Path* Utilities::Map::get_path(int i) {
       return this->paths.at(i);           //at(...) will throw an out of range exception
 }
 
-vector<Node*> Utilities::Map::get_sources() {
-      return this->source;
-}
 
-Node* Utilities::Map::get_source(int i) {
-      if(i >= source.size()){
-         claim("Attempting to access a source outside of the connection range number",kError);
-      }
-      return this->source.at(i);
-}
-
-vector<Node*> Utilities::Map::get_sinks() {
-      return this->sink;
-}
-
-Node* Utilities::Map::get_sink(int i) {
-      if(i >= sink.size()){
-         claim("Attempting to access a sink outside of the connection range number",kError);
-      }
-      return this->sink.at(i);
-}
-
-bool Utilities::Map::is_blocker(int x, int y) {
-      if(y >= this->map.size()) {
-        claim("Attemping to access a node outside of the map's range (y-value out of range)", kError);
-	    return NULL;
-      }
-      if(x >= this->map.at(y).size()) {
-        claim("Attemping to access a node outside of the map's range (x-value out of range)", kError);
-	    return NULL;
-      }
-      if(map.at(y).at(x)->get_cost() == -1){
-             return 1;
-       }
-       else
-             return 0;
-}
-
-bool Utilities::Map::is_blocker(Point coord) {
-      return this->is_blocker(coord.x, coord.y);
-}
 /*
 Since each node has an x/y coordinate, if you pass a Node* into replace node, it will take the node at the passed in
 Nodes location, delete it, and then place the passed in node into the map at its proper location.
@@ -157,7 +117,6 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
                 for( int i = 0; i < b.at(blocker_num).height;i++ ){//blocker height point
                         x = b.at(blocker_num).location.x;
                         for( int j = 0; j < b.at(blocker_num).width;j++ ){//blocker width point
-				this->map.at(y).at(x)->display_node();
                                 this->map.at(y).at(x)->set_cost(-1);
                                 while(this->map.at(y).at(x)->connections_empty()!=1){
                                     this->map.at(y).at(x)->connections_at(0)->get_end(this->map.at(y).at(x))->remove_m_connection(this->map.at(y).at(x));
@@ -171,27 +130,7 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
                  }
        }
 }
-void Utilities::Map::set_source(Point s) {
-      if(s.x > this->get_width()){
-            claim("Attemping to set source node outside of the map range(x)", kError);
-       }
-      if(s.y > this->get_height()){
-            claim("Attemping to set source node outside of the map range(y)", kError);
-       }
-       this->map.at(s.y).at(s.x)->set_cost(-2);
-       this -> source.push_back(this->map.at(s.y).at(s.x));
-}
 
-void Utilities::Map::set_sink(Point s) {
-      if(s.x > this->get_width()){
-            claim("Attemping to set sink node outside of the map range(x)", kError);
-       }
-      if(s.y > this->get_height()){
-            claim("Attemping to set sink node outside of the map range(y)", kError);
-       }
-       map.at(s.y).at(s.x) -> set_cost(-3);
-       this -> sink.push_back(map.at(s.y).at(s.x));
-}
 void Utilities::Map::display_map(){
       cout << endl << endl;
       for(int i = 0; i < this->get_height();i++){
@@ -212,4 +151,10 @@ void Utilities::Map::display_size(){
         cout << endl;
 
 }
+void Utilities::Map::set_connection(vector<Connection> c){
+       this->connection = c;
+}
 
+vector<Connection> Utilities::Map::get_connection(){
+       return this->connection ;
+}
