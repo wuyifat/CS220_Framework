@@ -1,6 +1,9 @@
 #include "../Headers/edge.h"
 #include "../Headers/node.h"
 #include "../Headers/claim.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 
 Utilities::Node::Node(int x, int y, int cost):coord(x,y){
       this->cost = cost;
@@ -116,3 +119,26 @@ void Utilities::Node::remove_connection(Edge* connection) {
             //TODO: Add debug warning if it gets here without a delete
       }
 }
+
+void Utilities::Node::display_node() {
+
+        cout  <<"Node ("<<coord.x<<", "<<coord.y<<")";
+}
+
+void Utilities::Node::display_edges() {
+    for(int i = 0; i < this->connections_size();i++){
+        cout << endl <<"The number "<< i <<" is :";
+        this->connections_at(i)->display_edge();
+    }
+    if ( this->connections_size() == 0){
+        cout << " this node no connections" << endl;
+    }
+}
+void Utilities::Node::remove_m_connection(Node* node){
+        for(int i= 0; i < this->connections_size();i++){
+            if( (this->connections_at(i)->get_end(this))->get_coord()==node->get_coord()){
+            this->remove_connection(connections_at(i));
+             }
+         }
+
+}  

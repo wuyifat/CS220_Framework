@@ -1,9 +1,9 @@
-#include "../Headers/lee.h"
+#include "../Headers/threebit.h"
 #include <iostream>
 using std::cout;
 using std::endl;
 
-Algorithm::Lee::Lee(Map* m){
+Algorithm::Threebit::Threebit(Map* m){
     this->map = m;
     this->connection = m->get_connection();
     this->number = m->get_connection().size();
@@ -13,13 +13,13 @@ Algorithm::Lee::Lee(Map* m){
     }
 }
 
-//Algorithm::Lee::~Lee(){
+//Algorithm::Threebit::~Threebit(){
 
 //empty destory function
 //}
 
 
-void Algorithm::Lee::forward(){
+void Algorithm::Threebit::forward(){
     for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
         if(i != 0){//if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
             for(int y = 0; y < this->map->get_height();y++){
@@ -47,9 +47,15 @@ void Algorithm::Lee::forward(){
                     break;
                 }
                 f1++;
+
                 if(f1 == 1){//the key point to increase cost
                     if(q2.empty()){
-                        value++;
+                        if(value == 3){
+                            value = 1;
+                         }
+                         else{
+                             value++;
+                         }
                     }
                 }
                 Node* temp = q1.front();
@@ -63,6 +69,8 @@ void Algorithm::Lee::forward(){
                         new_path->add_segment(new_segment);
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
+                        cout<< "!!!!!!!!!!!!!!!!NOW I FOUND THE SINK!!!!!!!!!!!!!!!!!!!!"<<endl;
+                        this->map->display_map();
                         this->traceback(new_path);
 //                        this->paths.push_back(new_path);
                         break;
@@ -82,7 +90,12 @@ void Algorithm::Lee::forward(){
                 f2++;
                 if (f2 == 1){
                     if(q1.empty()){
-                        value++;
+                        if(value == 3){
+                            value = 1;
+                         }
+                         else{
+                             value++;
+                         }
                     }
                 }
                 Node* temp = q2.front();
@@ -96,6 +109,8 @@ void Algorithm::Lee::forward(){
                         new_path->add_segment(new_segment);
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
+                        cout<< "!!!!!!!!!!!!!!!!NOW I FOUND THE SINK!!!!!!!!!!!!!!!!!!!!"<<endl;
+                        this->map->display_map();
                         this->traceback(new_path);
 //                        this->paths.push_back(new_path);
                         break;
@@ -112,17 +127,22 @@ void Algorithm::Lee::forward(){
 }
 
 
-Map* Algorithm::Lee::get_map(){
+Map* Algorithm::Threebit::get_map(){
     return this->map;
 }
 
-void Algorithm::Lee::traceback(Path* path){
+void Algorithm::Threebit::traceback(Path* path){
     int flag = 0;
     while(flag!=1){
 	    for(int i = 0; i< this->map->get_node(path->get_sink())->connections_size();i++){
 	        Node* tail = this->map->get_node(path->get_sink());
 		Node* neibor = tail->connections_at(i)->get_end(tail);
 		if(tail->get_cost()==1){
+                    if(neibor->get_cost()==3){
+			PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
+			path->add_segment(new_segment);
+			path->set_sink(neibor->get_coord());
+		    }
 		    if(neibor->get_cost()==-2){
 			PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 			path->add_segment(new_segment);
@@ -140,12 +160,12 @@ void Algorithm::Lee::traceback(Path* path){
     this->paths.push_back(path);
 }
 
-vector<Path*> Algorithm::Lee::get_paths(){
+vector<Path*> Algorithm::Threebit::get_paths(){
     return this->paths;
 }
 
 
-vector<Connection> Algorithm::Lee::get_connection(){
+vector<Connection> Algorithm::Threebit::get_connection(){
        return this->connection ;
 }
 

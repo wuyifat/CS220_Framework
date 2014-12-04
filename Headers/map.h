@@ -16,6 +16,7 @@ namespace Utilities {
     class Map{
         private:
             vector<vector<Node*> > map;
+            vector<Connection> connection;
             vector<Path*> paths;
             vector<Node*> source;
             vector<Node*> sink;
@@ -30,12 +31,9 @@ namespace Utilities {
             Node* get_node(Point coord);
             vector<Path*> get_paths();
             Path* get_path(int i);
-            vector<Node*> get_sources();
-            Node* get_source(int i);
-            vector<Node*> get_sinks();
-            Node* get_sink(int i);
 	    bool is_blocker(int x,int y);
             bool is_blocker(Point coord);
+            vector<Connection> get_connection();
             /* Mutators */
             void replace_node(Node* replacement_node);
             void set_paths(vector<Path*> paths);
@@ -43,9 +41,9 @@ namespace Utilities {
             void replace_path(int i, Path* path);
             void remove_path(int i);
             void set_blocker(vector<Blocker> b);
-            void set_source(Point source);
-            void set_sink(Point sink);
-            void display();
+            void display_map();
+            void display_size();
+            void set_connection(vector<Connection> c);
     };
 }
 #endif //_MAP_BASE_H_

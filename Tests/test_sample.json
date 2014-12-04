@@ -5,10 +5,14 @@
 	"width": 10,
 
 	"blockerList": [
-	{"name": "blocker1", "width": 2, "height": 2, "x": 5, "y": 5}
+
+         {"name": "blocker3", "width": 2, "height": 3, "x": 2, "y":4 },
+         {"name": "blocker1", "width": 2, "height": 2, "x": 7, "y":6 }
 	],
 
 	"routeList": [
-	{"name": "route1", "source_x": 3, "source_y": 3, "sink_x": 1, "sink_y": 5}
+	{"name": "route1", "source_x": 2, "source_y": 2, "sink_x": 2, "sink_y":9},
+	{"name": "route1", "source_x": 0, "source_y": 0, "sink_x": 9, "sink_y":9}
+
 	]
 }

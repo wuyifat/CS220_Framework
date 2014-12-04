@@ -1,5 +1,5 @@
-#ifndef _LEE_BASE_H_
-#define _LEE_BASE_H_
+#ifndef _THREEBIT_BASE_H_
+#define _THREEBIT_BASE_H_
 
 #include "edge.h"
 #include "node.h"
@@ -21,7 +21,7 @@ using Utilities::Path;
 using Utilities::Map;
 
 namespace Algorithm{
-    class Lee{
+    class Threebit{
         private:
             Map* map;
             int number; //number of source = number of sink = number of path
@@ -30,8 +30,8 @@ namespace Algorithm{
             vector<Node*> source;        
             vector<Node*> sink;        
         public:
-            Lee(Map* m);
-          //  ~Lee();
+            Threebit(Map* m);
+          //  ~Threebit();
 
             void forward();
             void traceback(Path* path);
