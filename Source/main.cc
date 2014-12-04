@@ -4,6 +4,7 @@
 #include "../Headers/node.h"
 #include "../Headers/lee.h"
 #include "../Headers/threebit.h"
+#include "../Headers/twobit.h"
 #include <time.h>
 #include <cstdlib>
 #include <iostream>
@@ -16,31 +17,29 @@ int main(int argc,char* argv[]) {
 	// DO NOT CHANGE THIS SECTION OF CODE
 	if(argc < 2) { cout << "Usage: ./grid_router <test_file>" << endl; }
 	Utilities::ProblemObject* first_problem = new Utilities::ProblemObject(std::string(argv[1]));
-	// EDIT FROM HERE DOWN
+
+	// initailizae the map
 	Utilities::Map m(first_problem->get_width(), first_problem->get_height());
+
+
+//------------------Set the blockers and connection----------------
         m.set_blocker(first_problem->get_blockers());//set blockers
 	m.set_connection(first_problem->get_connections());//set connetions
-
 	Map* mm = &m;
-//        Algorithm::Lee l(mm);
-        Algorithm::Threebit l(mm);
-        cout << "there are "<<l.get_connection().size()<< " pair of sources and sinks "<<endl;
+
+//------------------Run different algorithm-----------------------
+ //       Algorithm::Lee l(mm);
+        Algorithm::Twobit l(mm);
         l.forward();
 	mm->display_map();
         cout << " Finished" <<endl<<endl<<endl; 
 
-//------------------------display path--------------------------
 
+//------------------------display path--------------------------
         vector<Path*> p = l.get_paths();
         for (unsigned i = 0;i < p.size();i++) {
-                cout << "\tPath " << i+1 << " of " << p.size() << ": ("
-                         << p.at(i)->at(0)->get_source().x << "," << p.at(i)->at(0)->get_source().y << ") ";
-                for (unsigned j = 0;j < p.at(i)->size();j++) {
-                        cout << "(" << p.at(i)->at(j)->get_sink().x << "," << p.at(i)->at(j)->get_sink().y << ") ";
-                }
-                cout << endl;
-                Path* temp = p.at(i);
-                delete temp;
+                cout << "\tPath " << i+1 << " of " << p.size() << ":" << endl;
+                p.at(i)->display_path();
         }
 
 	delete first_problem;

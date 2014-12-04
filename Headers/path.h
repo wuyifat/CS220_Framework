@@ -34,7 +34,7 @@ namespace Utilities {
             /* Mutators */
             void set_source(Point source);
             void set_sink(Point sink);
-
+            void display_path();
             /*
             == Inherited Mutators ==
             void add_segment(PathSegment* pathsegment);
