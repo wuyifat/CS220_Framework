@@ -44,6 +44,7 @@ namespace Utilities {
             void display_map();
             void display_size();
             void set_connection(vector<Connection> c);
-    };
+    	    void initialize();
+	};
 }
 #endif //_MAP_BASE_H_
