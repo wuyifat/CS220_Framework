@@ -22,7 +22,13 @@ Algorithm::Threebit::Threebit(Map* m){
 void Algorithm::Threebit::forward(){
     for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
         if(i != 0){//if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
-            map->initialize();
+            for(int y = 0; y < this->map->get_height();y++){
+                for(int x = 0; x < this->map->get_width();x++){
+                    if(this->map->get_node(x,y)->get_cost()!=-1){
+                        this->map->get_node(x,y)->set_cost(0);//reset cost to 0
+                    }//if
+                }//for x
+            }//for y
         }// if not 1
         this->source.at(i)->set_cost(-2);//set source cost to -2
         this->sink.at(i)->set_cost(-3);//set sink cost to -3
