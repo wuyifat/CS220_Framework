@@ -29,11 +29,14 @@ int main(int argc,char* argv[]) {
 	Map* mm = &m;
 
 //------------------Run different algorithm-----------------------
- //       Algorithm::Lee l(mm);
+//        Algorithm::Lee l(mm);
+//        Algorithm::Threebit l(mm);
 //        Algorithm::Twobit l(mm);
         Algorithm::Ruben l(mm);
         l.forward();
 	mm->display_map();
+	mm->display_md();
+
         cout << " Finished" <<endl<<endl<<endl; 
 
 

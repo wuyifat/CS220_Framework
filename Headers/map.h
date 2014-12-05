@@ -31,20 +31,17 @@ namespace Utilities {
             Node* get_node(Point coord);
             vector<Path*> get_paths();
             Path* get_path(int i);
-	    bool is_blocker(int x,int y);
-            bool is_blocker(Point coord);
             vector<Connection> get_connection();
             /* Mutators */
-            void replace_node(Node* replacement_node);
             void set_paths(vector<Path*> paths);
             void add_path(Path* path);
             void replace_path(int i, Path* path);
             void remove_path(int i);
             void set_blocker(vector<Blocker> b);
-            void display_map();
-            void display_size();
+            void display_map();//display cost
+            void display_size();//display connection size
+            void display_md();//display manhantan distance
             void set_connection(vector<Connection> c);
-    	    void initialize();
-	};
+    };
 }
 #endif //_MAP_BASE_H_

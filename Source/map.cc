@@ -76,10 +76,6 @@ Path* Utilities::Map::get_path(int i) {
 Since each node has an x/y coordinate, if you pass a Node* into replace node, it will take the node at the passed in
 Nodes location, delete it, and then place the passed in node into the map at its proper location.
 */
-void Utilities::Map::replace_node(Node* replacement_node) {
-      delete this->map.at(replacement_node->get_y()).at(replacement_node->get_x());
-      this->map.at(replacement_node->get_y()).at(replacement_node->get_x()) = replacement_node;
-}
 
 void Utilities::Map::set_paths(vector<Path*> paths) {
 	this->paths = paths;
@@ -136,7 +132,7 @@ void Utilities::Map::display_map(){
       for(int i = 0; i < this->get_height();i++){
           cout << endl;
           for(int j = 0; j < this->get_width();j++){
-              cout << "\t"<< (this->map.at(i).at(j))->get_cost();
+              cout << " "<< (this->map.at(i).at(j))->get_cost();
           }
       }
       cout << endl << endl;
@@ -149,7 +145,6 @@ void Utilities::Map::display_size(){
                 }
         }
         cout << endl;
-
 }
 void Utilities::Map::set_connection(vector<Connection> c){
        this->connection = c;
@@ -159,14 +154,13 @@ vector<Connection> Utilities::Map::get_connection(){
        return this->connection ;
 }
 
-// added by Deen: initialize is to set the costs of non-block nodes to zero
-void Utilities::Map::initialize()
-{
-	for(int y = 0; y < get_height();y++){
-            for(int x = 0; x < get_width();x++){
-                if(get_node(x,y)->get_cost()!=-1){
-                    get_node(x,y)->set_cost(0);//reset cost to 0
-                }//if
-            }//for x
-        }//for y
+void Utilities::Map::display_md(){
+        for(int i = 0; i< this->get_height();i++){
+                cout << endl;
+                for(int j = 0; j < this->get_width();j++){
+                        cout<<" "<< this->get_node(j,i)->get_distance();
+                }
+        }
+        cout << endl;
 }
+

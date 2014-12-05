@@ -1,5 +1,6 @@
 #include "../Headers/ruben.h"
 #include <iostream>
+#include <cmath>
 using std::cout;
 using std::endl;
 
@@ -21,7 +22,10 @@ Algorithm::Ruben::Ruben(Map* m){
 
 void Algorithm::Ruben::forward(){
     for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
-        if(i != 0){//if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
+
+//------------------------reset the map ------------------------------------------
+//if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
+        if(i != 0){
             for(int y = 0; y < this->map->get_height();y++){
                 for(int x = 0; x < this->map->get_width();x++){
                     if(this->map->get_node(x,y)->get_cost()!=-1){
@@ -30,14 +34,21 @@ void Algorithm::Ruben::forward(){
                 }//for x
             }//for y
         }// if not 1
+
+
+//------------------------set source and sink------------------------
         this->source.at(i)->set_cost(-2);//set source cost to -2
         this->sink.at(i)->set_cost(-3);//set sink cost to -3
-
+        Point md = this->sink.at(i)->get_coord();//use for compute manhuatan distance
+        int min_d = abs(md.x+md.y-source.at(i)->get_x()-source.at(i)->get_y());
         int flag = 0;// this flag use to break while loop, if we found sink, the flag = 1 and break loop
         int value = 0;// ues for cost
 
+
+
 //the basic ideal of this algorithm is use 2 queue to set the cost
 	queue<Node*> q1,q2;
+        vector<Node*> others;
         q1.push(this->source.at(i));
         while(flag != 1){// while flag !=1 keep found sink
    	    int f1 = 0;
@@ -61,8 +72,7 @@ void Algorithm::Ruben::forward(){
                         map->display_map();
                         Path* new_path = new Path();
                         PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
-                        cout<< " this is the last node !!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-                        temp->display_node();
+                        this->map->display_md();
                         new_path->add_segment(new_segment);
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
@@ -71,8 +81,14 @@ void Algorithm::Ruben::forward(){
                         break;
                     }
                     if(neibor->get_cost() == 0){
-                        (this->map->get_node(neibor->get_coord()))->set_cost(value);
-                        q2.push(neibor);
+                        neibor->set_cost(value);
+                        neibor->set_m_d(md);
+                        if (neibor->get_distance() == min_d){
+                            q2.push(neibor);
+                        }//if
+                        else{
+                            others.push_back(neibor);
+                        }//else
                     }//if
                 }//for
              }//whileq1
@@ -96,8 +112,7 @@ void Algorithm::Ruben::forward(){
                         map->display_map();
                         Path* new_path = new Path();
                         PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
-                         cout<< " this is the last node !!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-                        temp->display_node();
+                        this->map->display_md();
                         new_path->add_segment(new_segment);
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
@@ -106,9 +121,14 @@ void Algorithm::Ruben::forward(){
                         break;
                     }
                     if(neibor->get_cost() == 0){
-                        (this->map->get_node(neibor->get_coord()))->set_cost(value);
-
-                        q1.push(neibor);
+                        neibor->set_cost(value);
+                        neibor->set_m_d(md);
+                        if (neibor->get_distance() == min_d){
+                            q1.push(neibor);
+                        }//if
+                        else{
+                            others.push_back(neibor);
+                        } 
                     }//if
                 }//for
              }//whileq2

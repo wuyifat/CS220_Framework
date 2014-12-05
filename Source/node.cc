@@ -5,12 +5,19 @@
 using std::cout;
 using std::endl;
 
+void Utilities::Node::updata_d(){
+      this->distance = this->cost + this->m_d;
+}
+
+
 Utilities::Node::Node(int x, int y, int cost):coord(x,y){
       this->cost = cost;
+      this->updata_d();
 }
 
 Utilities::Node::Node(Point coord, int cost):coord(coord.x,coord.y){
       this->cost = cost;
+      this->updata_d();
 }
 
 Utilities::Node::~Node() {
@@ -67,6 +74,10 @@ int Utilities::Node::get_cost() {
       return this->cost;
 }
 
+int Utilities::Node::get_distance() {
+      return this->distance;
+}
+
 void Utilities::Node::set_coord(int x, int y) {
       this->coord.x = x;
       this->coord.y = y;
@@ -89,20 +100,39 @@ void Utilities::Node::set_connections(vector<Edge*> connections) {
 }
 
 void Utilities::Node::add_connection_mirrored(Edge* connection) {
-      //TODO: Check the connections list first to make sure to not add duplicates
-      this->connections.push_back(connection);
+      if (this-> connections_contains(connection) == 0){
+          this->connections.push_back(connection);
+      }
 }
 
 void Utilities::Node::add_connection(Edge* connection) {
-      //TODO: Check the connections list first to make sure to not add duplicates
-      this->connections.push_back(connection);
-      connection->get_end(this)->add_connection_mirrored(connection);
+       if (this-> connections_contains(connection) == 0){
+          this->connections.push_back(connection);
+          connection->get_end(this)->add_connection_mirrored(connection);
+      }           
 }
 
 void Utilities::Node::set_cost(int cost) {
       this->cost = cost;
 }
-
+void Utilities::Node::set_m_d(Point sink){
+      if(sink.x > this->coord.x){
+          if(sink.y > this->coord.y){
+              this->m_d = sink.x - coord.x + sink.y - coord.y;
+          }
+          else{
+              this->m_d = sink.x - coord.x + coord.y - sink.y;
+          }
+      }
+      else      
+          if(sink.y > this->coord.y){
+              this->m_d = coord.x - sink.x + sink.y - coord.y;
+          }
+          else{
+              this->m_d = coord.x - sink.x + coord.y - sink.y;
+          }
+      this->updata_d();
+}
 //If an edge occurs multiple times in the connection list, all instances will be removed
 void Utilities::Node::remove_connection(Edge* connection) {
       bool nothing_removed = true;
@@ -116,7 +146,8 @@ void Utilities::Node::remove_connection(Edge* connection) {
             }
       }
       if(nothing_removed) {
-            //TODO: Add debug warning if it gets here without a delete
+
+//            claim("The edge is not connect to this point, nothing removed", kWarning);
       }
 }
 
