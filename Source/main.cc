@@ -22,20 +22,22 @@ int main(int argc,char* argv[]) {
 	// initailizae the map
 	Utilities::Map m(first_problem->get_width(), first_problem->get_height());
 
-
+        cout << "Mapping the input file..."<<endl;
+        cout << "Mapping Blockers, source and sinks file..."<<endl<<endl;
 //------------------Set the blockers and connection----------------
         m.set_blocker(first_problem->get_blockers());//set blockers
 	m.set_connection(first_problem->get_connections());//set connetions
 	Map* mm = &m;
-
+        cout << "Finished Mapping, Starting Algorithm."<<endl<<endl;
 //------------------Run different algorithm-----------------------
 //        Algorithm::Lee l(mm);
 //        Algorithm::Threebit l(mm);
 //        Algorithm::Twobit l(mm);
         Algorithm::Ruben l(mm);
+
         l.forward();
-	mm->display_map();
-	mm->display_md();
+        mm->display_map();
+	      mm->display_md();
 
         cout << " Finished" <<endl<<endl<<endl; 
 

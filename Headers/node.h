@@ -19,6 +19,7 @@ namespace Utilities {
             int cost;
             int distance;
             int m_d;
+            int flag;
             /* Private Mutators */
             void add_connection_mirrored(Edge*);
             void updata_d();
@@ -32,6 +33,7 @@ namespace Utilities {
             Point get_coord();
             int get_x();
             int get_y();
+            int get_flag();
             unsigned connections_size();
             bool connections_empty();
             bool connections_contains(Edge* edge);
@@ -40,6 +42,7 @@ namespace Utilities {
             int get_distance();
 
             /* Mutators */
+            void set_flag(int i);
             void set_coord(int x, int y);
             void set_x_coord(int x);
             void set_y_coord(int y);

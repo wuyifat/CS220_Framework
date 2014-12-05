@@ -38,10 +38,12 @@ Utilities::Point Utilities::Node::get_coord() {
       return this->coord;
 }
 
+int Utilities::Node::get_flag() {
+      return this->flag;
+}
 int Utilities::Node::get_x() {
       return this->coord.x;
 }
-
 int Utilities::Node::get_y() {
       return this->coord.y;
 }
@@ -87,10 +89,12 @@ void Utilities::Node::set_coord(Point coord) {
       this->coord = coord;
 }
 
+void Utilities::Node::set_flag(int x) {
+      this->flag = x;
+}
 void Utilities::Node::set_x_coord(int x) {
       this->coord.x = x;
 }
-
 void Utilities::Node::set_y_coord(int y) {
       this->coord.y = y;
 }
