@@ -28,7 +28,9 @@ namespace Algorithm{
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        
-            vector<Node*> sink;        
+            vector<Node*> sink;
+            
+            void reset_map();        
         public:
             Ruben(Map* m);
           //  ~Ruben();
@@ -39,6 +41,7 @@ namespace Algorithm{
             Map* get_map();
             vector<Path*> get_paths();
 	    vector<Connection> get_connection();
+            Node* min_node(vector<Node*> others);
     };
 }
 #endif

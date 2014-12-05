@@ -34,13 +34,7 @@ int main(int argc,char* argv[]) {
 //        Algorithm::Threebit l(mm);
 //        Algorithm::Twobit l(mm);
         Algorithm::Ruben l(mm);
-
         l.forward();
-        mm->display_map();
-	      mm->display_md();
-
-        cout << " Finished" <<endl<<endl<<endl; 
-
 
 //------------------------display path--------------------------
         vector<Path*> p = l.get_paths();
@@ -49,6 +43,7 @@ int main(int argc,char* argv[]) {
                 p.at(i)->display_path();
         }
 
+        cout << " Finished" <<endl<<endl<<endl; 
 	delete first_problem;
 
 	return 0;

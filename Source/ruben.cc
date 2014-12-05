@@ -19,6 +19,15 @@ Algorithm::Ruben::Ruben(Map* m){
 //empty destory function
 //}
 
+void Algorithm::Ruben::reset_map(){
+    for(int y = 0; y < this->map->get_height();y++){
+        for(int x = 0; x < this->map->get_width();x++){
+            if(this->map->get_node(x,y)->get_cost()!=-1){
+	        this->map->get_node(x,y)->set_cost(0);//reset cost to 0
+            }
+        }
+     }
+}
 
 void Algorithm::Ruben::forward(){
     for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
@@ -26,14 +35,8 @@ void Algorithm::Ruben::forward(){
 //------------------------reset the map ------------------------------------------
 //if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
         if(i != 0){
-            for(int y = 0; y < this->map->get_height();y++){
-                for(int x = 0; x < this->map->get_width();x++){
-                    if(this->map->get_node(x,y)->get_cost()!=-1){
-                        this->map->get_node(x,y)->set_cost(0);//reset cost to 0
-                    }//if
-                }//for x
-            }//for y
-        }// if not 1
+            this->reset_map();
+        }
 
 
 //------------------------set source and sink------------------------
@@ -50,82 +53,53 @@ void Algorithm::Ruben::forward(){
 	queue<Node*> q1,q2;
         vector<Node*> others;
         q1.push(this->source.at(i));
-   	    int f1 = 0;
-int debug=0;
+   	int f1 = 0;//fi for check wether the first time in queue
         while(flag != 1){// while flag !=1 keep found sink
-
-	    int f2 = 0;
             while(!q1.empty()){
                 if(flag == 1){//if found sink 
                     break;
                 }
                 f1++;
                 Node* temp = q1.front();
-                cout << " now I got the q1 first element"<<endl;
-                temp->display_node();
-                cout <<endl;
                 q1.pop();
-                temp->set_flag(1);
+                temp->set_flag(1);//this flag to check the node can only in to vector once
+
                 for(int j = 0; j < temp->connections_size();j++){                
                     Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    temp -> display_node();
-                    cout << " 's neibor is "<<endl;
-                    neibor ->display_node();
-                    cout << "the cost is "<< neibor->get_cost()<<endl<<endl;
-                   if(neibor->get_cost() == -3){//if we found sink we use traceback function to save the path
+                    if(neibor->get_cost() == -3){//if we found sink we use traceback function to save the path
                         flag = 1;
-                        map->display_map();
+                        // add a path to vector
                         Path* new_path = new Path();
                         PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
                         this->map->display_md();
                         new_path->add_segment(new_segment);
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
+                        //traceback
                         this->traceback(new_path);
-//                        this->paths.push_back(new_path);
                         break;
                     }
-                    if(neibor->get_cost() == 0 || neibor->get_distance() == min_d){
 
+                    if(neibor->get_cost() == 0 || neibor->get_distance() == min_d){//for normal point 
                         if(neibor->get_cost()==0){
-                        if(f1!=1 ){
-                            neibor->set_cost(temp->get_cost()+1);
-                        }
-                        else{
-                            neibor->set_cost(1);
-                        }
-                        neibor->set_m_d(md);
-                        cout << endl << "now set new node";
-                        neibor -> display_node();
-                        cout << " cost is " << neibor->get_cost() << "distance is " << neibor->get_distance() << endl;
-                        }
-			else{
-				
-                            neibor->display_node();
-                           cout << "is already added into the map";
-			}
-			cout << " distance value:";
-                        this->map->display_md();
-                        cout << endl << endl << endl << " cost value :"; 
-                        this->map->display_map();
-                        if (neibor->get_distance() == min_d){
-                            if(neibor->get_flag()!=1){
-                            q2.push(neibor);
-                            neibor->set_flag(1);
-}
-                        }//if
-                        else{
-                            others.push_back(neibor);
-
-                             cout << "push ";
-                            neibor->display_node();
-                            cout << "into Vector. and vecot contains " << endl;
-                            for (int test = 0; test < others.size();test++){
-                                others.at(test)->display_node();
+                            if(f1!=1 ){
+                                neibor->set_cost(temp->get_cost()+1);
                             }
-                            cout << endl << "its done " << endl;
+                            else{
+                                neibor->set_cost(1);
+                            }
+                            neibor->set_m_d(md);
+                        }
+                        if (neibor->get_distance() == min_d){
+                            if(neibor->get_flag()!=1){//if this node first time to queue,push it
+                                q2.push(neibor);
+                                neibor->set_flag(1);
+                            }
+                         }//if md=distance
+                        else{
+                            others.push_back(neibor);//if the distance not min number, save it to vector
                         }//else
-                    }//if
+                    }//if||
                 }//for
              }//whileq1
 
@@ -133,20 +107,11 @@ int debug=0;
                if(flag == 1){
                     break;
                 }
-/*                f2++;
-                if (f2 == 1){
-                    if(q1.empty()){
-                        value++;
-                    }
-                }
-*/                Node* temp = q2.front();
+                Node* temp = q2.front();
                 temp->set_flag(1);
                 q2.pop();
                 for(int j = 0; j < temp->connections_size();j++){                
                     Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    temp -> display_node();
-                    cout << " 's neibor is "<<endl;
-                    neibor ->display_node();
                     if(neibor->get_cost() == -3){
                         flag = 1;
                         map->display_map();
@@ -157,61 +122,29 @@ int debug=0;
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
                         this->traceback(new_path);
-//                        this->paths.push_back(new_path);
                         break;
                     }
-//                        neibor->set_cost(value);
-                    if(neibor->get_cost() == 0|| neibor->get_distance() == min_d){
-
-                        if(neibor->get_cost()==0){
-			neibor->display_node();
-			 neibor->set_cost(temp->get_cost()+1);
-                        neibor->set_m_d(md);                        
-			cout << endl << "now set new node";
-                        neibor -> display_node();
-                        cout << " cost is " << neibor->get_cost() << "distance is " << neibor->get_distance() << endl;
+                    if(neibor->get_cost() ==  0|| neibor->get_distance() == min_d){
+                        if(neibor->get_cost() == 0){
+			    neibor->set_cost(temp->get_cost()+ 1);
+                            neibor->set_m_d(md);                        
                         }
-			else{
-				
-                            neibor->display_node();
-                           cout << "is already added into the map";
-			}
-
-			cout << " distance value:";
-                        this->map->display_md();
-                        cout << endl << endl << endl << " cost value :"; 
-                        this->map->display_map();
                         if (neibor->get_distance() == min_d){
                             if(neibor->get_flag()!=1){
                                 q1.push(neibor);
                                 neibor->set_flag(1);
-                            }
+                            }//if falg!=1
                         }//if
                         else{
                             others.push_back(neibor);
-  
-                             cout << "push ";
-                            neibor->display_node();
-                            cout << "into Vector. and vecot contains " << endl;
-                            for (int test = 0; test < others.size();test++){
-                                others.at(test)->display_node();
-                            }
-                            cout << endl << "its done " << endl;
                         } 
-                    }//if
+                    }//if ||
                 }//for
              }//whileq2
-             if(q1.empty() && q2.empty()){
-                 cout << " Now q1 and q2 both empty!!"<<endl;
-
-                        map->display_map();
-                 Node* tt = this->min_node(others);
-                 tt->display_node();
+             if(q1.empty() && q2.empty()){//if q1 empty q2 empty, found element in vector
+                 Node* tt = this->min_node(others);//found the smallest one in vector
                  min_d = tt->get_distance();
                  q1.push(tt);
-                 cout << "Min distance change to "<< min_d << endl;
-
-                 cout << "q1 is empty or not       "<< q1.empty() << endl;
              }//if q1 q2 empty             
 
         }//while flag
@@ -442,19 +375,6 @@ Node* Algorithm::Ruben::min_node(vector<Node*> others){
           }
       }
       Node* n = others.at(get_pos);
-      n->display_node();
-      cout<<endl<< "before erase "<<endl;
-                            for (int test = 0; test < others.size();test++){
-                                others.at(test)->display_node();
-                            }
       others.erase ( others.begin() + get_pos );
-      cout << endl<<"after erase "<< endl;
-                            for (int test = 0; test < others.size();test++){
-                                others.at(test)->display_node();
-                            }
-      cout<< endl<<endl;
       return n;
 }
-
-
-
