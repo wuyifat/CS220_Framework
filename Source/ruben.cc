@@ -24,6 +24,7 @@ void Algorithm::Ruben::reset_map(){
         for(int x = 0; x < this->map->get_width();x++){
             if(this->map->get_node(x,y)->get_cost()!=-1){
 	        this->map->get_node(x,y)->set_cost(0);//reset cost to 0
+	        this->map->get_node(x,y)->set_m_d(0);//reset cost to 0
             }
         }
      }
@@ -43,7 +44,7 @@ void Algorithm::Ruben::forward(){
         this->source.at(i)->set_cost(-2);//set source cost to -2
         this->sink.at(i)->set_cost(-3);//set sink cost to -3
         Point md = this->sink.at(i)->get_coord();//use for compute manhuatan distance
-        int min_d = abs(md.x+md.y-source.at(i)->get_x()-source.at(i)->get_y());
+        double min_d = abs(md.x+md.y-source.at(i)->get_x()-source.at(i)->get_y());
         int flag = 0;// this flag use to break while loop, if we found sink, the flag = 1 and break loop
         int value = 0;// ues for cost
 
@@ -88,7 +89,7 @@ void Algorithm::Ruben::forward(){
                             else{
                                 neibor->set_cost(1);
                             }
-                            neibor->set_m_d(md);
+                            neibor->set_m_d(md,1);
                         }
                         if (neibor->get_distance() == min_d){
                             if(neibor->get_flag()!=1){//if this node first time to queue,push it
@@ -127,7 +128,7 @@ void Algorithm::Ruben::forward(){
                     if(neibor->get_cost() ==  0|| neibor->get_distance() == min_d){
                         if(neibor->get_cost() == 0){
 			    neibor->set_cost(temp->get_cost()+ 1);
-                            neibor->set_m_d(md);                        
+                            neibor->set_m_d(md,1);                        
                         }
                         if (neibor->get_distance() == min_d){
                             if(neibor->get_flag()!=1){
