@@ -18,8 +18,7 @@ namespace Utilities {
             vector<vector<Node*> > map;
             vector<Connection> connection;
             vector<Path*> paths;
-            vector<Node*> source;
-            vector<Node*> sink;
+
         public:
             Map(int width, int height);
             ~Map();
@@ -32,6 +31,7 @@ namespace Utilities {
             vector<Path*> get_paths();
             Path* get_path(int i);
             vector<Connection> get_connection();
+
             /* Mutators */
             void set_paths(vector<Path*> paths);
             void add_path(Path* path);
@@ -41,6 +41,7 @@ namespace Utilities {
             void display_map();//display cost
             void display_size();//display connection size
             void display_md();//display manhantan distance
+            void display_flag();//display manhantan distance
             void set_connection(vector<Connection> c);
     };
 }

@@ -158,9 +158,18 @@ void Utilities::Map::display_md(){
         for(int i = 0; i< this->get_height();i++){
                 cout << endl;
                 for(int j = 0; j < this->get_width();j++){
-                        cout<<" "<< this->get_node(j,i)->get_distance();
+                        cout<<" "<< this->map.at(i).at(j)->get_distance();
                 }
         }
         cout << endl;
 }
 
+void Utilities::Map::display_flag(){
+        for(int i = 0; i< this->get_height();i++){
+                cout << endl;
+                for(int j = 0; j < this->get_width();j++){
+                        cout<<" "<< this->map.at(i).at(j)->get_flag();
+                }
+        }
+        cout << endl;
+}

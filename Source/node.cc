@@ -12,11 +12,15 @@ void Utilities::Node::updata_d(){
 
 Utilities::Node::Node(int x, int y, int cost):coord(x,y){
       this->cost = cost;
+      this->m_d = 0;
+      this->flag = 0;
       this->updata_d();
 }
 
 Utilities::Node::Node(Point coord, int cost):coord(coord.x,coord.y){
       this->cost = cost;
+      this->m_d = 0;
+      this->flag = 0;
       this->updata_d();
 }
 
@@ -76,7 +80,7 @@ int Utilities::Node::get_cost() {
       return this->cost;
 }
 
-int Utilities::Node::get_distance() {
+double Utilities::Node::get_distance() {
       return this->distance;
 }
 
@@ -119,22 +123,27 @@ void Utilities::Node::add_connection(Edge* connection) {
 void Utilities::Node::set_cost(int cost) {
       this->cost = cost;
 }
-void Utilities::Node::set_m_d(Point sink){
+void Utilities::Node::set_m_d(Point sink,double i){
       if(sink.x > this->coord.x){
           if(sink.y > this->coord.y){
-              this->m_d = sink.x - coord.x + sink.y - coord.y;
+              this->m_d = ( sink.x - coord.x + sink.y - coord.y ) * i;
           }
           else{
-              this->m_d = sink.x - coord.x + coord.y - sink.y;
+              this->m_d = ( sink.x - coord.x + coord.y - sink.y ) * i;
           }
       }
       else      
           if(sink.y > this->coord.y){
-              this->m_d = coord.x - sink.x + sink.y - coord.y;
+              this->m_d = ( coord.x - sink.x + sink.y - coord.y ) * i;
           }
           else{
-              this->m_d = coord.x - sink.x + coord.y - sink.y;
+              this->m_d = ( coord.x - sink.x + coord.y - sink.y ) * i;
           }
+      this->updata_d();
+}
+
+void Utilities::Node::set_m_d(double i){
+      this->m_d = i;
       this->updata_d();
 }
 //If an edge occurs multiple times in the connection list, all instances will be removed

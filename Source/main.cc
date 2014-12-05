@@ -4,6 +4,7 @@
 #include "../Headers/node.h"
 #include "../Headers/lee.h"
 #include "../Headers/threebit.h"
+#include "../Headers/korn.h"
 #include "../Headers/twobit.h"
 #include "../Headers/ruben.h"
 #include <time.h>
@@ -33,11 +34,14 @@ int main(int argc,char* argv[]) {
 //        Algorithm::Lee l(mm);
 //        Algorithm::Threebit l(mm);
 //        Algorithm::Twobit l(mm);
-        Algorithm::Ruben l(mm);
+//        Algorithm::Ruben l(mm);
+        Algorithm::Korn l(mm);
         l.forward();
-
+        cout<<"the node          dis " <<       mm->get_node(4,3)->get_distance()<<endl;
 //------------------------display path--------------------------
-        vector<Path*> p = l.get_paths();
+ 
+        mm->display_md();
+        mm->display_flag();       vector<Path*> p = l.get_paths();
         for (unsigned i = 0;i < p.size();i++) {
                 cout << "\tPath " << i+1 << " of " << p.size() << ":" << endl;
                 p.at(i)->display_path();

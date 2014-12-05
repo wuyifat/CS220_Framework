@@ -17,8 +17,8 @@ namespace Utilities {
             Point coord;
             vector<Edge*> connections;
             int cost;
-            int distance;
-            int m_d;
+            double distance;
+            double m_d;
             int flag;
             /* Private Mutators */
             void add_connection_mirrored(Edge*);
@@ -39,7 +39,7 @@ namespace Utilities {
             bool connections_contains(Edge* edge);
 	    Edge* connections_at(unsigned index);
             int get_cost();
-            int get_distance();
+            double get_distance();
 
             /* Mutators */
             void set_flag(int i);
@@ -54,7 +54,8 @@ namespace Utilities {
             void display_node();
             void display_edges();
             void remove_m_connection(Node* node);
-            void set_m_d(Point sink);
+            void set_m_d(Point sink,double i);
+            void set_m_d(double i);
     };
 }
 

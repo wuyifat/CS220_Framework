@@ -6,7 +6,9 @@
 
 	"blockerList": [
 
-],
+         {"name": "blocker3", "width": 2, "height": 3, "x": 2, "y":4 },
+         {"name": "blocker1", "width": 3, "height": 2, "x": 7, "y":6 }
+	],
 
 	"routeList": [
 	{"name": "route1", "source_x": 2, "source_y": 2, "sink_x": 2, "sink_y":9},
