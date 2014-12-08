@@ -12,6 +12,7 @@ void Utilities::Node::updata_d(){
 
 Utilities::Node::Node(int x, int y, int cost):coord(x,y){
       this->cost = cost;
+      this->isVisited = 0;
       this->m_d = 0;
       this->flag = 0;
       this->updata_d();
@@ -19,6 +20,7 @@ Utilities::Node::Node(int x, int y, int cost):coord(x,y){
 
 Utilities::Node::Node(Point coord, int cost):coord(coord.x,coord.y){
       this->cost = cost;
+      this->isVisited = 0;
       this->m_d = 0;
       this->flag = 0;
       this->updata_d();
@@ -80,6 +82,10 @@ int Utilities::Node::get_cost() {
       return this->cost;
 }
 
+int Utilities::Node::get_isVisited() {
+      return this->isVisited;
+}
+
 double Utilities::Node::get_distance() {
       return this->distance;
 }
@@ -123,6 +129,11 @@ void Utilities::Node::add_connection(Edge* connection) {
 void Utilities::Node::set_cost(int cost) {
       this->cost = cost;
 }
+
+void Utilities::Node::set_isVisited(int isVisited) {
+      this->isVisited = isVisited;
+}
+
 void Utilities::Node::set_m_d(Point sink,double i){
       if(sink.x > this->coord.x){
           if(sink.y > this->coord.y){
