@@ -17,6 +17,7 @@ namespace Utilities {
             Point coord;
             vector<Edge*> connections;
             int cost;
+	    int isVisited; // This is used mainly in bidirection: -1: block; 0: not visited yet; 1: visited by source expansion; 2: visited by sink expansion.
             double distance;
             double m_d;
             int flag;
@@ -41,6 +42,7 @@ namespace Utilities {
             bool connections_contains(Edge* edge);
 	    Edge* connections_at(unsigned index);
             int get_cost();
+	    int get_isVisited();
             double get_distance();
 
             /* Mutators */
@@ -53,6 +55,7 @@ namespace Utilities {
             void set_connections(vector<Edge*> connections);
             void add_connection(Edge* connection);
             void set_cost(int cost);
+	    void set_isVisited(int isVisited);
             void remove_connection(Edge* connection);
             void display_node();
             void display_edges();
