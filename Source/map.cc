@@ -175,11 +175,21 @@ void Utilities::Map::display_detour(){
         }
         cout << endl;
 }
+
 void Utilities::Map::display_flag(){
         for(int i = 0; i< this->get_height();i++){
                 cout << endl;
                 for(int j = 0; j < this->get_width();j++){
                         cout<<" "<< this->map.at(i).at(j)->get_flag();
+                }
+        }
+        cout << endl;
+}
+void Utilities::Map::display_hantan(){
+        for(int i = 0; i< this->get_height();i++){
+                cout << endl;
+                for(int j = 0; j < this->get_width();j++){
+                        cout<<" "<< this->map.at(i).at(j)->get_md();
                 }
         }
         cout << endl;

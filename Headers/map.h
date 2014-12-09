@@ -40,7 +40,8 @@ namespace Utilities {
             void set_blocker(vector<Blocker> b);
             void display_map();//display cost
             void display_size();//display connection size
-            void display_md();//display manhantan distance
+            void display_md();//display distance
+            void display_hantan();//display manhantan distance
             void display_flag();//display manhantan distance
             void display_detour();//display manhantan distance
             void set_connection(vector<Connection> c);
