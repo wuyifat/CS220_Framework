@@ -20,8 +20,8 @@ using Utilities::Node;
 using Utilities::Path;
 using Utilities::Map;
 
-namespace Algorithm{
-    class Twobit{
+namespace Algorithm {
+    class Twobit {
         private:
             Map* map;
             int number; //number of source = number of sink = number of path

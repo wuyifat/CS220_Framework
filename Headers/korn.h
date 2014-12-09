@@ -20,11 +20,11 @@ using Utilities::Node;
 using Utilities::Path;
 using Utilities::Map;
 
-namespace Algorithm{
-    class Korn{
+namespace Algorithm {
+    class Korn {
         private:
             Map* map;
-            int number; //number of source = number of sink = number of path
+            int number;    //number of source = number of sink = number of path
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        
@@ -41,7 +41,6 @@ namespace Algorithm{
             Map* get_map();
             vector<Path*> get_paths();
 	    vector<Connection> get_connection();
-//            Node* min_node(vector<Node*> others);
     };
 }
 #endif

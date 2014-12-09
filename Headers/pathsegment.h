@@ -9,7 +9,6 @@ namespace Utilities {
             Point source;
             Point sink;
             int length;
-
             void update_length();
 
         public:
@@ -30,6 +29,7 @@ namespace Utilities {
             /* Mutators */
             void set_source(Point source);          
             void set_sink(Point sink);
+            void reverse();
     };
 }
 

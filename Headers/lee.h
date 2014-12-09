@@ -20,11 +20,11 @@ using Utilities::Node;
 using Utilities::Path;
 using Utilities::Map;
 
-namespace Algorithm{
-    class Lee{
+namespace Algorithm {
+    class Lee {
         private:
             Map* map;
-            int number; //number of source = number of sink = number of path
+            int number;    //number of source = number of sink = number of path
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        
