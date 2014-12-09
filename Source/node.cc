@@ -14,12 +14,14 @@ Utilities::Node::Node(int x, int y, int cost):coord(x,y){
       this->cost = cost;
       this->m_d = 0;
       this->flag = 0;
+      this->detour = 100;
       this->updata_d();
 }
 
 Utilities::Node::Node(Point coord, int cost):coord(coord.x,coord.y){
       this->cost = cost;
       this->m_d = 0;
+      this->detour = 100;
       this->flag = 0;
       this->updata_d();
 }
@@ -47,6 +49,10 @@ int Utilities::Node::get_flag() {
 }
 int Utilities::Node::get_x() {
       return this->coord.x;
+}
+
+int Utilities::Node::get_detour() {
+      return this->detour;
 }
 int Utilities::Node::get_y() {
       return this->coord.y;
@@ -93,6 +99,10 @@ void Utilities::Node::set_coord(Point coord) {
       this->coord = coord;
 }
 
+
+void Utilities::Node::set_detour(int x) {
+      this->detour = x;
+}
 void Utilities::Node::set_flag(int x) {
       this->flag = x;
 }

@@ -20,6 +20,7 @@ namespace Utilities {
             double distance;
             double m_d;
             int flag;
+            int detour;
             /* Private Mutators */
             void add_connection_mirrored(Edge*);
             void updata_d();
@@ -34,6 +35,7 @@ namespace Utilities {
             int get_x();
             int get_y();
             int get_flag();
+            int get_detour();
             unsigned connections_size();
             bool connections_empty();
             bool connections_contains(Edge* edge);
@@ -43,6 +45,7 @@ namespace Utilities {
 
             /* Mutators */
             void set_flag(int i);
+            void set_detour(int i);
             void set_coord(int x, int y);
             void set_x_coord(int x);
             void set_y_coord(int y);

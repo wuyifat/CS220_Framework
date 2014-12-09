@@ -12,6 +12,13 @@ namespace Utilities {
         ~Point() {}
 
         /* Overloaded Operators */
+
+        bool operator!=(const Point& rhs) {
+            if(rhs.x != this->x || rhs.y != this->y) { 
+                return true; 
+            }
+            return false;
+        }
         bool operator==(const Point& rhs) {
             if(rhs.x == this->x && rhs.y == this->y) { 
                 return true; 

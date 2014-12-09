@@ -42,6 +42,7 @@ namespace Utilities {
             void display_size();//display connection size
             void display_md();//display manhantan distance
             void display_flag();//display manhantan distance
+            void display_detour();//display manhantan distance
             void set_connection(vector<Connection> c);
     };
 }

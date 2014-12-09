@@ -7,6 +7,7 @@
 #include "../Headers/korn.h"
 #include "../Headers/twobit.h"
 #include "../Headers/ruben.h"
+#include "../Headers/hadlock.h"
 #include <time.h>
 #include <cstdlib>
 #include <iostream>
@@ -31,24 +32,37 @@ int main(int argc,char* argv[]) {
 	Map* mm = &m;
         cout << "Finished Mapping, Starting Algorithm."<<endl<<endl;
 //------------------Run different algorithm-----------------------
+        int in;
+        char a[20]="*";
+
+        cout << "--------------------------------------------------------------------------------------------------------"<< endl << endl;
+        cout << "Please choose which algorithm :"<< endl;
+        cout << a;
+        cout << "1. Lee                  2. 3-bit                 3. 2-bit              4. Ruben                  5. Korn" << endl;
+       
+
 //        Algorithm::Lee l(mm);
 //        Algorithm::Threebit l(mm);
 //        Algorithm::Twobit l(mm);
 //        Algorithm::Ruben l(mm);
-        Algorithm::Korn l(mm);
+//        Algorithm::Korn l(mm);
+        Algorithm::Hadlock l(mm);
+       
         l.forward();
-        cout<<"the node          dis " <<       mm->get_node(4,3)->get_distance()<<endl;
 //------------------------display path--------------------------
  
         mm->display_md();
-        mm->display_flag();       vector<Path*> p = l.get_paths();
+        mm->display_flag();
+        vector<Path*> p = l.get_paths();
         for (unsigned i = 0;i < p.size();i++) {
                 cout << "\tPath " << i+1 << " of " << p.size() << ":" << endl;
                 p.at(i)->display_path();
         }
-
+cout<<"this is the sink of path"<<endl;
+mm->get_node(p.at(0)->get_sink())->display_node();
+        cout << "This is detour" << endl;
+        mm->display_detour();
         cout << " Finished" <<endl<<endl<<endl; 
 	delete first_problem;
-
 	return 0;
 }

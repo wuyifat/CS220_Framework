@@ -114,6 +114,7 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
                         x = b.at(blocker_num).location.x;
                         for( int j = 0; j < b.at(blocker_num).width;j++ ){//blocker width point
                                 this->map.at(y).at(x)->set_cost(-1);
+                                this->map.at(y).at(x)->set_detour(-100);
                                 while(this->map.at(y).at(x)->connections_empty()!=1){
                                     this->map.at(y).at(x)->connections_at(0)->get_end(this->map.at(y).at(x))->remove_m_connection(this->map.at(y).at(x));
                                     this->map.at(y).at(x)->remove_connection(this->map.at(y).at(x)->connections_at(0));
@@ -164,6 +165,16 @@ void Utilities::Map::display_md(){
         cout << endl;
 }
 
+
+void Utilities::Map::display_detour(){
+        for(int i = 0; i< this->get_height();i++){
+                cout << endl;
+                for(int j = 0; j < this->get_width();j++){
+                        cout<<" "<< this->map.at(i).at(j)->get_detour();
+                }
+        }
+        cout << endl;
+}
 void Utilities::Map::display_flag(){
         for(int i = 0; i< this->get_height();i++){
                 cout << endl;
