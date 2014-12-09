@@ -39,30 +39,18 @@ int main(int argc,char* argv[]) {
         int in;
         char a[20]="*";
 
-<<<<<<< HEAD
         cout << "---------------------------------------------------------------------------"<< endl << endl;
         cout << "Please choose which algorithm :"<< endl;
         cout << a;
         cout << "1. Lee                  2. 3-bit                 3. 2-bit              4. Ruben                  5. Korn" << endl;
-=======
-        cout << "--------------------------------------------------------------------------------------------------------"<< endl << endl;
-        cout << "Please choose which algorithm :"<< endl;
-        cout << a;
-        cout << "1. Lee                  2. 3-bit                 3. 2-bit              4. Ruben                  5. Korn" << endl;
-       
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
 
 //        Algorithm::Lee l(mm);
 //        Algorithm::Threebit l(mm);
 //        Algorithm::Twobit l(mm);
 //        Algorithm::Ruben l(mm);
 //        Algorithm::Korn l(mm);
-<<<<<<< HEAD
         Algorithm::Bidirection l(mm);        
-=======
-//        Algorithm::Hadlock l(mm);
-        Algorithm::Bidirection(mm);      
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+
         l.forward();
 //------------------------display path--------------------------
  //mm->display_map(); cin.get();

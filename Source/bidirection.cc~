@@ -18,27 +18,16 @@ Algorithm::Bidirection::Bidirection(Map *m) {
     for(int y = 0; y < map->get_height(); y++) {
         for(int x = 0; x < map->get_width(); x++) {
             if(map->get_node(x,y)->get_cost()==-1) {
-<<<<<<< HEAD
                 map->get_node(x,y)->set_is_visited(-1); // block
             }//if
             else
                 map->get_node(x,y)->set_is_visited(0); // visible nodes
-=======
-                map->get_node(x,y)->set_isVisited(-1); // block
-            }//if
-            else
-                map->get_node(x,y)->set_isVisited(0); // visible nodes
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
         }//for x
     }//for y
     // debug function: check whether isVisited function is correct
     for(int y = 0; y < map->get_height(); y++) {
         for(int x = 0; x < map->get_width(); x++) {
-<<<<<<< HEAD
             cout<<map->get_node(x,y)->get_is_visited()<<"\t";
-=======
-            cout<<map->get_node(x,y)->get_isVisited()<<"\t";
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
         }//for x
         cout<<endl;
     }//for y
@@ -56,11 +45,7 @@ void Algorithm::Bidirection::forward() {
                 for(int x = 0; x < map->get_width();x++) {
                     if(map->get_node(x,y)->get_cost()!=-1) {
                         map->get_node(x,y)->set_cost(0); //reset cost to 0
-<<<<<<< HEAD
                         map->get_node(x,y)->set_is_visited(0); //reset isVisited to 0
-=======
-                        map->get_node(x,y)->set_isVisited(0); //reset isVisited to 0
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
                     }//if
                 }//for x
             }//for y
@@ -69,13 +54,8 @@ void Algorithm::Bidirection::forward() {
         // set the cost of source and sink -2 and -3, respectively
         source.at(curConnection)->set_cost(-2);
         sink.at(curConnection)->set_cost(-3);
-<<<<<<< HEAD
         map->get_node(source.at(curConnection)->get_x(), source.at(curConnection)->get_y())->set_is_visited(1);
         map->get_node(sink.at(curConnection)->get_x(), sink.at(curConnection)->get_y())->set_is_visited(2);
-=======
-        map->get_node(source.at(curConnection)->get_x(), source.at(curConnection)->get_y())->set_isVisited(1);
-        map->get_node(sink.at(curConnection)->get_x(), sink.at(curConnection)->get_y())->set_isVisited(2);
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
         
         bool flag = false; // this parameter is to determine whether source and sink expansion meets. If yes then flag==true, vice versa.
         
@@ -115,23 +95,16 @@ void Algorithm::Bidirection::forward() {
                 q1Source.pop();
                 for(int j = 0; j<tempSource->connections_size(); j++) {
                     Node* neiborSource = tempSource->connections_at(j)->get_end(tempSource);
-<<<<<<< HEAD
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) { // if this node is visited by sink expansion
-=======
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_isVisited() == 2) { // if this node is visited by sink expansion
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                    // if this node is visited by sink expansion
+                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) { 
                         flag = true;
                         this->meetPointsSource.push_back(tempSource);
                         this->meetPointsSink.push_back(neiborSource);
                         break;
                     } // trace back will be done later
-<<<<<<< HEAD
+                    // visited by source expansion, therefore set as 1
                     if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1); // visited by source expansion, therefore set as 1
-=======
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_isVisited() == 0) {
-                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_isVisited(1); // visited by source expansion, therefore set as 1
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1); 
                         map->get_node(neiborSource->get_coord())->set_cost(valueSource);
 
                         q2Source.push(neiborSource);
@@ -154,23 +127,16 @@ void Algorithm::Bidirection::forward() {
                 q1Sink.pop();
                 for(int j = 0; j<tempSink->connections_size(); j++) {
                     Node* neiborSink = tempSink->connections_at(j)->get_end(tempSink);
-<<<<<<< HEAD
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) { // if this node is visited by source expansion
-=======
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_isVisited() == 1) { // if this node is visited by source expansion
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                    // if this node is visited by source expansion
+                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) { 
                         flag = true;
                         this->meetPointsSink.push_back(tempSink);
                         this->meetPointsSource.push_back(neiborSink);
                         break;
                     } // trace back will be done later
-<<<<<<< HEAD
+                    // visited by sink expansion, therefore set as 2
                     if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2); // visited by sink expansion, therefore set as 2
-=======
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_isVisited() == 0) {
-                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_isVisited(2); // visited by sink expansion, therefore set as 2
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2); 
                         map->get_node(neiborSink->get_coord())->set_cost(valueSink);
 //                        map->display_map();
                         q2Sink.push(neiborSink);
@@ -193,23 +159,17 @@ void Algorithm::Bidirection::forward() {
                 q2Source.pop();
                 for(int j = 0; j<tempSource->connections_size(); j++) {
                     Node* neiborSource = tempSource->connections_at(j)->get_end(tempSource);
-<<<<<<< HEAD
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) { // if this node is visited by sink expansion
-=======
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_isVisited() == 2) { // if this node is visited by sink expansion
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                    // if this node is visited by sink expansion
+                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) { 
                         flag = true;
                         this->meetPointsSource.push_back(tempSource);
                         this->meetPointsSink.push_back(neiborSource);
                         break;
                     } // trace back will be done later
-<<<<<<< HEAD
+                    // visited by source expansion, therefore set as 1
                     if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1); // visited by source expansion, therefore set as 1
-=======
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_isVisited() == 0) {
-                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_isVisited(1); // visited by source expansion, therefore set as 1
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1); 
+
                         map->get_node(neiborSource->get_coord())->set_cost(valueSource);
 //                        map->display_map();
                         q1Source.push(neiborSource);
@@ -232,23 +192,17 @@ void Algorithm::Bidirection::forward() {
                 q2Sink.pop();
                 for(int j = 0; j<tempSink->connections_size(); j++) {
                     Node* neiborSink = tempSink->connections_at(j)->get_end(tempSink);
-<<<<<<< HEAD
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) { // if this node is visited by source expansion
-=======
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_isVisited() == 1) { // if this node is visited by source expansion
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                    // if this node is visited by source expansion
+                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) { 
                         flag = true;
                         this->meetPointsSink.push_back(tempSink);
                         this->meetPointsSource.push_back(neiborSink);
                         break;
                     } // trace back will be done later
-<<<<<<< HEAD
+                    // visited by sink expansion, therefore set as 2
                     if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2); // visited by sink expansion, therefore set as 2
-=======
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_isVisited() == 0) {
-                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_isVisited(2); // visited by sink expansion, therefore set as 2
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2); 
+
                         map->get_node(neiborSink->get_coord())->set_cost(valueSink);
 //                        map->display_map();
                         q1Sink.push(neiborSink);
@@ -266,13 +220,12 @@ void Algorithm::Bidirection::forward() {
 void Algorithm::Bidirection::traceback(int curConnection) {
     // trace back the path from meetPointsSource to Source, known isVisited matrix and map matrix
     bool flag=false;
-<<<<<<< HEAD
-    cout<<this->source.at(curConnection)->get_y()<<this->source.at(curConnection)->get_x()<<this->source.at(curConnection)->get_cost()<<this->source.at(curConnection)->get_is_visited()<<endl;
-    cout<<this->sink.at(curConnection)->get_y()<<this->sink.at(curConnection)->get_x()<<this->sink.at(curConnection)->get_cost()<<this->sink.at(curConnection)->get_is_visited()<<endl;
-=======
-    cout<<this->source.at(curConnection)->get_y()<<this->source.at(curConnection)->get_x()<<this->source.at(curConnection)->get_cost()<<this->source.at(curConnection)->get_isVisited()<<endl;
-    cout<<this->sink.at(curConnection)->get_y()<<this->sink.at(curConnection)->get_x()<<this->sink.at(curConnection)->get_cost()<<this->sink.at(curConnection)->get_isVisited()<<endl;
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+
+    cout<<this->source.at(curConnection)->get_y()<<this->source.at(curConnection)->get_x()<<
+    this->source.at(curConnection)->get_cost()<<this->source.at(curConnection)->get_is_visited()<<endl;
+
+    cout<<this->sink.at(curConnection)->get_y()<<this->sink.at(curConnection)->get_x()<<
+    this->sink.at(curConnection)->get_cost()<<this->sink.at(curConnection)->get_is_visited()<<endl;
     
     Node* curNode = this->meetPointsSource.at(curConnection);
     Node* nxtNode = 0;
@@ -283,11 +236,9 @@ void Algorithm::Bidirection::traceback(int curConnection) {
             // find the adjacent node
             nxtNode = curNode->connections_at(i) -> get_end(curNode);
             // visited by source, and less distance to the source
-<<<<<<< HEAD
-            if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_is_visited() == 1 && ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -2))) {
-=======
-            if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_isVisited() == 1 && ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -2))) {
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+
+            if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_is_visited() == 1 &&
+            ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -2))) {
                 PathSegment* new_segment = new PathSegment(curNode->get_coord(),nxtNode->get_coord());
                 newPathSource->add_segment(new_segment);
                 cout<<"Current source path: \n";
@@ -311,11 +262,8 @@ void Algorithm::Bidirection::traceback(int curConnection) {
             // find the adjacent node
             nxtNode = curNode->connections_at(i) -> get_end(curNode);
             // visited by source, and less distance to the source
-<<<<<<< HEAD
-            if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_is_visited() == 2 && ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -3))) {
-=======
-            if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_isVisited() == 2 && ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -3))) {
->>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
+            if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_is_visited() == 2 &&
+            ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -3))) {
                 PathSegment* new_segment = new PathSegment(curNode->get_coord(),nxtNode->get_coord());
                 newPathSink->add_segment(new_segment);
                 cout<<"Current sink path: \n";

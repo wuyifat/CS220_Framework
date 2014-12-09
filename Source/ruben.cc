@@ -30,7 +30,7 @@ void Algorithm::Ruben::reset_map(){
      }
 }
 
-void Algorithm::Ruben::forward(){
+void Algorithm::Ruben::run(){
     for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
 
 //------------------------reset the map ------------------------------------------

@@ -34,7 +34,7 @@
 	     }
 	}
 
-	void Algorithm::Hadlock::forward(){
+	void Algorithm::Hadlock::run(){
 	    for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
 
 	//------------------------reset the map ------------------------------------------

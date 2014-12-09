@@ -51,7 +51,7 @@ int main(int argc,char* argv[]) {
 //        Algorithm::Korn l(mm);
         Algorithm::Bidirection l(mm);        
 
-        l.forward();
+        l.run();
 //------------------------display path--------------------------
  //mm->display_map(); cin.get();
         mm->display_md();

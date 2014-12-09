@@ -19,7 +19,7 @@ Algorithm::Threebit::Threebit(Map* m){
 //}
 
 
-void Algorithm::Threebit::forward(){
+void Algorithm::Threebit::run(){
     for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
         if(i != 0){//if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
             for(int y = 0; y < this->map->get_height();y++){

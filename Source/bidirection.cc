@@ -37,7 +37,7 @@ Algorithm::Bidirection::~Bidirection() {
     //no need to destruct since there is no new allocated space
 }
 
-void Algorithm::Bidirection::forward() {
+void Algorithm::Bidirection::run() {
     for(int curConnection = 0; curConnection<number; curConnection++) {
         // if it is not the first time to do the algorithm, we need to initialize the costs of all nodes in the map
         if(curConnection != 0) {
