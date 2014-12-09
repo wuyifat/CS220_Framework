@@ -22,6 +22,7 @@ namespace Utilities {
             double distance;
             double m_d;
             int flag;
+            int detour;
             /* Private Mutators */
             void add_connection_mirrored(Edge*);
             void updata_d();

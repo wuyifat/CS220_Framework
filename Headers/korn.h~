@@ -24,7 +24,7 @@ namespace Algorithm {
     class Korn {
         private:
             Map* map;
-            int number; //number of source = number of sink = number of path
+            int number;    //number of source = number of sink = number of path
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        

@@ -62,6 +62,12 @@ int Utilities::Node::get_x() {
       return this->coord.x;
 }
 
+<<<<<<< HEAD
+=======
+int Utilities::Node::get_detour() {
+      return this->detour;
+}
+>>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
 int Utilities::Node::get_y() {
       return this->coord.y;
 }
@@ -107,10 +113,17 @@ void Utilities::Node::set_coord(Point coord) {
       this->coord = coord;
 }
 
+<<<<<<< HEAD
 void Utilities::Node::set_detour(int x) {
       this->detour = x;
 }
 
+=======
+
+void Utilities::Node::set_detour(int x) {
+      this->detour = x;
+}
+>>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
 void Utilities::Node::set_flag(int x) {
       this->flag = x;
 }

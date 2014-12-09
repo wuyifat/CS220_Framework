@@ -1,5 +1,5 @@
-#ifndef _KORN_BASE_H_
-#define _KORN_BASE_H_
+#ifndef _HADLOCK_BASE_H_
+#define _HADLOCK_BASE_H_
 
 #include "edge.h"
 #include "node.h"
@@ -9,7 +9,6 @@
 #include <queue>
 #include <vector>
 #include <iostream>
-
 
 using std::vector;
 using std::cerr;
@@ -22,7 +21,7 @@ using Utilities::Path;
 using Utilities::Map;
 
 namespace Algorithm{
-    class hadlock{
+    class Hadlock{
         private:
             Map* map;
             int number; //number of source = number of sink = number of path
@@ -31,8 +30,17 @@ namespace Algorithm{
             vector<Node*> source;        
             vector<Node*> sink;
             
-            void reset_map(); 
+            void reset_map();        
         public:
-            hadlock(Map* m);
-    }
+            Hadlock(Map* m);
+          //  ~Hadlock();
+
+            void forward();
+            void traceback(Path* path);
+            int direction(Point source,Point sink);
+            Map* get_map();
+            vector<Path*> get_paths();
+	    vector<Connection> get_connection();
+    };
 }
+#endif

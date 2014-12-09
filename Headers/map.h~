@@ -39,12 +39,21 @@ namespace Utilities {
             void replace_path(int i, Path* path);
             void remove_path(int i);
             void set_blocker(vector<Blocker> b);
+<<<<<<< HEAD
             void display_map();    //display cost
             void display_size();    //display connection size
             void display_md();    //display distance(= manhattan distance + cost)
             void display_manhattan();    //display manhantan distance
             void display_flag();    //display manhantan distance
-            void display_detour();    //display manhantan distance
+            void display_detour();    //display detour number
+=======
+            void display_map();//display cost
+            void display_size();//display connection size
+            void display_md();//display distance
+            void display_hantan();//display manhantan distance
+            void display_flag();//display manhantan distance
+            void display_detour();//display manhantan distance
+>>>>>>> 9fee1d35fcf66d417ae32a23133f516c29cd7b74
             void set_connection(vector<Connection> c);
     };
 }

@@ -62,6 +62,7 @@ int Utilities::Node::get_x() {
       return this->coord.x;
 }
 
+
 int Utilities::Node::get_y() {
       return this->coord.y;
 }
