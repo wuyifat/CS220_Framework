@@ -7,7 +7,8 @@
 #include "../Headers/korn.h"
 #include "../Headers/twobit.h"
 #include "../Headers/ruben.h"
-#include "../Headers/hadlock.h"
+// #include "../Headers/hadlock.h"
+#include "../Headers/bidirection.h"
 #include <time.h>
 #include <cstdlib>
 #include <iostream>
@@ -46,8 +47,8 @@ int main(int argc,char* argv[]) {
 //        Algorithm::Twobit l(mm);
 //        Algorithm::Ruben l(mm);
 //        Algorithm::Korn l(mm);
-        Algorithm::Hadlock l(mm);
-       
+//        Algorithm::Hadlock l(mm);
+        Algorithm::Bidirection(mm);      
         l.forward();
 //------------------------display path--------------------------
  
@@ -58,10 +59,10 @@ int main(int argc,char* argv[]) {
                 cout << "\tPath " << i+1 << " of " << p.size() << ":" << endl;
                 p.at(i)->display_path();
         }
-cout<<"this is the sink of path"<<endl;
+/* cout<<"this is the sink of path"<<endl;
 mm->get_node(p.at(0)->get_sink())->display_node();
         cout << "This is detour" << endl;
-        mm->display_detour();
+        mm->display_detour();*/
         cout << " Finished" <<endl<<endl<<endl; 
 	delete first_problem;
 	return 0;

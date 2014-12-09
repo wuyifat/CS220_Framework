@@ -48,6 +48,13 @@ bool Utilities::PathSegment::operator==(const PathSegment& rhs) {
     return false;
 }
 
+void Utilities::PathSegment::reverse() {
+    Point temp;
+    temp=source;
+    source=sink;
+    sink=temp;
+}
+
 Point Utilities::PathSegment::get_source() {
     return this->source;
 }
