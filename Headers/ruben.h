@@ -35,7 +35,7 @@ namespace Algorithm {
             Ruben(Map* m);
           //  ~Ruben();
 
-            void forward();
+            void run();
             void traceback(Path* path);
             int direction(Point source,Point sink);
             Map* get_map();

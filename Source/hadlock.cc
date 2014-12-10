@@ -104,7 +104,7 @@ cout<<"!!!!!!!!!!!!!!!!!!!!!!now it's the time to trace back!!!"<<endl;
 	//---------------------------set detour---------------------------
 				    neibor->set_m_d(md,1);
 				    int detour;
-				    detour = neibor->get_md()-min_d;
+				    detour = neibor->get_distance()-min_d;
 				    if ( detour <= 0){
 					neibor->set_detour(0);
 				    }
@@ -147,7 +147,7 @@ cout<<endl<< "cost   :";
 			    this->map->display_map();
 
 cout<< endl<<"manhatton :";
-			    this->map->display_hantan();
+			    this->map->display_manhattan();
 
 cout<< endl<<"detour:";
 			    this->map->display_detour();
@@ -181,7 +181,7 @@ cout<< endl<<"detour:";
 	//---------------------------set detour---------------------------
 				    neibor->set_m_d(md,1);
 				    int detour;
-				    detour = neibor->get_md()-min_d;
+				    detour = neibor->get_distance()-min_d;
 				    if ( detour <= 0){
 					neibor->set_detour(0);
 				    }

@@ -34,7 +34,7 @@ namespace Algorithm{
     public:
         Bidirection(Map* m);
         ~Bidirection();
-        void forward();
+        void run();
         void traceback(int curConnection);
         vector<Path*> get_paths();
         //        void display();

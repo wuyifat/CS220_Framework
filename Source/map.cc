@@ -198,7 +198,7 @@ void Utilities::Map::display_manhattan(){
         for(int i = 0; i< this->get_height();i++){
                 cout << endl;
                 for(int j = 0; j < this->get_width();j++){
-                        cout<<" "<< this->map.at(i).at(j)->get_md();
+                        cout<<" "<< this->map.at(i).at(j)->get_distance();
                 }
         }
         cout << endl;

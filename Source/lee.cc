@@ -30,7 +30,7 @@ void Algorithm::Lee::run() {
                     }//if
                 }//for x
             }//for y
-        }// if not 1
+ //       }// if not 1
         this->source.at(i)->set_cost(-2);//set source cost to -2
         this->sink.at(i)->set_cost(-3);//set sink cost to -3
 

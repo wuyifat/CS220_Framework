@@ -33,7 +33,7 @@ namespace Algorithm {
             Twobit(Map* m);
           //  ~Twobit();
 
-            void forward();
+            void run();
             void traceback(int same,Path* path);
             Map* get_map();
             vector<Path*> get_paths();

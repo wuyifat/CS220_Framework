@@ -35,7 +35,7 @@ namespace Algorithm{
             Hadlock(Map* m);
           //  ~Hadlock();
 
-            void forward();
+            void run();
             void traceback(Path* path);
             int direction(Point source,Point sink);
             Map* get_map();

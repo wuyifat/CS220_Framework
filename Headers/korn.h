@@ -35,7 +35,7 @@ namespace Algorithm {
             Korn(Map* m);
           //  ~Korn();
 
-            void forward();
+            void run();
             void traceback(Path* path);
             int direction(Point source,Point sink);
             Map* get_map();

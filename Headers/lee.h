@@ -33,7 +33,7 @@ namespace Algorithm {
             Lee(Map* m);
           //  ~Lee();
 
-            void forward();
+            void run();
             void traceback(Path* path);
             Map* get_map();
             vector<Path*> get_paths();
