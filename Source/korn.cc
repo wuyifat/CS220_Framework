@@ -8,6 +8,7 @@ using std::stack;
 Algorithm::Korn::Korn(Map* m) {
     this->map = m;
     this->connection = m->get_connection();
+    this->cross = 0;
     this->number = m->get_connection().size();
     for (int i = 0; i < this->number; i++) {
         this->source.push_back(this->map->get_node(this->connection.at(i).source));
@@ -241,6 +242,11 @@ cout<< "this is cost from check =1"<<endl;
                 q1.push(tt);
             }//if q1 q2 empty             
         }//while flag
+
+        if(this->cross == 0) {
+		Path* t = this->paths.at(i);
+            this->map->add_blocker(t);
+        }
     }//for path number
 }
 
@@ -470,3 +476,6 @@ int Algorithm::Korn::direction(Point source,Point sink) {
     return direction;
 }
 
+void Algorithm::Korn::set_cross(int i){
+    this->cross = i;
+}
