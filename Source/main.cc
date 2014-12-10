@@ -46,10 +46,10 @@ int main(int argc,char* argv[]) {
 
 //        Algorithm::Lee l(mm);
 //        Algorithm::Threebit l(mm);
-//        Algorithm::Twobit l(mm);
+        Algorithm::Twobit l(mm);
 //        Algorithm::Ruben l(mm);
 //        Algorithm::Korn l(mm);
-        Algorithm::Bidirection l(mm);        
+//        Algorithm::Bidirection l(mm);        
 
         l.run();
 //------------------------display path--------------------------
