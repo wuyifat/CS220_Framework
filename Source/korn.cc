@@ -8,13 +8,13 @@ Algorithm::Korn::Korn(Map* m) {
     this->map = m;
     this->connection = m->get_connection();
     this->number = m->get_connection().size();
-    for (int i = 0; i < this->number; i++){
+    for (int i = 0; i < this->number; i++) {
         this->source.push_back(this->map->get_node(this->connection.at(i).source));
         this->sink.push_back(this->map->get_node(this->connection.at(i).sink));
     }
 }
 
-//Algorithm::Korn::~Korn(){
+//Algorithm::Korn::~Korn() {
 
 //empty destory function
 //}
@@ -122,8 +122,8 @@ void Algorithm::Korn::run() {
             if(q1.empty()) {//if q1 empty q2 empty, found element in vector
                 int get_pos = 0;
                 int get_min = others.at(0)->get_distance();
-                for(int kkk = 0;kkk < others.size();kkk++){
-                    if(others.at(kkk)->get_distance() < get_min){
+                for(int kkk = 0;kkk < others.size();kkk++) {
+                    if(others.at(kkk)->get_distance() < get_min) {
                         get_min = others.at(kkk)->get_distance();
                         get_pos = kkk;
                     }
@@ -138,7 +138,7 @@ void Algorithm::Korn::run() {
 }
 
 
-Map* Algorithm::Korn::get_map(){
+Map* Algorithm::Korn::get_map() {
     return this->map;
 }
 
@@ -153,10 +153,10 @@ void Algorithm::Korn::traceback(Path* path) {
         x = tail->get_x();
         y = tail->get_y();
         //if we found the last point flag = 1
-        if(tail->get_cost()==1){
+        if(tail->get_cost()==1) {
             for(int i = 0; i< tail->connections_size();i++) {
                 Node* neibor = tail->connections_at(i)->get_end(tail);
-                if(neibor->get_cost()==-2){
+                if(neibor->get_cost()==-2) {
                     PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                     path->add_segment(new_segment);
                     path->set_sink(neibor->get_coord());
@@ -250,7 +250,7 @@ void Algorithm::Korn::traceback(Path* path) {
 //---------------------------------left situation---------------------------------
             case 1 :
 //check bounday
-                if(x-1 >= 0) {
+                if(x-1 > 0) {
                     Node* neibor = this->map->get_node(x-1,y);
                     // if in seme direction the next node's cost is less one than sink then add it in path
                     if(neibor->get_cost()==tail->get_cost()-1) {
@@ -263,7 +263,7 @@ void Algorithm::Korn::traceback(Path* path) {
                     else {
                         for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                 path->add_segment(new_segment);
                                 path->set_sink(neibor->get_coord());
@@ -287,9 +287,9 @@ void Algorithm::Korn::traceback(Path* path) {
 
                 break;
 //---------------------------------right situation---------------------------------
-            case 4:
+            case 3:
 //check bounday
-                if(x+1 <= this->map->get_width()) {
+                if(x+1 < this->map->get_width()) {
                     Node* neibor = this->map->get_node(x+1,y);
                     //if in seme direction the next node's cost is less one than sink then add it in path
                     if(neibor->get_cost()==tail->get_cost()-1) {

@@ -11,7 +11,6 @@ using std::endl;
 using std::string;
 using Utilities::Node;
 using Utilities::Path;
-using Utilities::ProblemObject;
 
 namespace Utilities {
     class Map{
@@ -39,12 +38,13 @@ namespace Utilities {
             void replace_path(int i, Path* path);
             void remove_path(int i);
             void set_blocker(vector<Blocker> b);
+	    void add_blocker(Path* p);
             void display_map();    //display cost
-            void display_size();    //display connection size
-            void display_md();    //display distance(= manhattan distance + cost)
+            void display_size();   //display connection size
+            void display_md();     //display distance
             void display_manhattan();    //display manhantan distance
             void display_flag();    //display manhantan distance
-            void display_detour();    //display detour number
+            void display_detour();    //display manhantan distance
             void set_connection(vector<Connection> c);
     };
 }

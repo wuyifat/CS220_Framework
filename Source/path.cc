@@ -33,7 +33,7 @@ void Utilities::Path::display_path() {
 	cout << "        ";
 	for (unsigned j = 0;j < this->size();j++) {
 	    cout << "(" << this->at(j)->get_source().x << "," << this->at(j)->get_source().y << ") ";
-	    if(j==this->size()-1){
+	    if(j==this->size()-1) {
 		cout << "(" << this->at(j)->get_sink().x << "," << this->at(j)->get_sink().y << ") ";
 	    }
 	}

@@ -4,25 +4,25 @@
 using std::cout;
 using std::endl;
 
-Algorithm::Ruben::Ruben(Map* m){
+Algorithm::Ruben::Ruben(Map* m) {
     this->map = m;
     this->connection = m->get_connection();
     this->number = m->get_connection().size();
-    for (int i = 0; i < this->number; i++){
+    for (int i = 0; i < this->number; i++) {
         this->source.push_back(this->map->get_node(this->connection.at(i).source));
         this->sink.push_back(this->map->get_node(this->connection.at(i).sink));
     }
 }
 
-//Algorithm::Ruben::~Ruben(){
+//Algorithm::Ruben::~Ruben() {
 
 //empty destory function
 //}
 
-void Algorithm::Ruben::reset_map(){
-    for(int y = 0; y < this->map->get_height();y++){
-        for(int x = 0; x < this->map->get_width();x++){
-            if(this->map->get_node(x,y)->get_cost()!=-1){
+void Algorithm::Ruben::reset_map() {
+    for(int y = 0; y < this->map->get_height();y++) {
+        for(int x = 0; x < this->map->get_width();x++) {
+            if(this->map->get_node(x,y)->get_cost()!=-1) {
 	        this->map->get_node(x,y)->set_cost(0);//reset cost to 0
 	        this->map->get_node(x,y)->set_m_d(0);//reset cost to 0
             }
@@ -30,12 +30,12 @@ void Algorithm::Ruben::reset_map(){
      }
 }
 
-void Algorithm::Ruben::run(){
-    for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
+void Algorithm::Ruben::run() {
+    for(int i = 0;i <this->number;i++) {//if we have i pair of sources and sinks, we need to do i times to find the path;
 
 //------------------------reset the map ------------------------------------------
 //if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
-        if(i != 0){
+        if(i != 0) {
             this->reset_map();
         }
 
@@ -55,9 +55,9 @@ void Algorithm::Ruben::run(){
         vector<Node*> others;
         q1.push(this->source.at(i));
    	int f1 = 0;//fi for check wether the first time in queue
-        while(flag != 1){// while flag !=1 keep found sink
-            while(!q1.empty()){
-                if(flag == 1){//if found sink 
+        while(flag != 1) {// while flag !=1 keep found sink
+            while(!q1.empty()) {
+                if(flag == 1) {//if found sink 
                     break;
                 }
                 f1++;
@@ -65,9 +65,9 @@ void Algorithm::Ruben::run(){
                 q1.pop();
                 temp->set_flag(1);//this flag to check the node can only in to vector once
 
-                for(int j = 0; j < temp->connections_size();j++){                
+                for(int j = 0; j < temp->connections_size();j++) {                
                     Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    if(neibor->get_cost() == -3){//if we found sink we use traceback function to save the path
+                    if(neibor->get_cost() == -3) {//if we found sink we use traceback function to save the path
                         flag = 1;
                         // add a path to vector
                         Path* new_path = new Path();
@@ -81,9 +81,9 @@ void Algorithm::Ruben::run(){
                         break;
                     }
 
-                    if(neibor->get_cost() == 0 || neibor->get_distance() == min_d){//for normal point 
-                        if(neibor->get_cost()==0){
-                            if(f1!=1 ){
+                    if(neibor->get_cost() == 0 || neibor->get_distance() == min_d) {//for normal point 
+                        if(neibor->get_cost()==0) {
+                            if(f1!=1 ) {
                                 neibor->set_cost(temp->get_cost()+1);
                             }
                             else{
@@ -91,8 +91,8 @@ void Algorithm::Ruben::run(){
                             }
                             neibor->set_m_d(md,1);
                         }
-                        if (neibor->get_distance() == min_d){
-                            if(neibor->get_flag()!=1){//if this node first time to queue,push it
+                        if (neibor->get_distance() == min_d) {
+                            if(neibor->get_flag()!=1) {//if this node first time to queue,push it
                                 q2.push(neibor);
                                 neibor->set_flag(1);
                             }
@@ -104,16 +104,16 @@ void Algorithm::Ruben::run(){
                 }//for
              }//whileq1
 
-             while(!q2.empty()){
-               if(flag == 1){
+             while(!q2.empty()) {
+               if(flag == 1) {
                     break;
                 }
                 Node* temp = q2.front();
                 temp->set_flag(1);
                 q2.pop();
-                for(int j = 0; j < temp->connections_size();j++){                
+                for(int j = 0; j < temp->connections_size();j++) {                
                     Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    if(neibor->get_cost() == -3){
+                    if(neibor->get_cost() == -3) {
                         flag = 1;
                         map->display_map();
                         Path* new_path = new Path();
@@ -125,13 +125,13 @@ void Algorithm::Ruben::run(){
                         this->traceback(new_path);
                         break;
                     }
-                    if(neibor->get_cost() ==  0|| neibor->get_distance() == min_d){
-                        if(neibor->get_cost() == 0){
+                    if(neibor->get_cost() ==  0|| neibor->get_distance() == min_d) {
+                        if(neibor->get_cost() == 0) {
 			    neibor->set_cost(temp->get_cost()+ 1);
                             neibor->set_m_d(md,1);                        
                         }
-                        if (neibor->get_distance() == min_d){
-                            if(neibor->get_flag()!=1){
+                        if (neibor->get_distance() == min_d) {
+                            if(neibor->get_flag()!=1) {
                                 q1.push(neibor);
                                 neibor->set_flag(1);
                             }//if falg!=1
@@ -142,7 +142,7 @@ void Algorithm::Ruben::run(){
                     }//if ||
                 }//for
              }//whileq2
-             if(q1.empty() && q2.empty()){//if q1 empty q2 empty, found element in vector
+             if(q1.empty() && q2.empty()) {//if q1 empty q2 empty, found element in vector
                  Node* tt = this->min_node(others);//found the smallest one in vector
                  min_d = tt->get_distance();
                  q1.push(tt);
@@ -153,25 +153,25 @@ void Algorithm::Ruben::run(){
 }
 
 
-Map* Algorithm::Ruben::get_map(){
+Map* Algorithm::Ruben::get_map() {
     return this->map;
 }
 
 
-void Algorithm::Ruben::traceback(Path* path){
+void Algorithm::Ruben::traceback(Path* path) {
     int direction;//0 up      1 left      2 down        3 right
     direction = this->direction(path->get_source(),path->get_sink());
     int flag = 0;
     int x,y;
-    while(flag!=1){           
+    while(flag!=1) {           
 	    Node* tail = this->map->get_node(path->get_sink()); 
             x = tail->get_x();
             y = tail->get_y();
 //if we found the last point flag = 1
-            if(tail->get_cost()==1){
-                for(int i = 0; i< tail->connections_size();i++){
+            if(tail->get_cost()==1) {
+                for(int i = 0; i< tail->connections_size();i++) {
                     Node* neibor = tail->connections_at(i)->get_end(tail);
-		    if(neibor->get_cost()==-2){
+		    if(neibor->get_cost()==-2) {
 			PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 			path->add_segment(new_segment);
 			path->set_sink(neibor->get_coord());
@@ -181,13 +181,13 @@ void Algorithm::Ruben::traceback(Path* path){
              }//if tail ==1
 //else we need do know the direction
             else{
-                switch(direction){
+                switch(direction) {
 //---------------------------------up situation---------------------------------
                 case  0:
 //check bounday
-                     if(y-1 >= 0){
+                     if(y-1 >= 0) {
                         Node* neibor = this->map->get_node(x,y-1);
-                       if(neibor->get_cost()==tail->get_cost()-1){//if in seme direction the next node's cost is less one than sink then add it in path
+                       if(neibor->get_cost()==tail->get_cost()-1) {//if in seme direction the next node's cost is less one than sink then add it in path
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		       	        path->add_segment(new_segment);
 		  	        path->set_sink(neibor->get_coord());
@@ -195,9 +195,9 @@ void Algorithm::Ruben::traceback(Path* path){
                         }//if 
 
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -208,9 +208,9 @@ void Algorithm::Ruben::traceback(Path* path){
 
                     }//if y-1>0
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -223,9 +223,9 @@ void Algorithm::Ruben::traceback(Path* path){
 
 //---------------------------------down situation---------------------------------
                 case 2 :
-                    if(y+1 <= this->map->get_height()){
+                    if(y+1 <= this->map->get_height()) {
                         Node* neibor = this->map->get_node(x,y+1);
-                        if(neibor->get_cost()==tail->get_cost()-1){//if in seme direction the next node's cost is less one than sink then add it in path
+                        if(neibor->get_cost()==tail->get_cost()-1) {//if in seme direction the next node's cost is less one than sink then add it in path
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		       	        path->add_segment(new_segment);
 		  	        path->set_sink(neibor->get_coord());
@@ -233,9 +233,9 @@ void Algorithm::Ruben::traceback(Path* path){
                         }//if 
 
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -245,9 +245,9 @@ void Algorithm::Ruben::traceback(Path* path){
                     }//else
                     }//if y-1>0
                    else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -260,9 +260,9 @@ void Algorithm::Ruben::traceback(Path* path){
 //---------------------------------left situation---------------------------------
                 case 1 :
 //check bounday
-                     if(x-1 >= 0){
+                     if(x-1 > 0) {
                         Node* neibor = this->map->get_node(x-1,y);
-                        if(neibor->get_cost()==tail->get_cost()-1){//if in seme direction the next node's cost is less one than sink then add it in path
+                        if(neibor->get_cost()==tail->get_cost()-1) {//if in seme direction the next node's cost is less one than sink then add it in path
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		       	        path->add_segment(new_segment);
 		  	        path->set_sink(neibor->get_coord());
@@ -270,9 +270,9 @@ void Algorithm::Ruben::traceback(Path* path){
                         }//if 
 
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -282,9 +282,9 @@ void Algorithm::Ruben::traceback(Path* path){
                     }//else
                     }//if x-1>0
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -295,11 +295,11 @@ void Algorithm::Ruben::traceback(Path* path){
 
                    break;
 //---------------------------------right situation---------------------------------
-                case 4:
+                case 3:
 //check bounday
-                     if(x+1 <= this->map->get_width()){
+                     if(x+1 < this->map->get_width()) {
                         Node* neibor = this->map->get_node(x+1,y);
-                        if(neibor->get_cost()==tail->get_cost()-1){//if in seme direction the next node's cost is less one than sink then add it in path
+                        if(neibor->get_cost()==tail->get_cost()-1) {//if in seme direction the next node's cost is less one than sink then add it in path
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		       	        path->add_segment(new_segment);
 		  	        path->set_sink(neibor->get_coord());
@@ -307,9 +307,9 @@ void Algorithm::Ruben::traceback(Path* path){
                         }//if 
 
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -319,9 +319,9 @@ void Algorithm::Ruben::traceback(Path* path){
                     }//else
                     }//if x+1<width
                     else{
-                        for(int i = 0; i< tail->connections_size();i++){
+                        for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
-                            if(neibor->get_cost() == tail->get_cost()-1){
+                            if(neibor->get_cost() == tail->get_cost()-1) {
 		                PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		                path->add_segment(new_segment);
 		                path->set_sink(neibor->get_coord());
@@ -337,18 +337,18 @@ void Algorithm::Ruben::traceback(Path* path){
     this->paths.push_back(path);
 }
 
-vector<Path*> Algorithm::Ruben::get_paths(){
+vector<Path*> Algorithm::Ruben::get_paths() {
     return this->paths;
 }
 
 
-vector<Connection> Algorithm::Ruben::get_connection(){
+vector<Connection> Algorithm::Ruben::get_connection() {
        return this->connection ;
 }
-int Algorithm::Ruben::direction(Point source,Point sink){
+int Algorithm::Ruben::direction(Point source,Point sink) {
     int direction;//0 up      1 left      2 down        3 right
-    if (sink.x == source.x){
-        if (sink.y > source.y){
+    if (sink.x == source.x) {
+        if (sink.y > source.y) {
             direction = 2;//backtrace to down
         }
         else{
@@ -356,7 +356,7 @@ int Algorithm::Ruben::direction(Point source,Point sink){
         }
     }
     else{
-        if (sink.x > source.x){
+        if (sink.x > source.x) {
             direction = 3;//right
         }
         else{
@@ -366,11 +366,11 @@ int Algorithm::Ruben::direction(Point source,Point sink){
     return direction;
 }
 
-Node* Algorithm::Ruben::min_node(vector<Node*> others){
+Node* Algorithm::Ruben::min_node(vector<Node*> others) {
       int get_pos = 0;
       int get_min = others.at(0)->get_distance();
-      for(int i = 0;i < others.size();i++){
-          if(others.at(i)->get_distance() < get_min){
+      for(int i = 0;i < others.size();i++) {
+          if(others.at(i)->get_distance() < get_min) {
               get_min = others.at(i)->get_distance();
               get_pos = i;
           }

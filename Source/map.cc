@@ -47,13 +47,13 @@ int Utilities::Map::get_height() {
 Node* Utilities::Map::get_node(int x, int y) {
     if(y >= this->map.size()) {
         claim("Attemping to access a node outside of the grid's range (y-value out of range)", kError);
-        return NULL;
+            return NULL;
     }
     if(x >= this->map.at(y).size()) {
         claim("Attemping to access a node outside of the map's range (x-value out of range)", kError);
-	return NULL;
+            return NULL;
     }
-    return this->map.at(y).at(x);    //at(...) will throw an out of range exception
+    return this->map.at(y).at(x);      //at(...) will throw an out of range exception
 }
 
 Node* Utilities::Map::get_node(Point coord) {
@@ -68,7 +68,7 @@ Path* Utilities::Map::get_path(int i) {
     if(i >= paths.size()) {
         claim("Attempting to access a path outside of the path list's range", kError);
     }
-    return this->paths.at(i);    //at(...) will throw an out of range exception
+    return this->paths.at(i);           //at(...) will throw an out of range exception
 }
 
 
@@ -103,16 +103,16 @@ void Utilities::Map::remove_path(int i) {
 
 void Utilities::Map::set_blocker(vector<Blocker> b) {
     int x,y;    //blocker location
-    for ( int blocker_num = 0; blocker_num < b.size(); blocker_num++){
+    for ( int blocker_num = 0; blocker_num < b.size(); blocker_num++) {
         x = b.at(blocker_num).location.x;
         y = b.at(blocker_num).location.y;
 
         //check x boundary   
-        if(x < 0 && x > this->get_width()){
+        if(x < 0 && x > this->get_width()) {
             claim( "x coord is not valid",kError); 
         }
         //check y boundary 
-        if( y < 0 && y > this->get_height()){
+        if( y < 0 && y > this->get_height()) {
             claim( "y coord is not valid",kError);
         }
 
@@ -134,11 +134,11 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
 }
 
 // display each node's cost
-void Utilities::Map::display_map(){
+void Utilities::Map::display_map() {
     cout << endl << endl;
-    for(int i = 0; i < this->get_height();i++){
+    for(int i = 0; i < this->get_height();i++) {
         cout << endl;
-        for(int j = 0; j < this->get_width();j++){
+        for(int j = 0; j < this->get_width();j++) {
             cout << " "<< (this->map.at(i).at(j))->get_cost();
         }
     }
@@ -146,61 +146,83 @@ void Utilities::Map::display_map(){
 }
 
 // display each node's connection size
-void Utilities::Map::display_size(){
-    for(int i = 0; i< this->get_height();i++){
+void Utilities::Map::display_size() {
+    for(int i = 0; i< this->get_height();i++) {
         cout << endl;
-        for(int j = 0; j < this->get_width();j++){
+        for(int j = 0; j < this->get_width();j++) {
             cout<<" "<< this->get_node(j,i)->connections_size();
         }
     }
     cout << endl;
 }
 
-void Utilities::Map::set_connection(vector<Connection> c){
+void Utilities::Map::set_connection(vector<Connection> c) {
     this->connection = c;
 }
 
-vector<Connection> Utilities::Map::get_connection(){
+vector<Connection> Utilities::Map::get_connection() {
     return this->connection ;
 }
 
-void Utilities::Map::display_detour(){
-        for(int i = 0; i< this->get_height();i++){
+void Utilities::Map::display_detour() {
+        for(int i = 0; i< this->get_height();i++) {
                 cout << endl;
-                for(int j = 0; j < this->get_width();j++){
+                for(int j = 0; j < this->get_width();j++) {
                         cout<<" "<< this->map.at(i).at(j)->get_detour();
                 }
         }
         cout << endl;
 }
 
-void Utilities::Map::display_md(){
-    for(int i = 0; i< this->get_height();i++){
+void Utilities::Map::display_md() {
+    for(int i = 0; i< this->get_height();i++) {
         cout << endl;
-        for(int j = 0; j < this->get_width();j++){
+        for(int j = 0; j < this->get_width();j++) {
             cout<<" "<< this->map.at(i).at(j)->get_distance();
         }
     }
     cout << endl;
 }
 
-void Utilities::Map::display_flag(){
-    for(int i = 0; i< this->get_height();i++){
+void Utilities::Map::display_flag() {
+    for(int i = 0; i< this->get_height();i++) {
         cout << endl;
-        for(int j = 0; j < this->get_width();j++){
+        for(int j = 0; j < this->get_width();j++) {
             cout<<" "<< this->map.at(i).at(j)->get_flag();
         }
     }
     cout << endl;
 }
 
-void Utilities::Map::display_manhattan(){
-        for(int i = 0; i< this->get_height();i++){
+void Utilities::Map::display_manhattan() {
+        for(int i = 0; i< this->get_height();i++) {
                 cout << endl;
-                for(int j = 0; j < this->get_width();j++){
+                for(int j = 0; j < this->get_width();j++) {
                         cout<<" "<< this->map.at(i).at(j)->get_distance();
                 }
         }
         cout << endl;
+}
+
+void Utilities::Map::add_blocker(Path* path) {
+    int x = path->get_sink().x; 
+    int y = path->get_sink().y;
+    this->map.at(y).at(x)->set_cost(-1);
+    this->map.at(y).at(x)->set_detour(-100);
+    while(this->map.at(y).at(x)->connections_empty()!=1) {
+	this->map.at(y).at(x)->connections_at(0)->get_end(this->map.at(y).at(x))->remove_m_connection(this->map.at(y).at(x));
+	this->map.at(y).at(x)->remove_connection(this->map.at(y).at(x)->connections_at(0));
+    }
+    for(int i = 0;i < path->size();i++) {
+        x = path->at(i)->get_source().x; 
+	y = path->at(i)->get_source().y;
+	this->map.at(y).at(x)->set_cost(-1);
+	this->map.at(y).at(x)->set_detour(-100);
+	while(this->map.at(y).at(x)->connections_empty()!=1) {
+            this->map.at(y).at(x)->connections_at(0)->get_end(this->map.at(y).at(x))->remove_m_connection(this->map.at(y).at(x));
+	    this->map.at(y).at(x)->remove_connection(this->map.at(y).at(x)->connections_at(0));
+	}
+    }
+
 }
 

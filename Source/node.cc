@@ -5,12 +5,12 @@
 using std::cout;
 using std::endl;
 
-void Utilities::Node::updata_d(){
+void Utilities::Node::updata_d() {
       this->distance = this->cost + this->m_d;
 }
 
 
-Utilities::Node::Node(int x, int y, int cost):coord(x,y){
+Utilities::Node::Node(int x, int y, int cost):coord(x,y) {
       this->cost = cost;
       this->is_visited = 0;
       this->m_d = 0;
@@ -19,7 +19,7 @@ Utilities::Node::Node(int x, int y, int cost):coord(x,y){
       this->updata_d();
 }
 
-Utilities::Node::Node(Point coord, int cost):coord(coord.x,coord.y){
+Utilities::Node::Node(Point coord, int cost):coord(coord.x,coord.y) {
       this->cost = cost;
       this->is_visited = 0;
       this->m_d = 0;
@@ -127,13 +127,13 @@ void Utilities::Node::set_connections(vector<Edge*> connections) {
 }
 
 void Utilities::Node::add_connection_mirrored(Edge* connection) {
-      if (this-> connections_contains(connection) == 0){
+      if (this-> connections_contains(connection) == 0) {
           this->connections.push_back(connection);
       }
 }
 
 void Utilities::Node::add_connection(Edge* connection) {
-       if (this-> connections_contains(connection) == 0){
+       if (this-> connections_contains(connection) == 0) {
           this->connections.push_back(connection);
           connection->get_end(this)->add_connection_mirrored(connection);
       }           
@@ -147,9 +147,9 @@ void Utilities::Node::set_is_visited(int is_visited) {
       this->is_visited = is_visited;
 }
 
-void Utilities::Node::set_m_d(Point sink,double i){
-      if(sink.x > this->coord.x){
-          if(sink.y > this->coord.y){
+void Utilities::Node::set_m_d(Point sink,double i) {
+      if(sink.x > this->coord.x) {
+          if(sink.y > this->coord.y) {
               this->m_d = ( sink.x - coord.x + sink.y - coord.y ) * i;
           }
           else{
@@ -157,7 +157,7 @@ void Utilities::Node::set_m_d(Point sink,double i){
           }
       }
       else      
-          if(sink.y > this->coord.y){
+          if(sink.y > this->coord.y) {
               this->m_d = ( coord.x - sink.x + sink.y - coord.y ) * i;
           }
           else{
@@ -166,7 +166,7 @@ void Utilities::Node::set_m_d(Point sink,double i){
       this->updata_d();
 }
 
-void Utilities::Node::set_m_d(double i){
+void Utilities::Node::set_m_d(double i) {
       this->m_d = i;
       this->updata_d();
 }
@@ -194,17 +194,17 @@ void Utilities::Node::display_node() {
 }
 
 void Utilities::Node::display_edges() {
-    for(int i = 0; i < this->connections_size();i++){
+    for(int i = 0; i < this->connections_size();i++) {
         cout << endl <<"The number "<< i <<" is :";
         this->connections_at(i)->display_edge();
     }
-    if ( this->connections_size() == 0){
+    if ( this->connections_size() == 0) {
         cout << " this node no connections" << endl;
     }
 }
-void Utilities::Node::remove_m_connection(Node* node){
-        for(int i= 0; i < this->connections_size();i++){
-            if( (this->connections_at(i)->get_end(this))->get_coord()==node->get_coord()){
+void Utilities::Node::remove_m_connection(Node* node) {
+        for(int i= 0; i < this->connections_size();i++) {
+            if( (this->connections_at(i)->get_end(this))->get_coord()==node->get_coord()) {
             this->remove_connection(connections_at(i));
              }
          }

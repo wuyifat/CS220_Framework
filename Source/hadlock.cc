@@ -6,25 +6,25 @@
 	using std::endl;
 	using std::stack;
 
-	Algorithm::Hadlock::Hadlock(Map* m){
+	Algorithm::Hadlock::Hadlock(Map* m) {
 	    this->map = m;
 	    this->connection = m->get_connection();
 	    this->number = m->get_connection().size();
-	    for (int i = 0; i < this->number; i++){
+	    for (int i = 0; i < this->number; i++) {
 		this->source.push_back(this->map->get_node(this->connection.at(i).source));
 		this->sink.push_back(this->map->get_node(this->connection.at(i).sink));
 	    }
 	}
 
-	//Algorithm::Hadlock::~Hadlock(){
+	//Algorithm::Hadlock::~Hadlock() {
 
 	//empty destory function
 	//}
 
-	void Algorithm::Hadlock::reset_map(){
-	    for(int y = 0; y < this->map->get_height();y++){
-		for(int x = 0; x < this->map->get_width();x++){
-		    if(this->map->get_node(x,y)->get_cost()!=-1){
+	void Algorithm::Hadlock::reset_map() {
+	    for(int y = 0; y < this->map->get_height();y++) {
+		for(int x = 0; x < this->map->get_width();x++) {
+		    if(this->map->get_node(x,y)->get_cost()!=-1) {
 			this->map->get_node(x,y)->set_cost(0);//reset cost to 0
 			this->map->get_node(x,y)->set_flag(0);
 			this->map->get_node(x,y)->set_m_d(0);
@@ -34,12 +34,12 @@
 	     }
 	}
 
-	void Algorithm::Hadlock::run(){
-	    for(int i = 0;i <this->number;i++){//if we have i pair of sources and sinks, we need to do i times to find the path;
+	void Algorithm::Hadlock::run() {
+	    for(int i = 0;i <this->number;i++) {//if we have i pair of sources and sinks, we need to do i times to find the path;
 
 	//------------------------reset the map ------------------------------------------
 	//if this is the first time to do the algorithm, we don't need to reset the map, if not, we need to reset every node's cost to 0 except blocker
-		if(i != 0){
+		if(i != 0) {
 		    this->reset_map();
 		}
 
@@ -60,9 +60,9 @@ int debug = 0;
 	//the basic ideal of this algorithm is use 2 queue to set the cost
 		stack<Node*> q1,q2;
 		q1.push(this->source.at(i));
-		while(flag != 1){// while flag !=1 keep found sink
+		while(flag != 1) {// while flag !=1 keep found sink
 
-		    while(!q1.empty()){
+		    while(!q1.empty()) {
 /*
 	if(debug==16)
   {
@@ -77,9 +77,9 @@ debug++;
 cout<<"get q1 is ";
 temp->display_node();
 			temp->set_flag(1);//this flag to check the node can only in to vector once
-			for(int j = 0; j < temp->connections_size();j++){ 
+			for(int j = 0; j < temp->connections_size();j++) { 
 			    Node* neibor = (temp->connections_at(j))->get_end(temp);
-			    if(neibor->get_cost() == -3){//if we found sink we use traceback function to save the path
+			    if(neibor->get_cost() == -3) {//if we found sink we use traceback function to save the path
 				flag = 1;
 cout<<"!!!!!!!!!!!!!!!!!!!!!!now it's the time to trace back!!!"<<endl;
 				// add a path to vector
@@ -93,9 +93,9 @@ cout<<"!!!!!!!!!!!!!!!!!!!!!!now it's the time to trace back!!!"<<endl;
 				this->traceback(new_path);
 				break;
 			    }
-			    if(neibor->get_flag()!=1){ 
-			        if (neibor->get_cost()==0){
-                                if(first == 1){
+			    if(neibor->get_flag()!=1) { 
+			        if (neibor->get_cost()==0) {
+                                if(first == 1) {
 		                    neibor->set_cost(1);
 			        }
 			        else{
@@ -105,7 +105,7 @@ cout<<"!!!!!!!!!!!!!!!!!!!!!!now it's the time to trace back!!!"<<endl;
 				    neibor->set_m_d(md,1);
 				    int detour;
 				    detour = neibor->get_distance()-min_d;
-				    if ( detour <= 0){
+				    if ( detour <= 0) {
 					neibor->set_detour(0);
 				    }
 				    else{
@@ -118,25 +118,25 @@ neibor->display_node();
 			    }//if get_flag()!=1
 			}//for
 
-			if(flag == 1){//if found sink 
+			if(flag == 1) {//if found sink 
 			    break;
 			}
-			if(!small.empty()){
-			    for(int kkk = 0;kkk < small.size();kkk++){
+			if(!small.empty()) {
+			    for(int kkk = 0;kkk < small.size();kkk++) {
 				    Node* tt = small.at(kkk);
-if(temp->get_detour()==-2){
+if(temp->get_detour()==-2) {
 
-				    if (tt->get_detour() ==0){
+				    if (tt->get_detour() ==0) {
 			                q1.push(tt);
 				    }
-				   if( tt->get_detour() == 1 ){
+				   if( tt->get_detour() == 1 ) {
 					q2.push(tt);
 				    }
 }else{
-				    if (tt->get_detour() == temp->get_detour()){
+				    if (tt->get_detour() == temp->get_detour()) {
 			                q1.push(tt);
 				    }
-				   if( tt->get_detour() == temp->get_detour()+1 ){
+				   if( tt->get_detour() == temp->get_detour()+1 ) {
 					q2.push(tt);
 				    }
 }				    //debug			cout<< "Push it from SMALL to OTHERS"<<endl;
@@ -153,16 +153,16 @@ cout<< endl<<"detour:";
 			    this->map->display_detour();
 		     }//whileq1
 
-		    while(!q2.empty()){
-			if(flag == 1){//if found sink 
+		    while(!q2.empty()) {
+			if(flag == 1) {//if found sink 
 			    break;
 			}
 			Node* temp = q2.top();
 			q2.pop();
 			temp->set_flag(1);//this flag to check the node can only in to vector once
-			for(int j = 0; j < temp->connections_size();j++){                
+			for(int j = 0; j < temp->connections_size();j++) {                
 			    Node* neibor = (temp->connections_at(j))->get_end(temp);
-			    if(neibor->get_cost() == -3){//if we found sink we use traceback function to save the path
+			    if(neibor->get_cost() == -3) {//if we found sink we use traceback function to save the path
 				flag = 1;
 				// add a path to vector
 				Path* new_path = new Path();
@@ -175,14 +175,14 @@ cout<< endl<<"detour:";
 				this->traceback(new_path);
 				break;
 			    }
-			    if(neibor->get_flag()!=1){ 
-				if(neibor->get_cost()==0){
+			    if(neibor->get_flag()!=1) { 
+				if(neibor->get_cost()==0) {
                                     neibor->set_cost(temp->get_cost()+1);
 	//---------------------------set detour---------------------------
 				    neibor->set_m_d(md,1);
 				    int detour;
 				    detour = neibor->get_distance()-min_d;
-				    if ( detour <= 0){
+				    if ( detour <= 0) {
 					neibor->set_detour(0);
 				    }
 				    else{
@@ -193,13 +193,13 @@ cout<< endl<<"detour:";
 			    }//if get_flag()!=1
 			}//for
 
-			if(!small.empty()){
-			    for(int kkk = 0;kkk < small.size();kkk++){
+			if(!small.empty()) {
+			    for(int kkk = 0;kkk < small.size();kkk++) {
 				    Node* tt = small.at(kkk);
-				    if (tt->get_detour() == temp->get_detour()){
+				    if (tt->get_detour() == temp->get_detour()) {
 			                q2.push(tt);
 				    }
-				    if( tt->get_detour() == temp->get_detour()+1 ){
+				    if( tt->get_detour() == temp->get_detour()+1 ) {
 					q1.push(tt);
 				    }
 				    //debug			cout<< "Push it from SMALL to OTHERS"<<endl;
@@ -215,12 +215,12 @@ cout<< endl<<"detour:";
 }
 
 
-Map* Algorithm::Hadlock::get_map(){
+Map* Algorithm::Hadlock::get_map() {
     return this->map;
 }
 
 
-void Algorithm::Hadlock::traceback(Path* path){
+void Algorithm::Hadlock::traceback(Path* path) {
     int flag = 0;
     vector<Node*> small;
     stack<PathSegment*> q1,q2;
@@ -229,13 +229,13 @@ void Algorithm::Hadlock::traceback(Path* path){
     int need = 0;
 int debug =0;
     int check = 0;//if check = 1 need to remove some path
-    while(flag!=1){           
+    while(flag!=1) {           
 //--------------------------------------------------Q1--------------------
-while(!q1.empty()){
+while(!q1.empty()) {
 
 debug++;
 this->map->display_flag();
-	if(check == 1){
+	if(check == 1) {
 	    check = 0;
 	    need= 0;
 cout<<"the size of q1 is "<< q1.size()<<endl<<endl;
@@ -244,7 +244,7 @@ cout<<"the size of q1 is "<< q1.size()<<endl<<endl;
 int test = (path->get_sink()!=branch);
 
 cout << "if the value is 1 then they are not equal     "<< test<<endl;
-	    while(path->get_sink()!=branch){
+	    while(path->get_sink()!=branch) {
 cout<< "before remove:";
 path->display_path();
 		path->remove_segment(path->at(path->size()-1));
@@ -264,15 +264,15 @@ cout<< "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!this is q1 and the tial is :";
 tail->display_node();
 cout<< endl;
 	//if we found the last point flag = 1
-	for(int i = 0; i< tail->connections_size();i++){
+	for(int i = 0; i< tail->connections_size();i++) {
 	    Node* neibor = tail->connections_at(i)->get_end(tail);
-	    if(neibor->get_flag()==2){
+	    if(neibor->get_flag()==2) {
 cout<<"enter flag ==2 do nothing"<<endl;
 	need++;
 cout<< "now need is "<<need<<endl;
 	    }
 	    else{
-	        if(neibor->get_cost()==-2){//if we found sink
+	        if(neibor->get_cost()==-2) {//if we found sink
 		    PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		    path->add_segment(new_segment);
 		    path->set_sink(neibor->get_coord());
@@ -283,7 +283,7 @@ break;
 		}//if neibor = -2
 		else{
 
-		    if(neibor->get_flag()==1){
+		    if(neibor->get_flag()==1) {
 			small.push_back(neibor);
 			cout<< "push back in to small vetor"<<endl<<endl;}
 		    else{
@@ -294,18 +294,18 @@ break;
 
 	}//end neibor size
 
-if(flag==1){
+if(flag==1) {
 break;
 }
 
 
 
-	    if(!small.empty()){
+	    if(!small.empty()) {
 
                     int get_pos = 0;
             	    int get_min = small.at(0)->get_detour();
-   		    for(int kkk = 0;kkk < small.size();kkk++){
-         		if(small.at(kkk)->get_detour() < get_min){
+   		    for(int kkk = 0;kkk < small.size();kkk++) {
+         		if(small.at(kkk)->get_detour() < get_min) {
               		    get_min = small.at(kkk)->get_detour();
               		    get_pos = kkk;
          		}//if		
@@ -314,23 +314,23 @@ break;
 
 
 cout<<" small is not empty"<<endl<<endl;
-		for(int kkk = 0;kkk < small.size();kkk++){
+		for(int kkk = 0;kkk < small.size();kkk++) {
 		    Node* tt = small.at(kkk);
 cout<<"get a element in smalli "<<kkk<< " " ;
 tt->display_node();
 cout<<"and it's detour is "<<tt->get_detour();
 cout<<endl<<endl;
 cout<< "the get_pos is "<<get_pos<<endl;
-                    if(kkk!= get_pos){
+                    if(kkk!= get_pos) {
  cout<< "now enter kkk!=get_pos"<<endl;
-			    if (tt->get_detour() == tail->get_detour()){
+			    if (tt->get_detour() == tail->get_detour()) {
 
 				    PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
 				    q2.push(new_segment);
 				    tt->display_node();
 				    cout<<" detour value equel push in q2  "<<tt->get_detour()<< endl;
 			    }
-			    if( tt->get_detour() == tail->get_detour()-1){
+			    if( tt->get_detour() == tail->get_detour()-1) {
 				    PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
 
 				    q1.push(new_segment);
@@ -339,7 +339,7 @@ cout<< "the get_pos is "<<get_pos<<endl;
 				    cout<<"value is -1 so push in q1"<<tt->get_detour()<<endl;
 			    }
 
-			    if( tt->get_detour() == tail->get_detour()+1){
+			    if( tt->get_detour() == tail->get_detour()+1) {
 need++;
 cout<<"tt=tail+1 so need is "<<need<<endl;
 }
@@ -357,16 +357,16 @@ cout<< "push the minin pathsegment to q1";
 		small.clear();
 	    }//small empty
 cout<<endl<<"the need value is "<< need<<" the check value is "<< check<<endl;
-	    if(need == tail->connections_size()){
+	    if(need == tail->connections_size()) {
 		    check++;
 	    }
     }//end while q1
 
 //--------------------------------------------------Q2--------------------
-while(!q2.empty()){
+while(!q2.empty()) {
 
 this->map->display_flag();
-	if(check == 1){
+	if(check == 1) {
 	    check = 0;
 	    need= 0;
 cout<<"t!!!!!!!!!!!!!!he size of q2      is "<< q2.size()<<endl<<endl;
@@ -374,7 +374,7 @@ cout<<"t!!!!!!!!!!!!!!he size of q2      is "<< q2.size()<<endl<<endl;
 
 int test = (path->get_sink()!=branch);
 cout << "this test is "<< test;
-	    while(path->get_sink()!=branch){
+	    while(path->get_sink()!=branch) {
 
 		path->remove_segment(path->at(path->size()-1));
 	        path->set_sink( path->at(path->size()-1)->get_sink());
@@ -390,14 +390,14 @@ cout<< "!------------------------------!this is q2 and the tial is :";
 tail->display_node();
 cout<< endl;
 	//if we found the last point flag = 1
-	for(int i = 0; i< tail->connections_size();i++){
+	for(int i = 0; i< tail->connections_size();i++) {
 	    Node* neibor = tail->connections_at(i)->get_end(tail);
-	    if(neibor->get_flag()==2){
+	    if(neibor->get_flag()==2) {
 cout<<"enter flag ==2 do nothing"<<endl;
 	need++;
 	    }
 	    else{
-	        if(neibor->get_cost()==-2){//if we found sink
+	        if(neibor->get_cost()==-2) {//if we found sink
 		    PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
 		    path->add_segment(new_segment);
 		    path->set_sink(neibor->get_coord());
@@ -407,7 +407,7 @@ neibor->display_node();
 break;
 		}//if neibor = -2
 		else{
-		    if(neibor->get_flag()==1){
+		    if(neibor->get_flag()==1) {
 			small.push_back(neibor);
 			cout<< "push back in to small vetor"<<endl<<endl;}
 		    else{
@@ -418,20 +418,20 @@ break;
 
 	}//end neibor size
 
-if(flag==1){
+if(flag==1) {
 break;
 }
 
-	    if(need == tail->connections_size()){
+	    if(need == tail->connections_size()) {
 		    check++;
 	    }
 
-	    if(!small.empty()){
+	    if(!small.empty()) {
 
                     int get_pos = 0;
             	    int get_min = small.at(0)->get_detour();
-   		    for(int kkk = 0;kkk < small.size();kkk++){
-         		if(small.at(kkk)->get_detour() < get_min){
+   		    for(int kkk = 0;kkk < small.size();kkk++) {
+         		if(small.at(kkk)->get_detour() < get_min) {
               		    get_min = small.at(kkk)->get_detour();
               		    get_pos = kkk;
          		}//if		
@@ -440,20 +440,20 @@ break;
 
 
 cout<<" small is not empty"<<endl<<endl;
-		for(int kkk = 0;kkk < small.size();kkk++){
+		for(int kkk = 0;kkk < small.size();kkk++) {
 		    Node* tt = small.at(kkk);
 cout<<"get a element in smalli "<<kkk<< "   ";
 tt->display_node();
 cout<<endl<<endl;
-if(kkk!= get_pos){
-		  if (tt->get_detour() == tail->get_detour()){
+if(kkk!= get_pos) {
+		  if (tt->get_detour() == tail->get_detour()) {
 
 		        PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
 			q1.push(new_segment);
 tt->display_node();
 cout<<"push in q2  "<<tt->get_detour()<< endl;
 		    }
-		    if( tt->get_detour() == tail->get_detour()-1){
+		    if( tt->get_detour() == tail->get_detour()-1) {
 			PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
 
 			q2.push(new_segment);
@@ -461,7 +461,7 @@ cout<<"push in q2  "<<tt->get_detour()<< endl;
 tt->display_node();
 cout<<"push in q1"<<tt->get_detour()<<endl;
 
-			    if( tt->get_detour() == tail->get_detour()+1){
+			    if( tt->get_detour() == tail->get_detour()+1) {
 need++;
 cout<<"tt=tail+1 so need is "<<need<<endl;
 }
@@ -484,11 +484,11 @@ cout<<"tt=tail+1 so need is "<<need<<endl;
 }
 
 
-vector<Connection> Algorithm::Hadlock::get_connection(){
+vector<Connection> Algorithm::Hadlock::get_connection() {
        return this->connection ;
 }
 
-vector<Path*> Algorithm::Hadlock::get_paths(){
+vector<Path*> Algorithm::Hadlock::get_paths() {
     return this->paths;
 }
 
