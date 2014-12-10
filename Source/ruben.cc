@@ -8,6 +8,7 @@ using std::stack;
 
 Algorithm::Ruben::Ruben(Map* m){
     this->map = m;
+    this->cross = 0;
     this->connection = m->get_connection();
     this->number = m->get_connection().size();
     for (int i = 0; i < this->number; i++){
@@ -245,6 +246,11 @@ tt->display_node();
              }//if q1 q2 empty             
 
         }//while flag
+    
+        if(this->cross == 0) {
+		Path* t = this->paths.at(i);
+            this->map->add_blocker(t);
+        }
     }//for path number
 }
 
@@ -438,6 +444,10 @@ this->map->display_map();
     this->paths.push_back(path);
 }
 
+
+void Algorithm::Ruben::set_cross(int i){
+    this->cross = i;
+}
 vector<Path*> Algorithm::Ruben::get_paths(){
     return this->paths;
 }

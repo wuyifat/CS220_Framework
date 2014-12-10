@@ -25,6 +25,7 @@ namespace Algorithm {
         private:
             Map* map;
             int number; //number of source = number of sink = number of path
+            int cross; //number of source = number of sink = number of path
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        
@@ -37,6 +38,7 @@ namespace Algorithm {
 
             void run();
             void traceback(Path* path);
+	    void set_cross(int i);
             int direction(Point source,Point sink);
             Map* get_map();
             vector<Path*> get_paths();

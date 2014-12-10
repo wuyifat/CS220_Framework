@@ -7,7 +7,7 @@
 #include "../Headers/korn.h"
 #include "../Headers/twobit.h"
 #include "../Headers/ruben.h"
-// #include "../Headers/hadlock.h"
+ #include "../Headers/hadlock.h"
 #include "../Headers/bidirection.h"
 #include <time.h>
 #include <cstdlib>
@@ -46,8 +46,8 @@ int main(int argc,char* argv[]) {
 
 //        Algorithm::Lee l(mm);
 //        Algorithm::Threebit l(mm);
-        Algorithm::Twobit l(mm);
-//        Algorithm::Ruben l(mm);
+//        Algorithm::Twobit l(mm);
+        Algorithm::Ruben l(mm);
 //        Algorithm::Korn l(mm);
 //        Algorithm::Bidirection l(mm);        
 
