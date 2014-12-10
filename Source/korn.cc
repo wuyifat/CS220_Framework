@@ -1,9 +1,10 @@
 #include "../Headers/korn.h"
 #include <iostream>
 #include <cmath>
+#include <stack>
 using std::cout;
 using std::endl;
-
+using std::stack;
 Algorithm::Korn::Korn(Map* m) {
     this->map = m;
     this->connection = m->get_connection();
@@ -44,59 +45,161 @@ void Algorithm::Korn::run() {
         Point md = this->sink.at(i)->get_coord();//use for compute manhuatan distance
         double min_d = abs(md.x+md.y-source.at(i)->get_x()-source.at(i)->get_y()) * 2;
         int flag = 0;    // this flag use to break while loop, if we found sink, the flag = 1 and break loop
-        int value = 0;    // use for cost
-
+        int direction;
+        int x = 0;
+        int y = 0;
+        int check = 0;
+        int debug = 0;
         //the basic ideal of this algorithm is use 2 queue to set the cost
-        queue<Node*> q1;
+        stack<Node*> q1;
         vector<Node*> others,small;
         q1.push(this->source.at(i));
+        Node* last = new Node(0,0);
+        Node* temp = new Node(0,0);
         int f1 = 0;    //fi for check wether the first time in queue
         while(flag != 1) {    // while flag !=1 keep finding sink
-            int fl2 = 0;
             while(!q1.empty()) {
+
+  /*              if(debug == 5) {    //if found sink 
+flag =1;
+                    break;
+                }
+debug++;
+*/
                 if(flag == 1) {    //if found sink 
                     break;
                 }
-                f1++;
-                Node* temp = q1.front();
+                temp = q1.top();
+		x = temp->get_x();
+		y = temp->get_y();
                 q1.pop();
                 temp->set_flag(1);    //this flag to check the node can only in to vector once
-                for(int j = 0; j < temp->connections_size();j++) {                
-                    Node* neibor = (temp->connections_at(j))->get_end(temp);
-                    //if we found sink we use traceback function to save the path   
-                    if(neibor->get_cost() == -3) {
-                        flag = 1;
-                        // add a path to vector
-                        Path* new_path = new Path();
-                        PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
-                        this->map->display_md();
-                        new_path->add_segment(new_segment);
-                        new_path->set_source(neibor->get_coord());
-                        new_path->set_sink(temp->get_coord());
-                        //traceback
-                        this->traceback(new_path);
-                        break;
-                    }
-                    if(neibor->get_flag()!=1) { 
-                        if(neibor->get_cost() == 0) {    //for normal point 
-                            if(f1!=1 ) {
-                                neibor->set_cost(temp->get_cost()+1);
-                            }
-                            else {
-                                neibor->set_cost(1);
-                            }
-                            neibor->set_m_d(md,2);
-                        }
-                        this->map->display_map();
-                        this->map->display_md();
-                        if (neibor->get_distance() <= min_d) {
-                             small.push_back(neibor);
-                         }//if md=distance
-                        else{
-                            others.push_back(neibor);//if the distance not min number, save it to vector
-                        }//else
-                    }//if get_flag()!=1
-                }//for
+		Node* neibor = new Node(0,0);
+
+if(f1 != 0){                
+                switch (direction){
+//---------------------------------up situation---------------------------------
+                case  0:
+                     if(y-1 >= 0&&this->map->get_node(x,y-1)->get_cost()!=-1){
+                        neibor = this->map->get_node(x,y-1);
+		     }//if 
+                    else{
+			    check = 1;
+                    }//else
+			    break;
+//---------------------------------down situation---------------------------------
+                case 2 :
+                    if(y+1 < this->map->get_height()&&this->map->get_node(x,y+1)->get_cost()!=-1){
+                        neibor = this->map->get_node(x,y+1);
+                        }//if 
+                    else{
+			    check = 1;
+                    }//else
+			    break;
+//---------------------------------left situation---------------------------------
+                case 1 :
+                     if(x-1 >= 0&&this->map->get_node(x-1,y)->get_cost()!=-1){
+                       neibor = this->map->get_node(x-1,y);
+		     }//if 
+                    else{
+			    check = 1;
+                    }//else
+			    break;
+//---------------------------------right situation---------------------------------
+                case 3:
+                     if(x+1 <this->map->get_width()&&this->map->get_node(x+1,y)->get_cost()!=-1){
+                       neibor = this->map->get_node(x+1,y);
+		     }//if 
+                    else{
+			    check = 1;
+                    }//else
+			    break;
+                }
+///////////////////////////////////////////////////////cc/////////////////////////////
+
+               if(check == 0){
+		       if(neibor->get_flag()!=1) { 
+			       if(neibor->get_cost() == -3) {
+				       flag = 1;
+				       // add a path to vector
+				       Path* new_path = new Path();
+				       PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
+				       this->map->display_md();
+				       new_path->add_segment(new_segment);
+				       new_path->set_source(neibor->get_coord());
+				       new_path->set_sink(temp->get_coord());
+				       //traceback
+				       this->traceback(new_path);
+				       break;
+			       }
+
+			       if(neibor->get_cost() == 0) {    //for normal point 
+				       if(f1!=0 ) {
+					       neibor->set_cost(temp->get_cost()+1);
+				       }
+				       else {
+					       neibor->set_cost(1);
+				       }
+				       neibor->set_m_d(md,2);
+			       }
+cout<< "this is cost"<<endl;
+			       this->map->display_map();
+cout << "this is distance"<<endl;
+			       this->map->display_md();
+			       if (neibor->get_distance() <= min_d) {
+				       small.push_back(neibor);
+			       }//if md=distance
+			       else{
+				       check = 1;
+				       others.push_back(neibor);//if the distance not min number, save it to vector
+			       }//else
+		       }//if get_flag()!=1
+	       }//check == 0
+}
+               if(check == 1 || f1 == 0){
+		       check = 0;
+		       for(int j = 0; j < temp->connections_size();j++) {                
+			       neibor = (temp->connections_at(j))->get_end(temp);
+			       if(neibor->get_flag()!=1) {
+				       //if we found sink we use traceback function to save the path   
+				       if(neibor->get_cost() == -3) {
+					       flag = 1;
+					       // add a path to vector
+					       Path* new_path = new Path();
+					       PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
+cout <<"this is distance from check = 1"<<endl;
+					       this->map->display_md();
+					       new_path->add_segment(new_segment);
+					       new_path->set_source(neibor->get_coord());
+					       new_path->set_sink(temp->get_coord());
+					       //traceback
+					       this->traceback(new_path);
+					       break;
+				       }
+
+				       if(neibor->get_cost() == 0) {    //for normal point 
+					       if(f1!=0 ) {
+						       neibor->set_cost(temp->get_cost()+1);
+					       }
+					       else {
+						       neibor->set_cost(1);
+					       }
+					       neibor->set_m_d(md,2);
+				       }
+
+cout<< "this is cost from check =1"<<endl;
+				       this->map->display_map();
+				       this->map->display_md();
+				       if (neibor->get_distance() <= min_d) {
+					       small.push_back(neibor);
+				       }//if md=distance
+				       else{
+					       others.push_back(neibor);//if the distance not min number, save it to vector
+				       }//else
+			       }//if get_flag()!=1
+		       }//for
+	       }
+                f1++;
                 if(!small.empty()) {
                     int get_pos = 0;
             	    int get_min = small.at(0)->get_distance();
@@ -109,6 +212,8 @@ void Algorithm::Korn::run() {
 
                     Node* tt = small.at(get_pos);
                     min_d = tt->get_distance();
+		    direction = this->direction(last->get_coord(),tt->get_coord());
+		    last = temp;
                     q1.push(tt);
                     small.erase ( small.begin() + get_pos );
                     for(int kkk = 0;kkk < small.size();kkk++) {
@@ -131,6 +236,8 @@ void Algorithm::Korn::run() {
                 Node* tt = others.at(get_pos);
                 others.erase ( others.begin() + get_pos );
                 min_d = tt->get_distance();
+		direction = this->direction(last->get_coord(),tt->get_coord());
+		last = temp;
                 q1.push(tt);
             }//if q1 q2 empty             
         }//while flag
