@@ -79,7 +79,6 @@ void Algorithm::Threebit::run() {
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
 //                        cout<< "!!!!!!!!!!!!!!!!NOW I FOUND THE SINK!!!!!!!!!!!!!!!!!!!!"<<endl;
-                        this->map->display_map();
                         if(ruben_trace == 1) {
                             this->traceback(new_path,ruben_trace);
                         }
@@ -90,7 +89,6 @@ void Algorithm::Threebit::run() {
                     }
                     if(neibor->get_cost() == 0) {
                         neibor->set_cost(value);
-                        map->display_map();
                         q2.push(neibor);
                     }//if
                 }//for
@@ -132,7 +130,6 @@ void Algorithm::Threebit::run() {
                     }
                     if(neibor->get_cost() == 0) {
                         neibor->set_cost(value);
-                        map->display_map();
                         q1.push(neibor);
                     }//if
                 }//for
@@ -154,16 +151,11 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
 //    cout<<"use ruben!!!!!!!!!!"<<endl;
     int direction;//0 up      1 left      2 down        3 right
     direction = this->direction(path->get_source(),path->get_sink());
-    cout <<"the direction value is 0up 1left 2down 3right    "<<direction<<endl;
     int flag = 0;
     int x,y;
     bool arg;
     while(flag!=1) {
         Node* tail = this->map->get_node(path->get_sink());
-        cout<< endl<<"the tail is "<<endl;
-        tail->display_node();
-        cout <<"the direction value is 0up 1left 2down 3right    "<<direction<<endl;
-        this->map->display_map();
         x = tail->get_x();
         y = tail->get_y();
         
@@ -212,7 +204,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                             for(int i = 0; i< tail->connections_size();i++) {
                                 Node* neibor = tail->connections_at(i)->get_end(tail);
                                 if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                    cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                     PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                     path->add_segment(new_segment);
                                     path->set_sink(neibor->get_coord());
@@ -226,7 +217,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
                             if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                 path->add_segment(new_segment);
                                 path->set_sink(neibor->get_coord());
@@ -243,7 +233,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         Node* neibor = this->map->get_node(x,y+1);
                         //if in seme direction the next node's cost is less one than sink then add it in path
                         if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                            cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                             path->add_segment(new_segment);
                             path->set_sink(neibor->get_coord());
@@ -254,7 +243,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                             for(int i = 0; i< tail->connections_size();i++) {
                                 Node* neibor = tail->connections_at(i)->get_end(tail);
                                 if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                    cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                     PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                     path->add_segment(new_segment);
                                     path->set_sink(neibor->get_coord());
@@ -268,7 +256,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
                             if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                 path->add_segment(new_segment);
                                 path->set_sink(neibor->get_coord());
@@ -286,7 +273,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         Node* neibor = this->map->get_node(x-1,y);
                         //if in seme direction the next node's cost is less one than sink then add it in path
                         if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                            cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                             path->add_segment(new_segment);
                             path->set_sink(neibor->get_coord());
@@ -297,7 +283,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                             for(int i = 0; i< tail->connections_size();i++) {
                                 Node* neibor = tail->connections_at(i)->get_end(tail);
                                 if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                    cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                     PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                     path->add_segment(new_segment);
                                     path->set_sink(neibor->get_coord());
@@ -311,7 +296,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
                             if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                 path->add_segment(new_segment);
                                 path->set_sink(neibor->get_coord());
@@ -328,7 +312,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         Node* neibor = this->map->get_node(x+1,y);
                         //if in seme direction the next node's cost is less one than sink then add it in path
                         if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                            cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                             path->add_segment(new_segment);
                             path->set_sink(neibor->get_coord());
@@ -339,7 +322,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                             for(int i = 0; i< tail->connections_size();i++) {
                                 Node* neibor = tail->connections_at(i)->get_end(tail);
                                 if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                    cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                     PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                     path->add_segment(new_segment);
                                     path->set_sink(neibor->get_coord());
@@ -353,7 +335,6 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
                         for(int i = 0; i< tail->connections_size();i++) {
                             Node* neibor = tail->connections_at(i)->get_end(tail);
                             if(neibor->get_cost()==tail->get_cost()-1 || (neibor->get_cost()==3 && tail->get_cost()==1)) {
-//                                cout<<"direction is "<<direction<<", checking tail "<<tail->get_y()<<" "<<tail->get_x()<<", checking neibor "<<neibor->get_y()<<" "<<neibor->get_x()<<endl;
                                 PathSegment* new_segment = new PathSegment(tail->get_coord(),neibor->get_coord());
                                 path->add_segment(new_segment);
                                 path->set_sink(neibor->get_coord());

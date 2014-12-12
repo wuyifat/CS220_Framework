@@ -119,11 +119,11 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
         }
         
         //check block boundary
-        if(x+b.at(blocker_num).width>=this->get_width()) {
+        if(x+b.at(blocker_num).width>this->get_width()) {
             claim("Current block is too big",kError);
             exit(0);
         }
-        if(y+b.at(blocker_num).height>=this->get_height()) {
+        if(y+b.at(blocker_num).height>this->get_height()) {
             claim("Current block is too big",kError);
             exit(0);
         }
