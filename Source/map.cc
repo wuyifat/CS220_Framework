@@ -1,3 +1,16 @@
+/* Filename: map.cc
+ * Author: Deen Ma
+ * Date: 12/12/2014
+ * Description:
+ Map::Map(): constructor. Connection and Blockers are set. In each node of the map, the connection of this node is set. The node is connected with all its neibor nodes except for block nodes.
+ Map::~Map(): destructor. We need not only delete the map itself, but delete all the nodes as well.
+ set_blocker():  Set blockers inside the map.
+ set_connection(): Read the source-sink pair from the c, which is a vector of pairs, to the map.
+ add_blocker(): This function is to treat the completed path as blocker. When we don't allow the intersection between paths, our method is just to treat the previous connected paths as blockers.
+ display_md(): return the distance = manhattan distance + the already-expanded distance
+ display_manhattan(): return the manhattan distance
+ */
+
 #include "../Headers/map.h"
 #include "../Headers/edge.h"
 #include "../Headers/claim.h"
@@ -104,6 +117,13 @@ void Utilities::Map::remove_path(int i) {
 }
 
 void Utilities::Map::set_blocker(vector<Blocker> b) {
+/*
+ Set blockers inside the map. 
+ input: the vector of blockers
+ output: the value of get_cost and is_visited of those blocked nodes are set to -1.
+ We not only set the property of blocked nodes, but also checked whether the block is out-of-bound, and whether two blocks overlaps (In our program, it will return an error).
+ When we add a block, we remove some connections (for example, the connection between a normal node and a blocked node).
+ */
     int x,y;    //blocker location
     for ( int blocker_num = 0; blocker_num < b.size(); blocker_num++) {
         x = b.at(blocker_num).location.x;
@@ -173,6 +193,12 @@ void Utilities::Map::display_size() {
 }
 
 void Utilities::Map::set_connection(vector<Connection> c) {
+/*
+ Read the source-sink pair from the c, which is a vector of pairs, to the map.
+ input: the vector of source-sink pairs
+ output: the value of get_cost of source and sink nodes are set to -2 and -3, respectively.
+ We firstly check whether the source or sink nodes are legal, then check whether source or sink are at the boundary of the map. We firstly add those pairs with neither source nor sink on the boundary, then add those pairs with source or sink on the boundary. The reason we do this is to try our best to avoid path intersections.
+ */
     int source_x, source_y, sink_x, sink_y;
     for(int connection_num = 0; connection_num < c.size(); connection_num++) {
         source_x = c.at(connection_num).source.x;
@@ -251,6 +277,7 @@ void Utilities::Map::display_detour() {
 }
 
 void Utilities::Map::display_md() {
+/* this function is to return the distance = manhattan distance + the already-expanded distance*/
     for(int i = 0; i< this->get_height();i++) {
         cout << endl;
         for(int j = 0; j < this->get_width();j++) {
@@ -271,6 +298,7 @@ void Utilities::Map::display_flag() {
 }
 
 void Utilities::Map::display_manhattan() {
+/* this function is to return the manhattan distance*/
     for(int i = 0; i< this->get_height();i++) {
         cout << endl;
         for(int j = 0; j < this->get_width();j++) {
@@ -281,6 +309,10 @@ void Utilities::Map::display_manhattan() {
 }
 
 void Utilities::Map::add_blocker(Path* path) {
+/* This function is to treat the completed path as blocker. When we don't allow the intersection between paths, our method is just to treat the previous connected paths as blockers. 
+ input: path
+ output: the costs of the nodes on this path are set to -1, that means these nodes are now treated as blocked nodes.
+*/
     int x = path->get_sink().x; 
     int y = path->get_sink().y;
     this->map.at(y).at(x)->set_cost(-1);

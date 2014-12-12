@@ -1,3 +1,21 @@
+/* Filename: threebit.h
+ * Author: Deen Ma
+ * Date: 12/12/2014
+ * Description:
+data: 
+ number: the number of pairs of source and sink
+ ruben-trace: whether we choose minimum turn or not. 1 is min-turn and 0 is not
+ cross: whether we allow cross among paths or not. 1 allows while 0 not allow
+ path: the output of the function. it contains a vector of paths.
+ connection: the input of the function, the source-sink pairs information included
+methods:
+ run(): the complete step for bidirection, from the expansion of source and sink, and the trackback.
+ traceback(Path* path): this is the trackback when we do NOT consider min-turn.
+ traceback(Path* path, int i): this is the trackback when we CONSIDER min-turn.
+ min_node(): return the surrounding node with the minimal cost value.
+ direction(): return the direction of two nodes. 0 up, 1 left, 2 down, 3 right
+ */
+
 #ifndef _THREEBIT_BASE_H_
 #define _THREEBIT_BASE_H_
 
@@ -38,13 +56,13 @@ namespace Algorithm{
         bool set_min_turn();
         bool set_cross();
         void run();
-        void traceback(Path* path);
-        void traceback(Path* path,int i) ;
+        void traceback(Path* path); // not min-turn
+        void traceback(Path* path,int i) ; // min-turn
         Map* get_map();
         vector<Path*> get_paths();
         vector<Connection> get_connection();
-        Node* min_node(vector<Node*> others);
-        int direction(Point source,Point sink);
+        Node* min_node(vector<Node*> others); //return the surrounding node with the minimal cost value.
+        int direction(Point source,Point sink); // return the direction of two nodes. 0 up, 1 left, 2 down, 3 right.
     };
 }
 #endif

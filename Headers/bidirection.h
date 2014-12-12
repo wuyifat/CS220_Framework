@@ -1,3 +1,18 @@
+/* Filename: bidirection.h
+* Author: Deen Ma
+* Date: 12/12/2014
+* Description:
+Note that minimum turn and whether allowing cross are disabled in this function
+data:
+ path: the output of the function. it contains a vector of paths. 
+ connection: the input of the function, the source-sink pairs information included
+ meetPointsSource: a vector of points when source expansion meet sink expansion
+ meetPointsSink: a vector of points when sink expansion meet source expansion
+methods:
+ run(): the complete step for bidirection, from the expansion of source and sink, and the trackback.
+ traceback(): the traceback process, included in run().
+*/
+
 #ifndef _BIDIRECTION_BASE_H_
 #define _BIDIRECTION_BASE_H_
 
@@ -25,8 +40,8 @@ namespace Algorithm{
     private:
         Map* map;
         int number; //number of source = number of sink = number of path
-        vector<Path*> paths;
-        vector<Connection> connection;
+        vector<Path*> paths; // output
+        vector<Connection> connection; // input, source-sink pair information included
         vector<Node*> source;
         vector<Node*> sink;
         vector<Node*> meetPointsSource; // the point when source expansion meet sink expansion

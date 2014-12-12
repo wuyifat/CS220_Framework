@@ -1,3 +1,12 @@
+/* Filename: bidirection.h
+ * Author: Deen Ma
+ * Date: 12/12/2014
+ * Description:
+ Note that minimum turn and whether allowing cross are disabled in this function
+ run(): is to run the whole program. The general steps includes initialization, expansion, termination. See function comments for details
+ traceback(): For either expansion, we retrieve the path back to the original point (source or sink). See function comments for details.
+ */
+
 #include "../Headers/bidirection.h"
 #include <iostream>
 
@@ -38,6 +47,16 @@ Algorithm::Bidirection::~Bidirection() {
 }
 
 void Algorithm::Bidirection::run() {
+/*
+ input: source-sink pair and block information included in the map.
+ output: vector of paths.
+ steps:
+ 1. Initialization of costs and is_visited.
+    At our program, source has a cost of -2, sink -3, block nodes -1, unvisited nodes 0.
+    At our program, source has a is_visited of 1, sink 2, block -1, unvisited nodes 0.
+ 2. For expansion of source and sink: we set two queues as data structure to store the expanded nodes. Just like the black and white pixels on a grid. The adjacent nodes have different color. When we expand the white nodes in the first iteration, we have to expand black nodes in the second expansion. q1 and q2 represents the black and white pixels.
+ 3. The end criteria is neibor.is_visited==2 in source expansion, or neibor.is_visited==1 in sink expansion. Since all the nodes in the source expansion have the is_visited value of 1, when a neibor of one node inside source expansion has a is_visited value of 2, it means this neibor node is expanded into sink expansion. Therefore two expansion meets and program completes.
+ */
     for(int curConnection = 0; curConnection<number; curConnection++) {
         // if it is not the first time to do the algorithm, we need to initialize the costs of all nodes in the map
         if(curConnection != 0) {
@@ -216,7 +235,13 @@ void Algorithm::Bidirection::run() {
 }
 
 void Algorithm::Bidirection::traceback(int curConnection) {
-    // trace back the path from meetPointsSource to Source, known isVisited matrix and map matrix
+/*For either expansion, we retrieve the path back to the original point (source or sink).
+ output: a path
+ input: a meet point and the original point.
+ steps:
+ 1. Back tracing: Find the neibor node, with the same is_visited value and with cost one less than current node. After finding it, create a path segment to store this pair
+ 2. Stop criteria: when the cost is -2 (source) or -3 (sink).
+*/
     bool flag=false;
     
     Node* curNode = this->meetPointsSource.at(curConnection);

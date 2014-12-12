@@ -1,3 +1,14 @@
+/* Filename: threebit.cc
+ * Author: Deen Ma
+ * Date: 12/12/2014
+ * Description:
+ run(): is to run the whole program. The general steps includes initialization, expansion, termination. See function comments for details
+ traceback(Path* path): Retrieve the path back to the original point (source or sink). See function comments for details when we don't consider the min-turn.
+ traceback(Path* path, int i): Retrieve the path back to the original point (source or sink). See function comments for details when we  consider the min-turn.
+ min_node(): return the surrounding node with the minimal cost value.
+ direction(): return the direction of two nodes. 0 up, 1 left, 2 down, 3 right
+ */
+
 #include "../Headers/threebit.h"
 #include <iostream>
 using std::cout;
@@ -27,7 +38,15 @@ Algorithm::Threebit::Threebit(Map* m) {
 
 
 void Algorithm::Threebit::run() {
-
+    /*
+     input: source-sink pair and block information included in the map.
+     output: vector of paths.
+     steps:
+     1. Initialization of costs.
+     At our program, source has a cost of -2, sink -3, block nodes -1, unvisited nodes 0.
+     2. For expansion of source and sink: we set two queues as data structure to store the expanded nodes. Just like the black and white pixels on a grid. The adjacent nodes have different color. When we expand the white nodes in the first iteration, we have to expand black nodes in the second expansion. q1 and q2 represents the black and white pixels.
+     3. The end criteria is when we find neibor.cost==-3, which means we find the sink.
+     */
     // iterate through the source-sink list
     for(int i = 0;i <this->number;i++) {
         // before searching each pair of source-sink, reset the map's cost=0 except for the blockers
@@ -148,6 +167,16 @@ Map* Algorithm::Threebit::get_map() {
 }
 
 void Algorithm::Threebit::traceback(Path* path,int i) {
+    /* Retrieve the path back to the original point (source or sink) considering the minimum turn.
+     output: a path
+     input: source-sink pair.
+     steps:
+     1. We find the direction of the first path segment (sink and a node neibor to sink)
+     2. Try to move on this direction as long as possible, unless we cannot move further (several factors can lead to this: 1. The cost in this direction no longer decrease, 2. hit the block or the bound of the map)
+     3. Switch direction when we have to. (See the factors described on 2)
+     4. Repeat 2 and 3 until find source.
+     */
+    
 //    cout<<"use ruben!!!!!!!!!!"<<endl;
     int direction;//0 up      1 left      2 down        3 right
     direction = this->direction(path->get_source(),path->get_sink());
@@ -354,6 +383,14 @@ void Algorithm::Threebit::traceback(Path* path,int i) {
 
 
 void Algorithm::Threebit::traceback(Path* path) {
+    /* Retrieve the path back to the original point (source or sink) without considering the minimum turn.
+     output: a path
+     input: source-sink pair.
+     steps:
+     1. Back tracing: Find the neibor node, with the same is_visited value and with cost one less than current node. After finding it, create a path segment to store this pair
+     2. Stop criteria: when finding the source (cost -2).
+   */
+
 //    cout<<"use reguler way"<<endl;
     int flag = 0;
     while(flag!=1) {
@@ -394,6 +431,8 @@ vector<Connection> Algorithm::Threebit::get_connection() {
 
 
 int Algorithm::Threebit::direction(Point source,Point sink) {
+    /* direction(): return the direction of two nodes. 0 up, 1 left, 2 down, 3 right
+  */
     int direction;//0 up      1 left      2 down        3 right
     if (sink.x == source.x) {
         if (sink.y > source.y) {
@@ -417,6 +456,9 @@ int Algorithm::Threebit::direction(Point source,Point sink) {
 
 
 Node* Algorithm::Threebit::min_node(vector<Node*> others) {
+/*
+ min_node(): return the surrounding node with the minimal cost value.
+ */
     int get_pos = 0;
     int get_min = others.at(0)->get_distance();
     for(int i = 0;i < others.size();i++) {
