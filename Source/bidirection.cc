@@ -25,12 +25,12 @@ Algorithm::Bidirection::Bidirection(Map *m) {
         }//for x
     }//for y
     // debug function: check whether isVisited function is correct
-    for(int y = 0; y < map->get_height(); y++) {
+/*    for(int y = 0; y < map->get_height(); y++) {
         for(int x = 0; x < map->get_width(); x++) {
             cout<<map->get_node(x,y)->get_is_visited()<<"\t";
         }//for x
         cout<<endl;
-    }//for y
+    }//for y*/
 }
 
 Algorithm::Bidirection::~Bidirection() {
@@ -58,9 +58,9 @@ void Algorithm::Bidirection::run() {
         map->get_node(sink.at(curConnection)->get_x(), sink.at(curConnection)->get_y())->set_is_visited(2);
         
         // use a flag to determine whether source and sink expansion meets. If yes then flag==true, vice versa.
-        bool flag = false; 
+        bool flag = false;
         
-        // everything here is same to the corresponding part of lee.cc, the only difference is that I copied all 
+        // everything here is same to the corresponding part of lee.cc, the only difference is that I copied all
         //temporary parameters into two parts. One is for source expansion and another one is for sink expansion
         int valueSource = 0;
         int valueSink = 0;
@@ -74,13 +74,13 @@ void Algorithm::Bidirection::run() {
         // Source expansion using q1
         q1Source.push(source.at(curConnection));
         q1Sink.push(sink.at(curConnection));
-
+        
         while(flag != true) {
             int f1Source=0;
             int f1Sink=0;
             int f2Source=0;
             int f2Sink=0;
-            map->display_map();
+//            map->display_map();
             
             while(!q1Source.empty()) { // Source black box first
                 if(flag == true) { // if source and sink expansions meet
@@ -97,7 +97,7 @@ void Algorithm::Bidirection::run() {
                 for(int j = 0; j<tempSource->connections_size(); j++) {
                     Node* neiborSource = tempSource->connections_at(j)->get_end(tempSource);
                     // if this node is visited by sink expansion
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) { 
+                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) {
                         flag = true;
                         this->meetPointsSource.push_back(tempSource);
                         this->meetPointsSink.push_back(neiborSource);
@@ -105,14 +105,14 @@ void Algorithm::Bidirection::run() {
                     } // trace back will be done later
                     // visited by source expansion, therefore set as 1
                     if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1); 
+                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1);
                         map->get_node(neiborSource->get_coord())->set_cost(valueSource);
-
+                        
                         q2Source.push(neiborSource);
                     } //if
                 } // for
             } // whileq1Source
-            map->display_map();
+//            map->display_map();
             
             while(!q1Sink.empty()) { // Sink black box second
                 if(flag == true) { // if source and sink expansions meet
@@ -129,7 +129,7 @@ void Algorithm::Bidirection::run() {
                 for(int j = 0; j<tempSink->connections_size(); j++) {
                     Node* neiborSink = tempSink->connections_at(j)->get_end(tempSink);
                     // if this node is visited by source expansion
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) { 
+                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) {
                         flag = true;
                         this->meetPointsSink.push_back(tempSink);
                         this->meetPointsSource.push_back(neiborSink);
@@ -137,14 +137,14 @@ void Algorithm::Bidirection::run() {
                     } // trace back will be done later
                     // visited by sink expansion, therefore set as 2
                     if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2); 
+                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2);
                         map->get_node(neiborSink->get_coord())->set_cost(valueSink);
-//                        map->display_map();
+                        //                        map->display_map();
                         q2Sink.push(neiborSink);
                     } //if
                 } // for
             } // whileq1Sink
-            map->display_map();
+//            map->display_map();
             
             while(!q2Source.empty()) { // Source white box third
                 if(flag == true) { // if source and sink expansions meet
@@ -161,7 +161,7 @@ void Algorithm::Bidirection::run() {
                 for(int j = 0; j<tempSource->connections_size(); j++) {
                     Node* neiborSource = tempSource->connections_at(j)->get_end(tempSource);
                     // if this node is visited by sink expansion
-                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) { 
+                    if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 2) {
                         flag = true;
                         this->meetPointsSource.push_back(tempSource);
                         this->meetPointsSink.push_back(neiborSource);
@@ -169,14 +169,14 @@ void Algorithm::Bidirection::run() {
                     } // trace back will be done later
                     // visited by source expansion, therefore set as 1
                     if(map->get_node(neiborSource->get_x(),neiborSource->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1); 
-
+                        map->get_node(neiborSource->get_x(),neiborSource->get_y())->set_is_visited(1);
+                        
                         map->get_node(neiborSource->get_coord())->set_cost(valueSource);
                         q1Source.push(neiborSource);
                     } //if
                 } // for
             } // whileq2Source
-            map->display_map();
+//            map->display_map();
             
             while(!q2Sink.empty()) { // Sink white box fourth
                 if(flag == true) { // if source and sink expansions meet
@@ -193,7 +193,7 @@ void Algorithm::Bidirection::run() {
                 for(int j = 0; j<tempSink->connections_size(); j++) {
                     Node* neiborSink = tempSink->connections_at(j)->get_end(tempSink);
                     // if this node is visited by source expansion
-                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) { 
+                    if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 1) {
                         flag = true;
                         this->meetPointsSink.push_back(tempSink);
                         this->meetPointsSource.push_back(neiborSink);
@@ -201,15 +201,16 @@ void Algorithm::Bidirection::run() {
                     } // trace back will be done later
                     // visited by sink expansion, therefore set as 2
                     if(map->get_node(neiborSink->get_x(),neiborSink->get_y())->get_is_visited() == 0) {
-                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2); 
-
+                        map->get_node(neiborSink->get_x(),neiborSink->get_y())->set_is_visited(2);
+                        
                         map->get_node(neiborSink->get_coord())->set_cost(valueSink);
                         q1Sink.push(neiborSink);
                     } //if
                 } // for
             } // whileq2Sink
-            map->display_map();
+//            map->display_map();
         }//whileq2sink
+        map->display_map();
         traceback(curConnection);
     }//forconnection
 }
@@ -217,12 +218,6 @@ void Algorithm::Bidirection::run() {
 void Algorithm::Bidirection::traceback(int curConnection) {
     // trace back the path from meetPointsSource to Source, known isVisited matrix and map matrix
     bool flag=false;
-
-    cout<<this->source.at(curConnection)->get_y()<<this->source.at(curConnection)->get_x()<<
-    this->source.at(curConnection)->get_cost()<<this->source.at(curConnection)->get_is_visited()<<endl;
-
-    cout<<this->sink.at(curConnection)->get_y()<<this->sink.at(curConnection)->get_x()<<
-    this->sink.at(curConnection)->get_cost()<<this->sink.at(curConnection)->get_is_visited()<<endl;
     
     Node* curNode = this->meetPointsSource.at(curConnection);
     Node* nxtNode = 0;
@@ -233,14 +228,14 @@ void Algorithm::Bidirection::traceback(int curConnection) {
             // find the adjacent node
             nxtNode = curNode->connections_at(i) -> get_end(curNode);
             // visited by source, and less distance to the source
-
+            
             if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_is_visited() == 1 &&
-            ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -2))) {
+               ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -2))) {
                 PathSegment* new_segment = new PathSegment(curNode->get_coord(),nxtNode->get_coord());
                 newPathSource->add_segment(new_segment);
-                cout<<"Current source path: \n";
-                newPathSource->display_path();
-                cout<<"\n";
+//                cout<<"Current source path: \n";
+//                newPathSource->display_path();
+//                cout<<"\n";
                 curNode = nxtNode;
                 if(curNode->get_cost() ==-2) {
                     break;
@@ -260,12 +255,12 @@ void Algorithm::Bidirection::traceback(int curConnection) {
             nxtNode = curNode->connections_at(i) -> get_end(curNode);
             // visited by source, and less distance to the source
             if(map->get_node(nxtNode->get_x(),nxtNode->get_y())->get_is_visited() == 2 &&
-            ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -3))) {
+               ((nxtNode->get_cost() == curNode ->get_cost()-1) || (nxtNode->get_cost() == -3))) {
                 PathSegment* new_segment = new PathSegment(curNode->get_coord(),nxtNode->get_coord());
                 newPathSink->add_segment(new_segment);
-                cout<<"Current sink path: \n";
-                newPathSink->display_path();
-                cout<<"\n";
+//                cout<<"Current sink path: \n";
+//                newPathSink->display_path();
+//                cout<<"\n";
                 curNode = nxtNode;
                 if(curNode->get_cost() ==-3) {
                     break;
@@ -273,8 +268,8 @@ void Algorithm::Bidirection::traceback(int curConnection) {
             } //if
         } //for
     } // while
-
-    // concatenate them, note that the sequence of sink expansion should be reversed    
+    
+    // concatenate them, note that the sequence of sink expansion should be reversed
     Path* newPath = new Path();
     for(int i = newPathSink->get_length()-1; i>-1; i--) {
         newPathSink->at(i)->reverse();
@@ -282,18 +277,22 @@ void Algorithm::Bidirection::traceback(int curConnection) {
     }
     
     PathSegment* conc = new PathSegment(meetPointsSink.at(curConnection)->
-    get_coord(),meetPointsSource.at(curConnection)->get_coord());
+                                        get_coord(),meetPointsSource.at(curConnection)->get_coord());
     newPath->add_segment(conc);
-
+    
     for(int i = 0; i<newPathSource->get_length(); i++) {
         newPath->add_segment(newPathSource->at(i));
     }
     this->paths.push_back(newPath);
-        
-    cout<<"Path "<<curConnection+1<<": ";
-    newPath->display_path();
-    delete newPathSource;
-    delete newPathSink;
+    
+//    cout<<"Path "<<curConnection+1<<": ";
+//    newPath->display_path();
+/*    while(!newPathSource->empty()) {
+        newPathSource->remove_segment(0);
+    }
+    while(!newPathSink->empty()) {
+        newPathSink->remove_segment(0);
+    }*/
 }
 
 vector<Path*> Algorithm::Bidirection::get_paths() {
