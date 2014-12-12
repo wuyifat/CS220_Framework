@@ -63,6 +63,7 @@ void Algorithm::Korn::run() {
         int direction;
         int x = 0;
         int y = 0;
+        int check = 0;
 //        int debug = 0;
         //the basic idea of this algorithm is use 2 queue to set the cost
         stack<Node*> q1;
