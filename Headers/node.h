@@ -1,3 +1,8 @@
+/*Filename:<node.h>
+*Author:Shuheng Li
+*Date:12/12/2014
+*Description:Add some funciont in this class
+*/
 #ifndef _NODE_BASE_H_
 #define _NODE_BASE_H_
 
@@ -19,10 +24,10 @@ namespace Utilities {
             int cost;
 	    int is_visited; // This is used mainly in bidirection: -1: block; 0: not visited yet; 1: visited by source
                             // expansion; 2: visited by sink expansion.
-            double distance;
-            double m_d;
-            int flag;
-            int detour;
+            double distance;//distance = manhantan distance + cost
+            double m_d;//manhatan distance
+            int flag;//same as is visited
+            int detour;//detour use for hadlock
             /* Private Mutators */
             void add_connection_mirrored(Edge*);
             void updata_d();
@@ -60,9 +65,9 @@ namespace Utilities {
             void remove_connection(Edge* connection);
             void display_node();
             void display_edges();
-            void remove_m_connection(Node* node);
-            void set_m_d(Point sink,double i);
-            void set_m_d(double i);
+            void remove_m_connection(Node* node);//if I remove Node A connnectionto Node B, then I need to remove Node B connection of Node A
+            void set_m_d(Point sink,double i);//Set manhattan distance 
+            void set_m_d(double i);//set Manhattan distance
     };
 }
 

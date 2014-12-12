@@ -1,3 +1,8 @@
+/*Filename:<korn.h>
+*Author:Shuheng Li
+*Date:12/12/2014
+*Description:Achieve Korn algorithm in grid routing
+*/
 #ifndef _KORN_BASE_H_
 #define _KORN_BASE_H_
 
@@ -25,7 +30,7 @@ namespace Algorithm {
         private:
             Map* map;
             int number;    //number of source = number of sink = number of path
-            int cross;    //number of source = number of sink = number of path
+            int cross;    //set allow cross or not
             double alpha;    // the overpull number of Korn's cost
             vector<Path*> paths;
             vector<Connection> connection;
@@ -39,7 +44,7 @@ namespace Algorithm {
 
             void run();
             void traceback(Path* path);
-            bool set_alpha();
+            bool set_alpha();//set overpull number
             bool set_cross();
             double get_alpha();
             int direction(Point source,Point sink);

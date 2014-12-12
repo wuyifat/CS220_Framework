@@ -1,3 +1,8 @@
+/*Filename:<ruben.h>
+*Author:Shuehng Li
+*Date:12/12/2014
+*Description:Achieved Ruben Algorithm in grid routing
+*/
 #ifndef _RUBEN_BASE_H_
 #define _RUBEN_BASE_H_
 
