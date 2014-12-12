@@ -23,6 +23,8 @@ Utilities::Map::Map(ProblemObject* problem) {
         }
         this->map.push_back(current_row);
     }
+    this->set_blocker(problem->get_blockers());//set blockers
+    this->set_connection(problem->get_connections());//set connetions
 }
 
 //Destructs the grid by deleting each node individually, the node destructors will delete their own set of edges
@@ -157,7 +159,43 @@ void Utilities::Map::display_size() {
 }
 
 void Utilities::Map::set_connection(vector<Connection> c) {
-    this->connection = c;
+    vector<bool> c_bound(c.size());
+    for(int i=0; i<c.size(); i++) {
+        if(this->get_node(c.at(i).source)->get_y()==0 ||
+           this->get_node(c.at(i).source)->get_x()==0 ||
+           this->get_node(c.at(i).source)->get_y()==get_height()-1 ||
+           this->get_node(c.at(i).source)->get_x()==get_width()-1 ||
+           this->get_node(c.at(i).sink)->get_y()==0 ||
+           this->get_node(c.at(i).sink)->get_x()==0 ||
+           this->get_node(c.at(i).sink)->get_y()==get_height()-1 ||
+           this->get_node(c.at(i).sink)->get_x()==get_width()-1) {
+            c_bound.at(i)=true;
+        }
+        else {
+            c_bound.at(i)=false;
+        }
+    }
+    // reorder
+    for(int i = 0; i < c.size(); i++) {
+        if(c_bound.at(i)==false) {
+            connection.push_back(c.at(i));
+        }
+    }
+    for(int i = 0; i < c.size(); i++) {
+        if(c_bound.at(i)==true) {
+            connection.push_back(c.at(i));
+        }
+    }
+    for(int i = 0; i < connection.size(); i++) {
+        if(this->get_node(connection.at(i).source)->get_cost()==-1) {
+            claim("The source of current path is inside the block, program exits", kError);
+            exit(0);
+        }
+        if(this->get_node(connection.at(i).sink)->get_cost()==-1) {
+            claim("The sink of current path is inside the block, program exits", kError);
+            exit(0);
+        }
+    }
 }
 
 vector<Connection> Utilities::Map::get_connection() {

@@ -29,21 +29,19 @@ int main(int argc,char* argv[]) {
     cout << "Mapping the input file..."<<endl;
     cout << "Mapping Blockers, source and sinks file..."<<endl<<endl;
 //------------------Set the blockers and connection----------------
-    m.set_blocker(first_problem->get_blockers());//set blockers
-    m.set_connection(first_problem->get_connections());//set connetions
     Map* mm = &m;
     mm->display_map();
     cout << "Finished Mapping, Starting ";
 
 //------------------Run different algorithm-----------------------
 
-//    cout << "Lee Algorithm." <<endl<<endl; Algorithm::Lee l(mm);
+    cout << "Lee Algorithm." <<endl<<endl; Algorithm::Lee l(mm);
 //    cout << "threebit Algorithm." <<endl<<endl; Algorithm::Threebit l(mm);  
 //    cout << "twobit Algorithm." <<endl<<endl; Algorithm::Twobit l(mm);  
 //    cout << "Ruben Algorithm." <<endl<<endl; Algorithm::Ruben l(mm);  
 //    cout << "Hadlock Algorithm." <<endl<<endl; Algorithm::Hadlock l(mm);  
 //    cout << "Korn Algorithm." <<endl<<endl; Algorithm::Korn l(mm);  
-    cout << "bidirection Algorithm." <<endl<<endl; Algorithm::Bidirection l(mm);         
+//    cout << "bidirection Algorithm." <<endl<<endl; Algorithm::Bidirection l(mm);
 
       l.run();
 //------------------------display path--------------------------
