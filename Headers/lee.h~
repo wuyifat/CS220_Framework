@@ -1,5 +1,5 @@
-#ifndef _RUBEN_BASE_H_
-#define _RUBEN_BASE_H_
+#ifndef _LEE_BASE_H_
+#define _LEE_BASE_H_
 
 #include "edge.h"
 #include "node.h"
@@ -20,30 +20,31 @@ using Utilities::Node;
 using Utilities::Path;
 using Utilities::Map;
 
-namespace Algorithm {
-    class Ruben {
+namespace Algorithm{
+    class Lee{
         private:
             Map* map;
             int number; //number of source = number of sink = number of path
-            int cross; //number of source = number of sink = number of path
+	    int ruben_trace;//if this value = 1,use ruben trace back
+	    int cross;//if cross = 1, source and sink can unlimit cross if 0 they can't 
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        
-            vector<Node*> sink;
-            
-            void reset_map();        
+            vector<Node*> sink;        
         public:
-            Ruben(Map* m);
-          //  ~Ruben();
+            Lee(Map* m);
+          //  ~Lee();
 
+	    void set_ruben_trace(int i);
+            bool set_cross();
             void run();
             void traceback(Path* path);
-            bool set_cross();
-            int direction(Point source,Point sink);
+            void traceback(Path* path,int i) ;
             Map* get_map();
             vector<Path*> get_paths();
 	    vector<Connection> get_connection();
-            Node* min_node(vector<Node*> others);
+	    Node* min_node(vector<Node*> others);
+	    int direction(Point source,Point sink);
     };
 }
 #endif

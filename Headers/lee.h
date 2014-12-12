@@ -35,9 +35,8 @@ namespace Algorithm{
             Lee(Map* m);
           //  ~Lee();
 
-
-	    void set_ruben_trace(int i);
-	    void set_cross(int i);
+            bool set_min_turn();
+            bool set_cross();
             void run();
             void traceback(Path* path);
             void traceback(Path* path,int i) ;

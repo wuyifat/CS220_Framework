@@ -1,50 +1,43 @@
-#ifndef _THREEBIT_BASE_H_
-#define _THREEBIT_BASE_H_
+#ifndef _BIDIRECTION_BASE_H_
+#define _BIDIRECTION_BASE_H_
 
 #include "edge.h"
 #include "node.h"
 #include "path.h"
 #include "map.h"
 #include "problem_object.h"
+#include "point.h"
 #include <queue>
 #include <vector>
 #include <iostream>
 
 using std::vector;
-using std::cerr;
+using std::cout;
 using std::endl;
-
-
 using std::queue;
+
 using Utilities::Node;
 using Utilities::Path;
 using Utilities::Map;
 
 namespace Algorithm{
-    class Threebit{
+    class Bidirection{
     private:
         Map* map;
         int number; //number of source = number of sink = number of path
-        int ruben_trace;//if this value = 1,use ruben trace back
-        int cross;//if cross = 1, source and sink can unlimit cross if 0 they can't
         vector<Path*> paths;
         vector<Connection> connection;
         vector<Node*> source;
         vector<Node*> sink;
+        vector<Node*> meetPointsSource; // the point when source expansion meet sink expansion
+        vector<Node*> meetPointsSink; // the point when source expansion meet sink expansion
     public:
-        Threebit(Map* m);
-        //  ~Threebit();        
-        
-        bool set_min_turn();
-        bool set_cross();
+        Bidirection(Map* m);
+        ~Bidirection();
         void run();
-        void traceback(Path* path);
-        void traceback(Path* path,int i) ;
-        Map* get_map();
+        void traceback(int curConnection);
         vector<Path*> get_paths();
-        vector<Connection> get_connection();
-        Node* min_node(vector<Node*> others);
-        int direction(Point source,Point sink);
+        //        void display();
     };
 }
 #endif

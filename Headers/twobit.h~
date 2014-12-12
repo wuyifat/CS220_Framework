@@ -1,5 +1,5 @@
-#ifndef _THREEBIT_BASE_H_
-#define _THREEBIT_BASE_H_
+#ifndef _TWOBIT_BASE_H_
+#define _TWOBIT_BASE_H_
 
 #include "edge.h"
 #include "node.h"
@@ -21,7 +21,7 @@ using Utilities::Path;
 using Utilities::Map;
 
 namespace Algorithm{
-    class Threebit{
+    class Twobit{
     private:
         Map* map;
         int number; //number of source = number of sink = number of path
@@ -32,14 +32,15 @@ namespace Algorithm{
         vector<Node*> source;
         vector<Node*> sink;
     public:
-        Threebit(Map* m);
-        //  ~Threebit();        
-        
+        Twobit(Map* m);
+        //  ~Twobit();
+                
         bool set_min_turn();
         bool set_cross();
+        bool set_min_turn();
         void run();
-        void traceback(Path* path);
-        void traceback(Path* path,int i) ;
+        void traceback(int fl,Path* path);
+        void traceback(int fl,Path* path,int i) ;
         Map* get_map();
         vector<Path*> get_paths();
         vector<Connection> get_connection();
