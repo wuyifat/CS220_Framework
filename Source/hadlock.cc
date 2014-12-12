@@ -301,7 +301,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
             q1.pop();
             tail->set_flag(2);
             need = 0;
-            cout<< endl;
             //if we found the last point flag = 1
             for(int i = 0; i< tail->connections_size();i++) {
                 Node* neibor = tail->connections_at(i)->get_end(tail);

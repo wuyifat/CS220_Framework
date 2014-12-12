@@ -1,3 +1,9 @@
+/* Filename: main.cc
+ * Author: Yi Wu, Shuheng Li, Deen Ma
+ * Date: 12/12/2014
+ * Description: our group members:
+ */
+
 #include "../Headers/map.h"
 #include "../Headers/edge.h"
 #include "../Headers/problem_object.h"
@@ -35,17 +41,16 @@ int main(int argc,char* argv[]) {
 
 //------------------Run different algorithm-----------------------
 
-//    cout << "Lee Algorithm." <<endl<<endl; Algorithm::Lee l(mm);
-//    cout << "threebit Algorithm." <<endl<<endl; Algorithm::Threebit l(mm);  
-//    cout << "twobit Algorithm." <<endl<<endl; Algorithm::Twobit l(mm);  
-//    cout << "Ruben Algorithm." <<endl<<endl; Algorithm::Ruben l(mm);  
-//    cout << "Hadlock Algorithm." <<endl<<endl; Algorithm::Hadlock l(mm);  
-//    cout << "Korn Algorithm." <<endl<<endl; Algorithm::Korn l(mm);  
-    cout << "bidirection Algorithm." <<endl<<endl; Algorithm::Bidirection l(mm);
+    cout << "Lee Algorithm." <<endl<<endl; Algorithm::Lee l(mm);
+//    cout << "threebit Algorithm." <<endl<<endl; Algorithm::Threebit l(mm);
+//    cout << "twobit Algorithm." <<endl<<endl; Algorithm::Twobit l(mm);
+//    cout << "Ruben Algorithm." <<endl<<endl; Algorithm::Ruben l(mm);
+//    cout << "Hadlock Algorithm." <<endl<<endl; Algorithm::Hadlock l(mm);
+//    cout << "Korn Algorithm." <<endl<<endl; Algorithm::Korn l(mm);
+//    cout << "bidirection Algorithm." <<endl<<endl; Algorithm::Bidirection l(mm);
 
       l.run();
 //------------------------display path--------------------------
- //mm->display_map(); cin.get();
     vector<Path*> p = l.get_paths();
     for (unsigned i = 0;i < p.size();i++) {
         cout << "\tPath " << i+1 << " of " << p.size() << ":" << endl;
@@ -53,6 +58,5 @@ int main(int argc,char* argv[]) {
     }
 
     cout << " Finished" <<endl<<endl<<endl; 
-    delete first_problem;
     return 0;
 }
