@@ -110,18 +110,32 @@ void Utilities::Map::set_blocker(vector<Blocker> b) {
         y = b.at(blocker_num).location.y;
 
         //check x boundary   
-        if(x < 0 && x > this->get_width()) {
-            claim( "x coord is not valid",kError); 
+        if(x < 0 || x > this->get_width()) {
+            claim( "blocker x coord is not valid",kError);
         }
         //check y boundary 
-        if( y < 0 && y > this->get_height()) {
-            claim( "y coord is not valid",kError);
+        if( y < 0 || y > this->get_height()) {
+            claim( "blocker y coord is not valid",kError);
         }
+        
+        //check block boundary
+        if(x+b.at(blocker_num).width>=this->get_width()) {
+            claim("Current block is too big",kError);
+            exit(0);
+        }
+        if(y+b.at(blocker_num).height>=this->get_height()) {
+            claim("Current block is too big",kError);
+            exit(0);
+        }
+
 
         // set each element in a blocker cost = -1 and delete its connections with adjacent cells
         for( int i = 0; i < b.at(blocker_num).height;i++ ) {
             x = b.at(blocker_num).location.x;
             for( int j = 0; j < b.at(blocker_num).width;j++ ) {
+                if(this->map.at(y).at(x)->get_cost()==-1) {
+                    claim("The block overlaps",kError);
+                }
                 this->map.at(y).at(x)->set_cost(-1);
                 while(this->map.at(y).at(x)->connections_empty() != 1) {
                     this->map.at(y).at(x)->connections_at(0)->get_end(this->map.at(y).at(x))->
@@ -159,6 +173,30 @@ void Utilities::Map::display_size() {
 }
 
 void Utilities::Map::set_connection(vector<Connection> c) {
+    int source_x, source_y, sink_x, sink_y;
+    for(int connection_num = 0; connection_num < c.size(); connection_num++) {
+        source_x = c.at(connection_num).source.x;
+        source_y = c.at(connection_num).source.y;
+        sink_x = c.at(connection_num).sink.x;
+        sink_y = c.at(connection_num).sink.y;
+        
+        //check x boundary
+        if(source_x < 0 || source_x > this->get_width()) {
+            claim( "source x coord is not valid",kError);
+        }
+        //check y boundary
+        if(sink_x < 0 || sink_x > this->get_width()) {
+            claim( "sink x coord is not valid",kError);
+        }
+        if(source_y < 0 || source_y > this->get_height()) {
+            claim( "source y coord is not valid",kError);
+        }
+        //check y boundary
+        if(sink_y < 0 || sink_y > this->get_height()) {
+            claim( "sink y coord is not valid",kError);
+        }
+    }
+    
     vector<bool> c_bound(c.size());
     for(int i=0; i<c.size(); i++) {
         if(this->get_node(c.at(i).source)->get_y()==0 ||

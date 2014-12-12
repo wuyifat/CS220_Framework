@@ -84,7 +84,6 @@ void Algorithm::Lee::run() {
                     }
                     if(neibor->get_cost() == 0) {
                         neibor->set_cost(value);
-                        map->display_map();
                         q2.push(neibor);
                     }//if
                 }//for
@@ -121,7 +120,6 @@ void Algorithm::Lee::run() {
                     }
                     if(neibor->get_cost() == 0) {
                        neibor->set_cost(value);
-                        map->display_map();
                         q1.push(neibor);
                     }//if
                 }//for
@@ -148,10 +146,6 @@ void Algorithm::Lee::traceback(Path* path,int i) {
     int x,y;
     while(flag!=1) {           
         Node* tail = this->map->get_node(path->get_sink()); 
-        cout<< endl<<"the tail is "<<endl;
-        tail->display_node();
-        cout <<"the direction value is 0up 1left 2down 3right    "<<direction<<endl;
-        this->map->display_map();
         x = tail->get_x();
         y = tail->get_y();
 
