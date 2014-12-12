@@ -1,3 +1,8 @@
+/*Filename:<hadlock.h>
+*Author:Shuheng Li
+*Date:12/12/2014
+*Description:Achieve Hadlock Algorithm to find path from source to sink
+*/
 #ifndef _HADLOCK_BASE_H_
 #define _HADLOCK_BASE_H_
 
@@ -25,7 +30,7 @@ namespace Algorithm{
         private:
             Map* map;
             int number; //number of source = number of sink = number of path
-            int cross; //number of source = number of sink = number of path
+            int cross; //set value allow new path to pass old path or not
             vector<Path*> paths;
             vector<Connection> connection;
             vector<Node*> source;        
@@ -39,7 +44,7 @@ namespace Algorithm{
             void run();
             bool set_cross();
             void traceback(Path* path);
-            int direction(Point source,Point sink);
+            int direction(Point source,Point sink);//get direction
             Map* get_map();
             vector<Path*> get_paths();
 	    vector<Connection> get_connection();

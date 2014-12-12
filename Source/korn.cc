@@ -1,3 +1,8 @@
+/*Filename:<korn.cc>
+*Author:Shuheng Li,Yi Wu
+*Date:12/12/2014
+*Description:Almost same as ruben algorithm, just change the distance value
+*/
 #include "../Headers/korn.h"
 #include <iostream>
 #include <cmath>
@@ -53,34 +58,33 @@ void Algorithm::Korn::run() {
         this->source.at(i)->set_cost(-2);    //set source cost to -2
         this->sink.at(i)->set_cost(-3);    //set sink cost to -3
         Point md = this->sink.at(i)->get_coord();    //use for compute manhattan distance
-        double min_d = abs(md.x+md.y-source.at(i)->get_x()-source.at(i)->get_y()) * 2;
+        double min_d = abs(md.x+md.y-source.at(i)->get_x()-source.at(i)->get_y()) * this->get_alpha();
         int flag = 0;    // this flag use to break while loop, if we found sink, the flag = 1 and break loop
         int direction;
         int x = 0;
         int y = 0;
-        int check = 0;
 //        int debug = 0;
         //the basic idea of this algorithm is use 2 queue to set the cost
         stack<Node*> q1;
         vector<Node*> others,small;
         q1.push(this->source.at(i));
         Node* last = new Node(0,0);
-        Node* temp = new Node(0,0);
-        int f1 = 0;    //fi for check wether the first time in queue
+        Node* current_node = new Node(0,0);
+        int first = 0;    //fi for check wether the first time in queue
         while(flag != 1) {    // while flag !=1 keep finding sink
             while(!q1.empty()) {
 
                 if(flag == 1) {    //if found sink 
                     break;
                 }
-                temp = q1.top();
-                x = temp->get_x();
-                y = temp->get_y();
+                current_node = q1.top();
+                x = current_node->get_x();
+                y = current_node->get_y();
                 q1.pop();
-                temp->set_flag(1);    //this flag to check the node can only in to vector once
+                current_node->set_flag(1);    //this flag to check the node can only in to vector once
                 Node* neibor = new Node(0,0);
 
-                if(f1 != 0) {                
+                if(first != 0) {                
                     switch (direction) {
 //---------------------------------up situation---------------------------------
                     case  0:
@@ -127,19 +131,18 @@ void Algorithm::Korn::run() {
                                 flag = 1;
                                 // add a path to vector
                                 Path* new_path = new Path();
-                                PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
-                                this->map->display_md();
+                                PathSegment* new_segment = new PathSegment(neibor->get_coord(),current_node->get_coord());
                                 new_path->add_segment(new_segment);
                                 new_path->set_source(neibor->get_coord());
-                                new_path->set_sink(temp->get_coord());
+                                new_path->set_sink(current_node->get_coord());
                                 //traceback
                                 this->traceback(new_path);
                                 break;
                             }
 
                             if(neibor->get_cost() == 0) {    //for normal point 
-                                if(f1!=0 ) {
-                                    neibor->set_cost(temp->get_cost()+1);
+                                if(first!=0 ) {
+                                    neibor->set_cost(current_node->get_cost()+1);
                                 }
                                 else {
                                     neibor->set_cost(1);
@@ -147,8 +150,6 @@ void Algorithm::Korn::run() {
                                 neibor->set_m_d(md,this->get_alpha());
                             }
 
-                            this->map->display_map();
-                            this->map->display_md();
                             if (neibor->get_distance() <= min_d) {
                                 small.push_back(neibor);
                             }//if md=distance
@@ -160,40 +161,35 @@ void Algorithm::Korn::run() {
                         }//if get_flag()!=1
                     }//check == 0
                 }
-                if(check == 1 || f1 == 0) {
+                if(check == 1 || first == 0) {
                     check = 0;
-                        for(int j = 0; j < temp->connections_size();j++) {                
-                            neibor = (temp->connections_at(j))->get_end(temp);
+                        for(int j = 0; j < current_node->connections_size();j++) {                
+                            neibor = (current_node->connections_at(j))->get_end(current_node);
                             if(neibor->get_flag()!=1) {
                                 //if we found sink we use traceback function to save the path   
                                 if(neibor->get_cost() == -3) {
                                     flag = 1;
                                     // add a path to vector
                                     Path* new_path = new Path();
-                                    PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
-//cout <<"this is distance from check = 1"<<endl;
-                                    this->map->display_md();
+                                    PathSegment* new_segment = new PathSegment(neibor->get_coord(),current_node->get_coord());
                                     new_path->add_segment(new_segment);
                                     new_path->set_source(neibor->get_coord());
-                                    new_path->set_sink(temp->get_coord());
+                                    new_path->set_sink(current_node->get_coord());
                                     //traceback
                                     this->traceback(new_path);
                                 break;
                             }
 
                             if(neibor->get_cost() == 0) {    //for normal point 
-                                if(f1!=0 ) {
-                                    neibor->set_cost(temp->get_cost()+1);
+                                if(first!=0 ) {
+                                    neibor->set_cost(current_node->get_cost()+1);
                                 }
                                 else {
                                     neibor->set_cost(1);
                                 }
-                                neibor->set_m_d(md,this->get_alpha());
+                                neibor->set_m_d(md,this->get_alpha());//This is most different between ruben and Korn!!!!!!!!!!!!!!!!!!
                             }
 
-//cout<< "this is cost from check =1"<<endl;
-                            this->map->display_map();
-                            this->map->display_md();
                             if (neibor->get_distance() <= min_d) {
                                 small.push_back(neibor);
                             }//if md=distance
@@ -203,7 +199,7 @@ void Algorithm::Korn::run() {
                         }//if get_flag()!=1
                     }//for
                 }
-                f1++;
+                first++;
                 if(!small.empty()) {
                     int get_pos = 0;
                     int get_min = small.at(0)->get_distance();
@@ -217,7 +213,7 @@ void Algorithm::Korn::run() {
                     Node* tt = small.at(get_pos);
                     min_d = tt->get_distance();
                     direction = this->direction(last->get_coord(),tt->get_coord());
-                    last = temp;
+                    last = current_node;
                     q1.push(tt);
                     small.erase ( small.begin() + get_pos );
                     for(int kkk = 0;kkk < small.size();kkk++) {
@@ -242,7 +238,7 @@ void Algorithm::Korn::run() {
                 others.erase ( others.begin() + get_pos );
                 min_d = tt->get_distance();
                 direction = this->direction(last->get_coord(),tt->get_coord());
-                last = temp;
+                last = current_node;
                 q1.push(tt);
             }//if q1 q2 empty             
         }//while flag
@@ -493,11 +489,11 @@ bool Algorithm::Korn::set_alpha() {
 }
 
 bool Algorithm::Korn::set_cross() {
-    int temp_cross;
+    int current_node_cross;
     cout << "Input 0 or 1 to choose if paths are allowed to cross. 0 = not allowed. 1 = allow" << endl;
-    cin >> temp_cross;
-    if ((temp_cross==1)||(temp_cross==0)) {
-        this->cross = temp_cross;
+    cin >> current_node_cross;
+    if ((current_node_cross==1)||(current_node_cross==0)) {
+        this->cross = current_node_cross;
         return false;
     }
     else 

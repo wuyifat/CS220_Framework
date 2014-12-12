@@ -1,3 +1,8 @@
+/*Filename:<lee.h>
+*Author:Shuheng Li
+*Date:12/12/2014
+*Description:Achieve Lee Algorthm to found several paths among more than one pair of sources and sinks
+*/
 #ifndef _LEE_BASE_H_
 #define _LEE_BASE_H_
 
@@ -35,16 +40,16 @@ namespace Algorithm{
             Lee(Map* m);
           //  ~Lee();
 
-            bool set_min_turn();
-            bool set_cross();
+            bool set_min_turn();//if the value is 1, use minimize turn traceback
+            bool set_cross();//if value is 0 a new path can't get through old path
             void run();
-            void traceback(Path* path);
-            void traceback(Path* path,int i) ;
+            void traceback(Path* path);//regular trace back
+            void traceback(Path* path,int i) ;//ruben trace back
             Map* get_map();
             vector<Path*> get_paths();
 	    vector<Connection> get_connection();
-	    Node* min_node(vector<Node*> others);
-	    int direction(Point source,Point sink);
+	    Node* min_node(vector<Node*> others);//found minimize cost among all neigor
+	    int direction(Point source,Point sink);//get direction
     };
 }
 #endif

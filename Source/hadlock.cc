@@ -1,3 +1,8 @@
+/*Filename:<hadlock.cc>
+*Author:Shuheng Li
+*Date:12/12/2014
+*Descreption:Using DfS to achieve hadlock algorthm, 
+*/
 #include "../Headers/hadlock.h"
 #include <iostream>
 #include <cmath>
@@ -13,10 +18,10 @@ Algorithm::Hadlock::Hadlock(Map* m) {
         cout << "Invalid cross value. Input again." << endl << endl;
     }
     this->connection = m->get_connection();
-    this->number = m->get_connection().size();
+    this->number = m->get_connection().size();//get the path number = source number = sink number
     for (int i = 0; i < this->number; i++) {
-    this->source.push_back(this->map->get_node(this->connection.at(i).source));
-    this->sink.push_back(this->map->get_node(this->connection.at(i).sink));
+        this->source.push_back(this->map->get_node(this->connection.at(i).source));
+        this->sink.push_back(this->map->get_node(this->connection.at(i).sink));
     }
 }
 
@@ -24,7 +29,7 @@ Algorithm::Hadlock::Hadlock(Map* m) {
     //empty destory function
 //}
 
-void Algorithm::Hadlock::reset_map() {
+void Algorithm::Hadlock::reset_map() {//reset the map
     for(int y = 0; y < this->map->get_height();y++) {
         for(int x = 0; x < this->map->get_width();x++) {
             if(this->map->get_node(x,y)->get_cost()!=-1) {
@@ -45,8 +50,8 @@ void Algorithm::Hadlock::run() {
         // before searching each pair of source-sink, reset the map's cost=0 except for the blockers          
         this->reset_map();
         // set source and sink
-        this->source.at(i)->set_detour(-2);//set source cost to -2
-        this->sink.at(i)->set_detour(-3);//set sink cost to -3
+        this->source.at(i)->set_detour(-2);//set source detourto -2
+        this->sink.at(i)->set_detour(-3);//set sink detour to -3
         this->source.at(i)->set_cost(-2);//set source cost to -2
         this->sink.at(i)->set_cost(-3);//set sink cost to -3
         Point md = this->sink.at(i)->get_coord();//use for compute manhuatan distance
@@ -57,32 +62,30 @@ void Algorithm::Hadlock::run() {
         int x = 0;
         int y = 0;
         int check = 0;
-        int debug = 0;
     
         //the basic ideal of this algorithm is use 2 queue to set the cost
-        stack<Node*> q1,q2;
+        stack<Node*> q1;
         vector<Node*> others;
         q1.push(this->source.at(i));
         Node* last = new Node(0,0);
-        Node* temp = new Node(0,0);
+        Node* current_node = new Node(0,0);
         int first = 0;
     
         while(flag != 1) {    // while flag !=1 keep searching for sink
             while(!q1.empty()) {
-                temp = q1.top();
-                x = temp->get_x();
-                y = temp->get_y();
+                current_node = q1.top();
+                x = current_node->get_x();//For computing direciton
+                y = current_node->get_y();
                 q1.pop();
 //                cout<<"get q1 is ";
-//                temp->display_node();
-                temp->set_flag(1);    //this flag to check the node can only in to vector once
+                current_node->set_flag(1);    //this flag to check the node can only in to vector once
                 Node* neibor = new Node(0,0);
 
-                if(first != 0) {                
+                if(first != 0) { //for the first tiem we don't konw the direction, so we need to do it after second turn               
                     switch (direction) {
 //---------------------------------up situation---------------------------------
                     case  0:
-                        if(y-1 >= 0&&this->map->get_node(x,y-1)->get_cost()!=-1) {
+                        if(y-1 >= 0&&this->map->get_node(x,y-1)->get_cost()!=-1) {//check boundary and not in blocker
                             neibor = this->map->get_node(x,y-1);
                         }//if 
                         else {
@@ -118,21 +121,18 @@ void Algorithm::Hadlock::run() {
                     break;
                     }
 ///////////////////////////////////////////////////////cc/////////////////////////////
-                    if (check == 0) {
+                    if (check == 0) {//if we got it though the direciton 
                         if(neibor->get_flag()!=1) { 
                             //if we found sink we use traceback function to save the path
                             if(neibor->get_cost() == -3) {
                                 flag = 1;
                                 // add a path to vector
                                 Path* new_path = new Path();
-                                PathSegment* new_segment = new PathSegment(neibor->get_coord(),temp->get_coord());
-//                                this->map->display_md();
+                                PathSegment* new_segment = new PathSegment(neibor->get_coord(),current_node->get_coord());
                                 new_path->add_segment(new_segment);
                                 new_path->set_source(neibor->get_coord());
-                                new_path->set_sink(temp->get_coord());
+                                new_path->set_sink(current_node->get_coord());
                                 //traceback
-                                cout << "The detour numbers are " << endl;
-                                this->map->display_detour();
                                 this->traceback(new_path);
                                 break;
                             }
@@ -141,25 +141,25 @@ void Algorithm::Hadlock::run() {
                                     neibor->set_cost(1);
                                 }
                                 else {
-                                    neibor->set_cost(temp->get_cost()+1);
+                                    neibor->set_cost(current_node->get_cost()+1);
                                 }
                                 //---------------------------set detour---------------------------
-                                neibor->set_m_d(md,1);
+                                neibor->set_m_d(md,1);//set node manhanttan distance
                                 int detour;
                                 detour = neibor->get_distance()-min_d;
                                 if ( detour <= 0) {
                                     neibor->set_detour(0);
                                 }
                                 else {
-                                    neibor->set_detour(detour/2);
+                                    neibor->set_detour(detour/2);//set detour
                                 }
                             }
-                            if (neibor->get_detour() == temp->get_detour()) {
-                                direction = this->direction(temp->get_coord(),neibor->get_coord());
-                                last = temp;
+                            if (neibor->get_detour() == current_node->get_detour()) {
+                                direction = this->direction(current_node->get_coord(),neibor->get_coord());//get direciton
+                                last = current_node;
                                 q1.push(neibor);
                             }
-                            if( neibor->get_detour() == temp->get_detour()+1 ) {
+                            if( neibor->get_detour() == current_node->get_detour()+1 ) {
                                 others.push_back(neibor);
                                 check = 1;
                             }
@@ -169,9 +169,9 @@ void Algorithm::Hadlock::run() {
 
                 if(check == 1 || first == 0) {
 
-                    for(int j = 0; j < temp->connections_size();j++) { 
+                    for(int j = 0; j < current_node->connections_size();j++) { 
 
-                        neibor = (temp->connections_at(j))->get_end(temp);
+                        neibor = (current_node->connections_at(j))->get_end(current_node);
 
                         if(neibor->get_flag()!=1) { 
                             //if we found sink we use traceback function to save the path
@@ -180,14 +180,11 @@ void Algorithm::Hadlock::run() {
                                 // add a path to vector
                                 Path* new_path = new Path();
                                 PathSegment* new_segment = 
-                                new PathSegment(neibor->get_coord(),temp->get_coord());
-//                                this->map->display_md();
+                                new PathSegment(neibor->get_coord(),current_node->get_coord());
                                 new_path->add_segment(new_segment);
                                 new_path->set_source(neibor->get_coord());
-                                new_path->set_sink(temp->get_coord());
+                                new_path->set_sink(current_node->get_coord());
                                 //traceback
-                                cout << "The detour numbers are " << endl;
-                                this->map->display_detour();
                                 this->traceback(new_path);
                                 break;
                             }
@@ -197,7 +194,7 @@ void Algorithm::Hadlock::run() {
                                     neibor->set_cost(1);
                                 }
                                 else {
-                                    neibor->set_cost(temp->get_cost()+1);
+                                    neibor->set_cost(current_node->get_cost()+1);
                                 }
                                 //---------------------------set detour---------------------------
                                 neibor->set_m_d(md,1);
@@ -210,15 +207,13 @@ void Algorithm::Hadlock::run() {
                                     neibor->set_detour(detour/2);
                                 }
                             }
-//                            cout<<" now push number into it small";
-//                            neibor->display_node();
         
-                            if(temp->get_detour()==-2) {
+                            if(current_node->get_detour()==-2) {
     
                                 if (neibor->get_detour() ==0) {
     
-                                    direction = this->direction(temp->get_coord(),neibor->get_coord());
-                                    last = temp;
+                                    direction = this->direction(current_node->get_coord(),neibor->get_coord());
+                                    last = current_node;
                                     q1.push(neibor);
                                 }
                                 if( neibor->get_detour() == 1 ) {
@@ -226,13 +221,13 @@ void Algorithm::Hadlock::run() {
                                 }
                             }
                             else {
-                                if (neibor->get_detour() == temp->get_detour()) {
+                                if (neibor->get_detour() == current_node->get_detour()) {
         
-                                    direction = this->direction(temp->get_coord(),neibor->get_coord());
-                                    last = temp;
+                                    direction = this->direction(current_node->get_coord(),neibor->get_coord());
+                                    last = current_node;
                                     q1.push(neibor);
                                 }
-                                if( neibor->get_detour() == temp->get_detour()+1 ) {
+                                if( neibor->get_detour() == current_node->get_detour()+1 ) {
                                     others.push_back(neibor);
                                 }
                             }
@@ -247,8 +242,8 @@ void Algorithm::Hadlock::run() {
             }//whileq1
 
             //if q1 empty q2 empty, found element in vector
-            if(q1.empty() ) {
-                int get_pos = 0;
+            if(q1.empty() ) {//found minimize detour node in this vector, and remove it from the vector, and push it to Q1
+                int get_pos = 0;//get position
                 int get_min = others.at(0)->get_distance();
                 for(int i = 0;i < others.size();i++) {
                     if(others.at(i)->get_distance() <= get_min) {
@@ -260,14 +255,12 @@ void Algorithm::Hadlock::run() {
                 others.erase ( others.begin() + get_pos );
                 min_d = tt->get_distance();
                 direction = this->direction(last->get_coord(),tt->get_coord());
-                last = temp;
-//                cout<< "now from OTHERS0 push to Q1"<<endl;
-//                tt->display_node();
+                last = current_node;
                 q1.push(tt);
             }//if q1 q2 empty             
         }//while flag
 
-        if(this->cross == 0) {
+        if(this->cross == 0) {//if corss = 0 set old path as a blocker
             Path* t = this->paths.at(i);
             this->map->add_blocker(t);
         }
@@ -281,34 +274,24 @@ Map* Algorithm::Hadlock::get_map() {
 
 
 void Algorithm::Hadlock::traceback(Path* path) {
-    int flag = 0;
-    vector<Node*> small;
+    int flag = 0;//break out the loop
+    vector<Node*> small;//same the all node from current node, and found a node with smallest detour
     stack<PathSegment*> q1,q2;
     q1.push(path->at(0)); 
     int first = 0;
     int need = 0;
-    int debug =0;
     int check = 0;//if check = 1 need to remove some path
     while(flag!=1) {           
     //--------------------------------------------------Q1--------------------
         while(!q1.empty()) {
 
-            debug++;
-//            this->map->display_flag();
-            if(check == 1) {
+            if(check == 1) {//right now in a dead situaltion, we need to back to last step, found another path
                 check = 0;
                 need= 0;
-//                cout<<"the size of q1 is "<< q1.size()<<endl<<endl;
-                Point branch = q1.top()->get_source();
-                int test = (path->get_sink()!=branch);
-//                cout << "if the value is 1 then they are not equal     "<< test<<endl;
-                while(path->get_sink()!=branch) {
-//                    cout<< "before remove:";
-                    path->display_path();
+                Point branch = q1.top()->get_source();//get last live node in Q1
+                while(path->get_sink()!=branch) {//found the point in path and remove the old part
                     path->remove_segment(path->at(path->size()-1));
                     path->set_sink( path->at(path->size()-1)->get_sink());
-//                    cout<<endl<<"after";
-                    path->display_path();
                 }
                 path->add_segment(q1.top());
             }
@@ -318,8 +301,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
             q1.pop();
             tail->set_flag(2);
             need = 0;
-//            cout<< "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!this is q1 and the tial is :";
-//            tail->display_node();
             cout<< endl;
             //if we found the last point flag = 1
             for(int i = 0; i< tail->connections_size();i++) {
@@ -335,7 +316,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
                         path->add_segment(new_segment);
                         path->set_sink(neibor->get_coord());
 //                        cout<<"++++++++++++++++++++++++++++++++++++++++++++++++++++I got the source@@@@@@@@@@@@@@@@@@"<<endl;
-//                        neibor->display_node();
                         flag = 1;
                         break;
                     }    //if neibor = -2
@@ -369,7 +349,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
                 for(int kkk = 0;kkk < small.size();kkk++) {
                     Node* tt = small.at(kkk);
 //                    cout<<"get a element in smalli "<<kkk<< " " ;
-//                    tt->display_node();
 //                    cout<<"and it's detour is "<<tt->get_detour();
 //                    cout<<endl<<endl;
 //                    cout<< "the get_pos is "<<get_pos<<endl;
@@ -378,13 +357,11 @@ void Algorithm::Hadlock::traceback(Path* path) {
                         if (tt->get_detour() == tail->get_detour()) {
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
                             q2.push(new_segment);
-//                            tt->display_node();
 //                            cout<<" detour value equel push in q2  "<<tt->get_detour()<< endl;
                         }
                         if( tt->get_detour() == tail->get_detour()-1) {
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
                             q1.push(new_segment);
-//                            tt->display_node();
 //                            cout<<"value is -1 so push in q1"<<tt->get_detour()<<endl;
                         }    
                         if( tt->get_detour() == tail->get_detour()+1) {
@@ -399,7 +376,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
                 path->add_segment(new_segment);
                 path->set_sink(tt->get_coord());
 //                cout<<"add a new path is ";
-                path->display_path();
 //                cout<< "push the minin pathsegment to q1";
                 q1.push(new_segment);
                 small.clear();
@@ -413,14 +389,12 @@ void Algorithm::Hadlock::traceback(Path* path) {
 //--------------------------------------------------Q2--------------------
         while(!q2.empty()) {
 
-//            this->map->display_flag();
             if(check == 1) {
                 check = 0;
                 need= 0;
 //                cout<<"t!!!!!!!!!!!!!!he size of q2      is "<< q2.size()<<endl<<endl;
                 Point branch = q2.top()->get_source();
                 int test = (path->get_sink()!=branch);
-                cout << "this test is "<< test;
                 while(path->get_sink()!=branch) {
                     path->remove_segment(path->at(path->size()-1));
                     path->set_sink( path->at(path->size()-1)->get_sink());
@@ -433,8 +407,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
             tail->set_flag(2);
             need = 0;
 //            cout<< "!------------------------------!this is q2 and the tial is :";
-//            tail->display_node();
-            cout<< endl;
             //if we found the last point flag = 1
             for(int i = 0; i< tail->connections_size();i++) {
                 Node* neibor = tail->connections_at(i)->get_end(tail);
@@ -448,7 +420,6 @@ void Algorithm::Hadlock::traceback(Path* path) {
                         path->add_segment(new_segment);
                         path->set_sink(neibor->get_coord());
 //                        cout<<"++++++++++++++++++++++++++++++++++++++++++++++++++++I got the source@@@@@@@@@@@@@@@@@@"<<endl;
-//                        neibor->display_node();
                         flag = 1;
                         break;
                     }//if neibor = -2
@@ -486,19 +457,16 @@ void Algorithm::Hadlock::traceback(Path* path) {
                 for(int kkk = 0;kkk < small.size();kkk++) {
                     Node* tt = small.at(kkk);
 //                    cout<<"get a element in smalli "<<kkk<< "   ";
-//                    tt->display_node();
 //                    cout<<endl<<endl;
                     if(kkk!= get_pos) {
                         if (tt->get_detour() == tail->get_detour()) {    
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
                             q1.push(new_segment);
-//                            tt->display_node();
 //                            cout<<"push in q2  "<<tt->get_detour()<< endl;
                         }
                         if( tt->get_detour() == tail->get_detour()-1) {
                             PathSegment* new_segment = new PathSegment(tail->get_coord(),tt->get_coord());
                             q2.push(new_segment);
-//                            tt->display_node();
 //                            cout<<"push in q1"<<tt->get_detour()<<endl;
 
                             if( tt->get_detour() == tail->get_detour()+1) {
@@ -553,11 +521,11 @@ int Algorithm::Hadlock::direction(Point source,Point sink) {
 }
 
 bool Algorithm::Hadlock::set_cross() {
-    int temp_cross;
+    int current_node_cross;
     cout << "Input 0 or 1 to choose if paths are allowed to cross. 0 = not allowed. 1 = allow" << endl;
-    cin >> temp_cross;
-    if ((temp_cross==1)||(temp_cross==0)) {
-        this->cross = temp_cross;
+    cin >> current_node_cross;
+    if ((current_node_cross==1)||(current_node_cross==0)) {
+        this->cross = current_node_cross;
         return false;
     }
     else 

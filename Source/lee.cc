@@ -1,3 +1,9 @@
+/*FileName: <lee.cc>
+*Auther: Shuheng Li
+*Data:12/12/2014
+*Description: Using two queue to finish this algorithm, use Edge claee and Node class to find the neibor and set its cost. Just like cheese board, Q1 find all node in white node, Q2 find all
+node in black,once Q1 is empty, we switch to Q2, if Q2 is empty we switch to Q1, until we found sink.
+*/
 #include "../Headers/lee.h"
 #include <iostream>
 using std::cout;
@@ -5,10 +11,10 @@ using std::endl;
 using std::cin;
 
 Algorithm::Lee::Lee(Map* m) {
-    while(set_cross()) {
+    while(set_cross()) {//set cross value, if cross = 0, a path can't go through old path
         cout << "Invalid cross value. Input again." << endl << endl;
     }
-    while(set_min_turn()) {
+    while(set_min_turn()) {//if set min_turn = 1, we will use ruben trace back, otherwises just use reguler way to trace back
         cout << "Invalid min_turn value. Input again." << endl << endl;
     }
     this->map = m;
@@ -49,18 +55,12 @@ void Algorithm::Lee::run() {
         queue<Node*> q1,q2;
         q1.push(this->source.at(i));
         while(flag != 1) {    // while flag !=1 keep searching for sink
-           int f1 = 0;
-            int f2 = 0;
+            int f1 = 0;//check wether is the first time run the algorithm,use for set first neibor value
             while(!q1.empty()) {
                 if(flag == 1) {    //if found sink 
                     break;
                 }
                 f1++;
-                if(f1 == 1) {    //the key point to increase cost
-                    if(q2.empty()) {
-                        value++;
-                    }
-                }
                 Node* temp = q1.front();
                 q1.pop();
                 for(int j = 0; j < temp->connections_size();j++) {                
@@ -73,7 +73,7 @@ void Algorithm::Lee::run() {
                         new_path->add_segment(new_segment);
                         new_path->set_source(neibor->get_coord());
                         new_path->set_sink(temp->get_coord());
-                        if(ruben_trace == 1) {
+                        if(ruben_trace == 1) {//use different way to trace back
                             this->traceback(new_path,ruben_trace);
                         }
                         else {
@@ -82,22 +82,21 @@ void Algorithm::Lee::run() {
 
                         break;
                     }
-                    if(neibor->get_cost() == 0) {
-                        neibor->set_cost(value);
+                    if(neibor->get_cost() == 0) {//if this is a new node, we set his cost and push to another stack
+                        if(f1==1){//if it start at source
+                            neibor->set_cost(1);
+			}
+			else{
+                            neibor->set_cost(temp->get_cost()+1);
+			}
                         q2.push(neibor);
                     }//if
                 }//for
              }//whileq1
 
              while(!q2.empty()) {
-               if(flag == 1) {
+               if(flag == 1) {//if we found sink
                     break;
-                }
-                f2++;
-                if (f2 == 1) {
-                    if(q1.empty()) {
-                        value++;
-                    }
                 }
                 Node* temp = q2.front();
                 q2.pop();
@@ -119,7 +118,7 @@ void Algorithm::Lee::run() {
                         break;
                     }
                     if(neibor->get_cost() == 0) {
-                       neibor->set_cost(value);
+                        neibor->set_cost(temp->get_cost()+1);
                         q1.push(neibor);
                     }//if
                 }//for
